@@ -1,12 +1,12 @@
 version: '3.8'
 
 services:
-  LOTS-frontend:
+  lots-frontend:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: LOTS-frontend
-    image: LOTS-frontend:latest
+    image: lots-frontend:latest
     ports:
       - "3001:80"
     restart: always
