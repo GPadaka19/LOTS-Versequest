@@ -26,7 +26,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            rm -rf ~/D20-FE
+            rm -rf ~/lots-netion
 
       - name: Copy dist & docker files to VPS
         uses: appleboy/scp-action@v0.1.4
@@ -35,7 +35,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "dist,Dockerfile,docker-compose.yml,nginx.conf"
-          target: "~/D20-FE"
+          target: "~/lots-netion"
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.0
@@ -44,9 +44,8 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd ~/D20-FE
+            cd ~/lots-netion
             sudo docker compose down
-            sudo docker rmi d20-fe-d20-frontend:latest || true
             sudo docker compose build
             sudo docker compose up -d
 
@@ -58,7 +57,7 @@ jobs:
         run: |
           curl -s -X POST https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage \
             -d chat_id=$TELEGRAM_CHAT_ID \
-            -d text="✅ CI/CD Sukses!%0AProject *D20-FE* berhasil dideploy ke VPS 🎉" \
+            -d text="✅ CI/CD Sukses!%0AProject *lots-netion* berhasil dideploy ke VPS 🎉" \
             -d parse_mode=Markdown
 
       - name: Send failure Telegram notification
@@ -69,5 +68,7 @@ jobs:
         run: |
           curl -s -X POST https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage \
             -d chat_id=$TELEGRAM_CHAT_ID \
-            -d text="❌ CI/CD Gagal!%0AProject *D20-FE* gagal dideploy ke VPS ⚠️" \
+            -d text="❌ CI/CD Gagal!%0AProject *lots-netion* gagal dideploy ke VPS ⚠️" \
             -d parse_mode=Markdown
+
+        # sudo docker rmi lots-netion-d20-frontend:latest || true
