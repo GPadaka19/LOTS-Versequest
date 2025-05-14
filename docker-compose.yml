@@ -1,11 +1,11 @@
 version: '3.8'
 
 services:
-  lots-frontend:
+  lots-netion:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: LOTS-frontend
+    container_name: lots-netion
     image: lots-frontend:latest
     ports:
       - "3001:80"
