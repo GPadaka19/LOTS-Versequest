@@ -38,8 +38,12 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center">
-          <div className="text-amber-500 font-bold text-xl md:text-2xl font-serif">
-            Legacy of the Sunstone
+          <div className="flex items-center">
+            <img 
+              src="/Picture/Versequest_White.png" 
+              alt="Legacy of the Sunstone" 
+              className="h-8 md:h-10 object-contain"
+            />
           </div>
           
           {/* Desktop Menu */}
