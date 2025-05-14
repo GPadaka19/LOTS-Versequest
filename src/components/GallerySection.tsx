@@ -68,42 +68,70 @@ const GallerySection = () => {
           </h2>
           
           <div className="mb-12 relative">
-            <div className="relative h-64 md:h-96 overflow-hidden rounded-lg shadow-2xl">
-              <img 
-                src={images[currentImage]} 
-                alt={`Game screenshot ${currentImage + 1}`} 
-                className="w-full h-full object-cover"
-              />
-              
-              <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
-                <span className="text-white text-xl font-bold">Screenshot {currentImage + 1}</span>
+            <div id="indicators-carousel" className="relative w-full">
+              {/* Carousel wrapper */}
+              <div className="relative h-64 md:h-96 overflow-hidden rounded-lg shadow-2xl">
+                {images.map((image, index) => (
+                  <div 
+                    key={index}
+                    className={`absolute w-full h-full transition-all duration-700 ease-in-out ${
+                      currentImage === index 
+                        ? 'opacity-100 translate-x-0' 
+                        : index < currentImage 
+                          ? '-translate-x-full opacity-0' 
+                          : 'translate-x-full opacity-0'
+                    }`}
+                    data-carousel-item={currentImage === index ? 'active' : undefined}
+                  >
+                    <img 
+                      src={image} 
+                      alt={`Game screenshot ${index + 1}`} 
+                      className="absolute block w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
               </div>
-            </div>
-            
-            <button 
-              onClick={prevImage}
-              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 text-white p-2 rounded-full transition-all"
-            >
-              <ChevronLeft size={24} />
-            </button>
-            
-            <button 
-              onClick={nextImage}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 text-white p-2 rounded-full transition-all"
-            >
-              <ChevronRight size={24} />
-            </button>
-            
-            <div className="flex justify-center mt-4">
-              {images.map((_, index) => (
-                <button 
-                  key={index}
-                  onClick={() => setCurrentImage(index)}
-                  className={`w-3 h-3 rounded-full mx-1 transition-all ${
-                    currentImage === index ? 'bg-amber-500 scale-125' : 'bg-gray-400'
-                  }`}
-                />
-              ))}
+
+              {/* Slider indicators */}
+              <div className="absolute z-30 flex -translate-x-1/2 space-x-3 rtl:space-x-reverse bottom-5 left-1/2">
+                {images.map((_, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                      currentImage === index ? 'bg-amber-500 scale-125' : 'bg-white/50'
+                    }`}
+                    onClick={() => setCurrentImage(index)}
+                    aria-current={currentImage === index}
+                    aria-label={`Slide ${index + 1}`}
+                    data-carousel-slide-to={index}
+                  />
+                ))}
+              </div>
+
+              {/* Slider controls */}
+              <button 
+                type="button" 
+                className="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                onClick={prevImage}
+                data-carousel-prev
+              >
+                <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white/70 group-focus:outline-none">
+                  <ChevronLeft className="w-4 h-4 text-white" />
+                  <span className="sr-only">Previous</span>
+                </span>
+              </button>
+              <button 
+                type="button" 
+                className="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                onClick={nextImage}
+                data-carousel-next
+              >
+                <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white/70 group-focus:outline-none">
+                  <ChevronRight className="w-4 h-4 text-white" />
+                  <span className="sr-only">Next</span>
+                </span>
+              </button>
             </div>
           </div>
           
