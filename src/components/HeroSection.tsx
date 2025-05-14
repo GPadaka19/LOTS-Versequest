@@ -38,7 +38,7 @@ const HeroSection = () => {
         }`}
       >
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 text-amber-500 font-serif leading-tight">
+          <h1 className="text-5xl md:text-7xl lg:text-7xl font-bold mb-6 text-amber-500 font-serif leading-tight">
             Legacy of the Sunstone
           </h1>
           <p className="text-xl md:text-3xl text-amber-100 mb-12 max-w-3xl mx-auto leading-relaxed">
@@ -59,15 +59,14 @@ const HeroSection = () => {
               Learn More
             </button>
           </div>
-        </div>
-        
-        <div 
-          className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer"
+        </div>  
+      </div>
+      <div 
+          className="absolute bottom-10 transform -translate-x-1/2 animate-bounce cursor-pointer z-20"
           onClick={scrollToAbout}
         >
-          <ChevronDown size={32} className="text-amber-100 opacity-80" />
+          <ChevronDown size={32} className="text-amber-300 opacity-80" />
         </div>
-      </div>
 
       {/* Animated Particles */}
       <div className="absolute inset-0 z-10 pointer-events-none">
