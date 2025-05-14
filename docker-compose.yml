@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: lots-netion
-    image: lots-frontend:latest
+    image: lots-netion:latest
     ports:
       - "3001:80"
     restart: always

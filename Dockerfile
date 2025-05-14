@@ -2,7 +2,7 @@
 FROM nginx:alpine
 
 # Copy hasil build
-COPY dist/ /usr/share/nginx/html
+# COPY dist/ /usr/share/nginx/html
 
 # Ganti default config NGINX
 COPY nginx.conf /etc/nginx/conf.d/default.conf
