@@ -6,8 +6,7 @@ const images = [
   'https://images.pexels.com/photos/2842070/pexels-photo-2842070.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
   'https://images.pexels.com/photos/12385131/pexels-photo-12385131.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
   'https://images.pexels.com/photos/3155506/pexels-photo-3155506.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  'https://images.pexels.com/photos/5409751/pexels-photo-5409751.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  'https://fotomhs.amikom.ac.id/2022/22_11_5020.jpg'
+  'https://images.pexels.com/photos/5409751/pexels-photo-5409751.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
 ];
 
 const GallerySection = () => {
