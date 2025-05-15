@@ -55,11 +55,14 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
         run: |
+          COMMIT_MESSAGE=$(git log -1 --pretty=format:"%s")
+          AUTHOR_NAME=$(git log -1 --pretty=format:"%an")
+          COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
+          
           curl -s -X POST https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage \
             -d chat_id="$TELEGRAM_CHAT_ID" \
-            -d text="✅ CI/CD Sukses!%0AProject *lots-netion* berhasil dideploy ke VPS 🎉%0A%0A📝 *Commit:* `${COMMIT_MESSAGE}`" \
+            -d text="✅ CI/CD Sukses!%0AProject *lots-netion* berhasil dideploy ke VPS 🎉%0A%0A📝 *Commit:* \`$COMMIT_MESSAGE\`%0A👤 *Author:* $AUTHOR_NAME%0A🔗 [Lihat Commit]($COMMIT_URL)" \
             -d parse_mode=Markdown
 
       - name: Send failure Telegram notification
@@ -67,11 +70,14 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
         run: |
+          COMMIT_MESSAGE=$(git log -1 --pretty=format:"%s")
+          AUTHOR_NAME=$(git log -1 --pretty=format:"%an")
+          COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
+          
           curl -s -X POST https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage \
             -d chat_id="$TELEGRAM_CHAT_ID" \
-            -d text="❌ CI/CD Gagal!%0AProject *lots-netion* gagal dideploy ke VPS ⚠️%0A%0A📝 *Commit:* `${COMMIT_MESSAGE}`" \
+            -d text="❌ CI/CD Gagal!%0AProject *lots-netion* gagal dideploy ke VPS ⚠️%0A%0A📝 *Commit:* \`$COMMIT_MESSAGE\`%0A👤 *Author:* $AUTHOR_NAME%0A🔗 [Lihat Commit]($COMMIT_URL)" \
             -d parse_mode=Markdown
 
 
