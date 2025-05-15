@@ -60,21 +60,22 @@ jobs:
             local text="$1"
             text="${text//\\/\\\\}"
             text="${text//_/\\_}"
-            text="${text//*/\\*}"
-            text="${text//[/\\[}"
-            text="${text//]/\\]}"
-            text="${text//(/\\(}"
-            text="${text//)/\\)}"
-            text="${text//~/\\~}"
-            text="${text//`/\\`}"
-            text="${text//!/\\!}"
-            text="${text//#/\\#}"
-            text="${text//+/\\+}"
-            text="${text//-/\\-}"
-            text="${text//=/\\=}"
-            text="${text//|/\\|}"
-            text="${text//./\\.}"
-            text="${text//>/\\>}"
+            text="${text//\*/\\*}"
+            text="${text//\[/\\[}"
+            text="${text//\]/\\]}"
+            text="${text//\(/\\(}"
+            text="${text//\)/\\)}"
+            text="${text//\~/\\~}"
+            text="${text//\`/\\\`}"
+            text="${text//\!/\\!}"
+            text="${text//\#/\\#}"
+            text="${text//\+/\\+}"
+            text="${text//\-/\\-}"
+            text="${text//\=/\\=}"
+            text="${text//\|/\\|}"
+            text="${text//\./\\.}"
+            text="${text//\>/\\>}"
+            text="${text//\//\\/}"
             echo "$text"
           }
 
@@ -86,10 +87,10 @@ jobs:
           AUTHOR_NAME=$(escape_markdown_v2 "$AUTHOR_NAME_RAW")
           COMMIT_URL_ESCAPED=$(echo "$COMMIT_URL" | sed -e 's/\//\\\//g' -e 's/:/\\:/g' -e 's/\./\\./g')
 
-          curl -s -X POST https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage \
+          curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
             -d chat_id="$TELEGRAM_CHAT_ID" \
-            -d text="✅ CI\\/CD Sukses\!\nProject *lots-netion* berhasil dideploy ke VPS 🎉\n\n📝 *Commit:* \`${COMMIT_MESSAGE}\`\n👤 *Author:* ${AUTHOR_NAME}\n🔗 [Lihat Commit](${COMMIT_URL_ESCAPED})" \
-            -d parse_mode=MarkdownV2
+            -d text="✅ CI\\/CD Sukses\\!\nProject *lots\\-netion* berhasil dideploy ke VPS 🎉\n\n📝 *Commit:* \`${COMMIT_MESSAGE}\`\n👤 *Author:* ${AUTHOR_NAME}\n🔗 [Lihat Commit](${COMMIT_URL_ESCAPED})" \
+            -d parse_mode="MarkdownV2"
 
       - name: Send Telegram notification (Failure)
         if: failure()
@@ -99,26 +100,26 @@ jobs:
         run: |
           escape_markdown_v2() {
             local text="$1"
-            text="${text//\\/\\\\}"  # Escape backslash dulu
+            text="${text//\\/\\\\}"
             text="${text//_/\\_}"
-            text="${text//*/\\*}"
-            text="${text//[/\\[}"
-            text="${text//]/\\]}"
-            text="${text//(/\\(}"
-            text="${text//)/\\)}"
-            text="${text//~/\\~}"
-            text="${text//`/\\`}"
-            text="${text//!/\\!}"
-            text="${text//#/\\#}"
-            text="${text//+/\\+}"
-            text="${text//-/\\-}"
-            text="${text//=/\\=}"
-            text="${text//|/\\|}"
-            text="${text//./\\.}"
-            text="${text//>/\\>}"
+            text="${text//\*/\\*}"
+            text="${text//\[/\\[}"
+            text="${text//\]/\\]}"
+            text="${text//\(/\\(}"
+            text="${text//\)/\\)}"
+            text="${text//\~/\\~}"
+            text="${text//\`/\\\`}"
+            text="${text//\!/\\!}"
+            text="${text//\#/\\#}"
+            text="${text//\+/\\+}"
+            text="${text//\-/\\-}"
+            text="${text//\=/\\=}"
+            text="${text//\|/\\|}"
+            text="${text//\./\\.}"
+            text="${text//\>/\\>}"
+            text="${text//\//\\/}"
             echo "$text"
           }
-
 
           COMMIT_MESSAGE_RAW=$(git log -1 --pretty=format:"%s")
           AUTHOR_NAME_RAW=$(git log -1 --pretty=format:"%an")
@@ -128,9 +129,9 @@ jobs:
           AUTHOR_NAME=$(escape_markdown_v2 "$AUTHOR_NAME_RAW")
           COMMIT_URL_ESCAPED=$(echo "$COMMIT_URL" | sed -e 's/\//\\\//g' -e 's/:/\\:/g' -e 's/\./\\./g')
 
-          curl -s -X POST https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage \
+          curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
             -d chat_id="$TELEGRAM_CHAT_ID" \
-            -d text="❌ CI\\/CD Gagal\!\nProject *lots-netion* gagal dideploy ke VPS ⚠️\n\n📝 *Commit:* \`${COMMIT_MESSAGE}\`\n👤 *Author:* ${AUTHOR_NAME}\n🔗 [Lihat Commit](${COMMIT_URL_ESCAPED})" \
-            -d parse_mode=MarkdownV2
+            -d text="❌ CI\\/CD Gagal\\!\nProject *lots\\-netion* gagal dideploy ke VPS ⚠️\n\n📝 *Commit:* \`${COMMIT_MESSAGE}\`\n👤 *Author:* ${AUTHOR_NAME}\n🔗 [Lihat Commit](${COMMIT_URL_ESCAPED})" \
+            -d parse_mode="MarkdownV2"
 
         # sudo docker rmi lots-netion-d20-frontend:latest || true
