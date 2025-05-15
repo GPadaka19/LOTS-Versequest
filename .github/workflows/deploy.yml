@@ -56,7 +56,7 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          COMMIT_MESSAGE=$(git log -1 --pretty=format:"%s" | sed -e 's/[][(){}*_`~>#+\-=|.!?&$@]/\\&/g')
+          COMMIT_MESSAGE=$(git log -1 --pretty=format:"%s" | sed -e 's/[][(){}*_`~>#+=|.!?&$@\-]/\\&/g')
           AUTHOR_NAME=$(git log -1 --pretty=format:"%an" | sed -e 's/[][(){}*_`~>#+\-=|.!?&$@]/\\&/g')
           COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
           COMMIT_URL_ESCAPED=$(echo "$COMMIT_URL" | sed -e 's/\//\\\//g' -e 's/:/\\:/g' -e 's/\./\\./g')
@@ -72,7 +72,7 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          COMMIT_MESSAGE=$(git log -1 --pretty=format:"%s" | sed -e 's/[][(){}*_`~>#+\-=|.!?&$@]/\\&/g')
+          COMMIT_MESSAGE=$(git log -1 --pretty=format:"%s" | sed -e 's/[][(){}*_`~>#+=|.!?&$@\-]/\\&/g')
           AUTHOR_NAME=$(git log -1 --pretty=format:"%an" | sed -e 's/[][(){}*_`~>#+\-=|.!?&$@]/\\&/g')
           COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
           COMMIT_URL_ESCAPED=$(echo "$COMMIT_URL" | sed -e 's/\//\\\//g' -e 's/:/\\:/g' -e 's/\./\\./g')
