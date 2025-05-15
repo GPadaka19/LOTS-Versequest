@@ -76,3 +76,4 @@ jobs:
 
 
         # sudo docker rmi lots-netion-d20-frontend:latest || true
+        # Test TELEGRAM BOT to GROUP
