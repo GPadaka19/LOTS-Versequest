@@ -26,7 +26,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            rm -rf ~/lots-netion
+            rm -rf ~/LOTS-NETION
 
       - name: Copy dist & docker files to VPS
         uses: appleboy/scp-action@v0.1.4
@@ -35,7 +35,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "dist,Dockerfile,docker-compose.yml,nginx.conf"
-          target: "~/lots-netion"
+          target: "~/LOTS-NETION"
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.0
@@ -44,9 +44,9 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd ~/lots-netion
+            cd ~/LOTS-NETION
             sudo docker compose down
-            sudo docker rmi lots-netion-d20-frontend:latest || true
+            sudo docker rmi lots-netion:latest || true
             sudo docker compose build
             sudo docker compose up -d
 
