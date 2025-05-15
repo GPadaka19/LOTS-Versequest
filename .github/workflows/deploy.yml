@@ -50,104 +50,36 @@ jobs:
             sudo docker compose up -d
             sudo docker image prune -f
 
-      - name: Debug Commit Info
-        run: |
-          echo "RAW COMMIT MESSAGE: $(git log -1 --pretty=format:"%s")"
-          echo "RAW AUTHOR NAME: $(git log -1 --pretty=format:"%an")"
-
-      - name: Send Telegram Notification (Success)
+      - name: Send Telegram notification (Success)
         if: success()
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          escape_markdown_v2() {
-            local text="$1"
-            text="${text//\\/\\\\}"   # Escape backslash first
-            text="${text//\`/\\\`}"  # Escape backtick
-            text="${text//_/\\_}"    # Escape underscore
-            text="${text//\*/\\*}"  # Escape asterisk
-            text="${text//\[/\\[}"  # Escape [
-            text="${text//\]/\\]}"  # Escape ]
-            text="${text//\(/\\(}"  # Escape (
-            text="${text//\)/\\)}"  # Escape )
-            text="${text//\~/\\~}"  # Escape ~
-            text="${text//\!/\\!}"  # Escape !
-            text="${text//\#/\\#}"  # Escape #
-            text="${text//\+/\\+}"  # Escape +
-            text="${text//\-/\\-}"  # Escape -
-            text="${text//\=/\\=}"  # Escape =
-            text="${text//\|/\\|}"  # Escape |
-            text="${text//\./\\.}"  # Escape .
-            text="${text//\>/\\>}"  # Escape >
-            text="${text//\//\\/}"  # Escape /
-            # Jangan escape newline supaya tampil baris baru di Telegram
-            echo "$text"
-          }
-
-          COMMIT_MESSAGE_RAW=$(git log -1 --pretty=format:"%s")
-          AUTHOR_NAME_RAW=$(git log -1 --pretty=format:"%an")
+          COMMIT_MESSAGE=$(git log -1 --pretty=format:"%s")
+          AUTHOR_NAME=$(git log -1 --pretty=format:"%an")
           COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
-
-          COMMIT_MESSAGE=$(escape_markdown_v2 "$COMMIT_MESSAGE_RAW")
-          AUTHOR_NAME=$(escape_markdown_v2 "$AUTHOR_NAME_RAW")
-          COMMIT_URL_ESCAPED=$(echo "$COMMIT_URL" | sed -e 's/\//\\\//g' -e 's/:/\\:/g' -e 's/\./\\./g')
-
-          echo "===================================="
-          echo "ESCAPED COMMIT MESSAGE: $COMMIT_MESSAGE"
-          echo "ESCAPED AUTHOR NAME: $AUTHOR_NAME"
-          echo "ESCAPED COMMIT URL: $COMMIT_URL_ESCAPED"
-          echo "===================================="
-
-          curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
+          
+          curl -s -X POST https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage \
             -d chat_id="$TELEGRAM_CHAT_ID" \
-            -d text="✅ *CI\\/CD Sukses*\\!\\n\\n*Project*\\: lots\\-netion berhasil dideploy 🚀\\n\\n📝 *Commit*\\: \\\`${COMMIT_MESSAGE}\\\`\\n👤 *Author*\\: ${AUTHOR_NAME}\\n🔗 [Lihat Commit](${COMMIT_URL_ESCAPED})" \
-            -d parse_mode="MarkdownV2" \
-            | jq .
+            -d text="✅ CI/CD Sukses!%0AProject *lots-netion* berhasil dideploy ke VPS 🎉%0A%0A📝 *Commit:* \`$COMMIT_MESSAGE\`%0A👤 *Author:* $AUTHOR_NAME%0A🔗 [Lihat Commit]($COMMIT_URL)" \
+            -d parse_mode=Markdown
 
-      - name: Send Telegram Notification (Failure)
+      - name: Send failure Telegram notification
         if: failure()
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          escape_markdown_v2() {
-            local text="$1"
-            text="${text//\\/\\\\}"
-            text="${text//\`/\\\`}"
-            text="${text//_/\\_}"
-            text="${text//\*/\\*}"
-            text="${text//\[/\\[}"
-            text="${text//\]/\\]}"
-            text="${text//\(/\\(}"
-            text="${text//\)/\\)}"
-            text="${text//\~/\\~}"
-            text="${text//\!/\\!}"
-            text="${text//\#/\\#}"
-            text="${text//\+/\\+}"
-            text="${text//\-/\\-}"
-            text="${text//\=/\\=}"
-            text="${text//\|/\\|}"
-            text="${text//\./\\.}"
-            text="${text//\>/\\>}"
-            text="${text//\//\\/}"
-            # Jangan escape newline
-            echo "$text"
-          }
-
-          COMMIT_MESSAGE_RAW=$(git log -1 --pretty=format:"%s")
-          AUTHOR_NAME_RAW=$(git log -1 --pretty=format:"%an")
+          COMMIT_MESSAGE=$(git log -1 --pretty=format:"%s")
+          AUTHOR_NAME=$(git log -1 --pretty=format:"%an")
           COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
-
-          COMMIT_MESSAGE=$(escape_markdown_v2 "$COMMIT_MESSAGE_RAW")
-          AUTHOR_NAME=$(escape_markdown_v2 "$AUTHOR_NAME_RAW")
-          COMMIT_URL_ESCAPED=$(echo "$COMMIT_URL" | sed -e 's/\//\\\//g' -e 's/:/\\:/g' -e 's/\./\\./g')
-
-          curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
+          
+          curl -s -X POST https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage \
             -d chat_id="$TELEGRAM_CHAT_ID" \
-            -d text="❌ *CI\\/CD Gagal*\\!\\n\\n*Project*\\: lots\\-netion gagal dideploy ⚠️\\n\\n📝 *Commit*\\: \\\`${COMMIT_MESSAGE}\\\`\\n👤 *Author*\\: ${AUTHOR_NAME}\\n🔗 [Lihat Commit](${COMMIT_URL_ESCAPED})" \
-            -d parse_mode="MarkdownV2" \
-            | jq .
+            -d text="❌ CI/CD Gagal!%0AProject *lots-netion* gagal dideploy ke VPS ⚠️%0A%0A📝 *Commit:* \`$COMMIT_MESSAGE\`%0A👤 *Author:* $AUTHOR_NAME%0A🔗 [Lihat Commit]($COMMIT_URL)" \
+            -d parse_mode=Markdown
+
 
         # sudo docker rmi lots-netion-d20-frontend:latest || true
-        # TEST GA #10
+        # Test TELEGRAM BOT to GROUP
