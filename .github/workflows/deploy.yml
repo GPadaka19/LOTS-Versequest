@@ -58,7 +58,7 @@ jobs:
         run: |
           escape_markdown_v2() {
             local text="$1"
-            text="${text//\\/\\\\}"  # Escape backslash dulu
+            text="${text//\\/\\\\}"
             text="${text//_/\\_}"
             text="${text//*/\\*}"
             text="${text//[/\\[}"
