@@ -55,16 +55,6 @@ jobs:
           echo "RAW COMMIT MESSAGE: $(git log -1 --pretty=format:"%s")"
           echo "RAW AUTHOR NAME: $(git log -1 --pretty=format:"%an")"
 
-      - name: Test Simple Telegram Message
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: |
-          curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
-            -d chat_id="$TELEGRAM_CHAT_ID" \
-            -d text="🛠️ *TEST SIMPLE MESSAGE*\\n\\nIni adalah test\\n\\n*Formatting*\\n\\- Escape\\: \\\\\\`\\n\\- Newline\\: \\\\\\n\\n🔧 *Debug*\\n\`Backtick\` \\_Italic\\_" \
-            -d parse_mode="MarkdownV2"
-
       - name: Send Telegram Notification (Success)
         if: success()
         env:
@@ -73,25 +63,25 @@ jobs:
         run: |
           escape_markdown_v2() {
             local text="$1"
-            text="${text//\\/\\\\}"       # Escape backslash first
-            text="${text//\`/\\\`}"      # Escape backticks
-            text="${text//_/\\_}"        # Escape underscore
-            text="${text//\*/\\*}"      # Escape asterisk
-            text="${text//\[/\\[}"      # Escape [
-            text="${text//\]/\\]}"      # Escape ]
-            text="${text//\(/\\(}"      # Escape (
-            text="${text//\)/\\)}"      # Escape )
-            text="${text//\~/\\~}"      # Escape ~
-            text="${text//\!/\\!}"      # Escape !
-            text="${text//\#/\\#}"      # Escape #
-            text="${text//\+/\\+}"      # Escape +
-            text="${text//\-/\\-}"      # Escape -
-            text="${text//\=/\\=}"      # Escape =
-            text="${text//\|/\\|}"      # Escape |
-            text="${text//\./\\.}"      # Escape .
-            text="${text//\>/\\>}"      # Escape >
-            text="${text//\//\\/}"      # Escape /
-            text="${text//$'\n'/\\n}"   # Escape newlines
+            text="${text//\\/\\\\}"   # Escape backslash first
+            text="${text//\`/\\\`}"  # Escape backtick
+            text="${text//_/\\_}"    # Escape underscore
+            text="${text//\*/\\*}"  # Escape asterisk
+            text="${text//\[/\\[}"  # Escape [
+            text="${text//\]/\\]}"  # Escape ]
+            text="${text//\(/\\(}"  # Escape (
+            text="${text//\)/\\)}"  # Escape )
+            text="${text//\~/\\~}"  # Escape ~
+            text="${text//\!/\\!}"  # Escape !
+            text="${text//\#/\\#}"  # Escape #
+            text="${text//\+/\\+}"  # Escape +
+            text="${text//\-/\\-}"  # Escape -
+            text="${text//\=/\\=}"  # Escape =
+            text="${text//\|/\\|}"  # Escape |
+            text="${text//\./\\.}"  # Escape .
+            text="${text//\>/\\>}"  # Escape >
+            text="${text//\//\\/}"  # Escape /
+            # Jangan escape newline supaya tampil baris baru di Telegram
             echo "$text"
           }
 
@@ -103,7 +93,6 @@ jobs:
           AUTHOR_NAME=$(escape_markdown_v2 "$AUTHOR_NAME_RAW")
           COMMIT_URL_ESCAPED=$(echo "$COMMIT_URL" | sed -e 's/\//\\\//g' -e 's/:/\\:/g' -e 's/\./\\./g')
 
-          # Debug escaped output
           echo "===================================="
           echo "ESCAPED COMMIT MESSAGE: $COMMIT_MESSAGE"
           echo "ESCAPED AUTHOR NAME: $AUTHOR_NAME"
@@ -114,7 +103,7 @@ jobs:
             -d chat_id="$TELEGRAM_CHAT_ID" \
             -d text="✅ *CI\\/CD Sukses*\\!\\n\\n*Project*\\: lots\\-netion berhasil dideploy 🚀\\n\\n📝 *Commit*\\: \\\`${COMMIT_MESSAGE}\\\`\\n👤 *Author*\\: ${AUTHOR_NAME}\\n🔗 [Lihat Commit](${COMMIT_URL_ESCAPED})" \
             -d parse_mode="MarkdownV2" \
-            | jq .  # Parse JSON response for debugging
+            | jq .
 
       - name: Send Telegram Notification (Failure)
         if: failure()
@@ -122,7 +111,6 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          # Reuse the same escape function from success step
           escape_markdown_v2() {
             local text="$1"
             text="${text//\\/\\\\}"
@@ -143,7 +131,7 @@ jobs:
             text="${text//\./\\.}"
             text="${text//\>/\\>}"
             text="${text//\//\\/}"
-            text="${text//$'\n'/\\n}"
+            # Jangan escape newline
             echo "$text"
           }
 
@@ -162,4 +150,4 @@ jobs:
             | jq .
 
         # sudo docker rmi lots-netion-d20-frontend:latest || true
-        # TEST GA #9
+        # TEST GA #10
