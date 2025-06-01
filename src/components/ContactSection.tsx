@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faItchIo } from '@fortawesome/free-brands-svg-icons';
 import CommentSection from './CommentSection';
 
+// Create XIcon component with a key
 const XIcon = createLucideIcon("X", [
   [
     "path",
@@ -16,32 +17,44 @@ const XIcon = createLucideIcon("X", [
   ],
 ]);
 
+// Create a wrapper component for XIcon
+const XIconWrapper = (props: { size: number }) => (
+  <div key="x-icon-wrapper">
+    <XIcon {...props} />
+  </div>
+);
+
 const socials = [
   { 
+    id: 'email',
     name: 'Email', 
     icon: <Mail size={24} />, 
     link: 'mailto:versequest.contact@gmail.com',
     color: 'bg-blue-600 hover:bg-blue-700' 
   },
   { 
+    id: 'instagram',
     name: 'Instagram', 
     icon: <Instagram size={24} />, 
     link: 'https://instagram.com/versequest.games',
     color: 'bg-gradient-to-bl from-[#833ab4] via-[#fd1d1d] to-[#fcb045] hover:opacity-90' 
   },
   { 
+    id: 'x',
     name: 'X', 
-    icon: <XIcon size={24} />, 
+    icon: <XIconWrapper size={24} />, 
     link: 'https://x.com/versequestgame',
     color: 'bg-black hover:bg-gray-800' 
   },
   { 
+    id: 'youtube',
     name: 'YouTube', 
     icon: <Youtube size={24} />, 
     link: 'https://youtube.com/@versequestgames',
     color: 'bg-red-600 hover:bg-red-700' 
   },
   { 
+    id: 'itchio',
     name: 'Itch.io', 
     icon: <FontAwesomeIcon icon={faItchIo} size="lg" />, 
     link: 'https://versequest.itch.io',
@@ -96,9 +109,9 @@ const ContactSection = () => {
           </p>
           
           <div className="flex flex-wrap justify-center gap-4">
-            {socials.map((social, index) => (
+            {socials.map((social) => (
               <a 
-                key={index}
+                key={social.id}
                 href={social.link}
                 target="_blank"
                 rel="noopener noreferrer"

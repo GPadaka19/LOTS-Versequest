@@ -1,8 +1,9 @@
-import React from 'react';
-
 const DefaultAvatar = () => {
   return (
-    <div className="w-10 h-10 rounded-full bg-amber-600 flex items-center justify-center text-white font-medium">
+    <div 
+      key="default-avatar"
+      className="w-10 h-10 rounded-full bg-amber-600 flex items-center justify-center text-white font-medium"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="h-6 w-6"
