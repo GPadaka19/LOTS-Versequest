@@ -16,8 +16,18 @@ jobs:
 
       - name: Create .env file from secret
         run: |
-          printf "%b" "${{ secrets.ENV_FILE }}" > .env
-      
+          echo "TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }}" > .env
+          echo "TELEGRAM_CHAT_ID=${{ secrets.TELEGRAM_CHAT_ID }}" >> .env
+          echo "VPS_HOST=${{ secrets.VPS_HOST }}" >> .env
+          echo "VPS_USER=${{ secrets.VPS_USER }}" >> .env
+          echo "SSH_PRIVATE_KEY=${{ secrets.SSH_PRIVATE_KEY }}" >> .env
+          echo "DISCORD_WEBHOOK_URL=${{ secrets.DISCORD_WEBHOOK_URL }}" >> .env
+          echo "VITE_FIREBASE_API_KEY=${{ secrets.VITE_FIREBASE_API_KEY }}" >> .env
+          echo "VITE_FIREBASE_AUTH_DOMAIN=${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}" >> .env
+          echo "VITE_FIREBASE_PROJECT_ID=${{ secrets.VITE_FIREBASE_PROJECT_ID }}" >> .env
+          echo "VITE_FIREBASE_STORAGE_BUCKET=${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}" >> .env
+          echo "VITE_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}" >> .env
+          echo "VITE_FIREBASE_APP_ID=${{ secrets.VITE_FIREBASE_APP_ID }}" >> .env
 
       - name: Install dependencies & build project
         run: |
@@ -65,7 +75,7 @@ jobs:
           AUTHOR_NAME=$(git log -1 --pretty=format:"%an")
           COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
           
-          curl -s -X POST https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage \
+          curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
             -d chat_id="$TELEGRAM_CHAT_ID" \
             -d text="✅ CI/CD Sukses!%0AProject *lots-netion* berhasil dideploy ke VPS 🎉%0A%0A📝 *Commit:* \`$COMMIT_MESSAGE\`%0A👤 *Author:* $AUTHOR_NAME%0A🔗 [Lihat Commit]($COMMIT_URL)" \
             -d parse_mode=Markdown
@@ -79,7 +89,7 @@ jobs:
           AUTHOR_NAME=$(git log -1 --pretty=format:"%an")
           COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
           
-          curl -s -X POST $DISCORD_WEBHOOK_URL \
+          curl -s -X POST "$DISCORD_WEBHOOK_URL" \
             -H "Content-Type: application/json" \
             -d "{\"username\":\"LOTS-CI/CD\",\"avatar_url\":\"https://github.com/identicons/$AUTHOR_NAME.png\",\"embeds\":[{\"title\":\"✅ CI/CD Success\",\"description\":\"Project **lots-netion** successfully deployed to VPS 🎉\",\"color\":65280,\"fields\":[{\"name\":\"Commit\",\"value\":\"\`$COMMIT_MESSAGE\`\",\"inline\":true},{\"name\":\"Author\",\"value\":\"$AUTHOR_NAME\",\"inline\":true},{\"name\":\"View Commit\",\"value\":\"[Click here]($COMMIT_URL)\",\"inline\":true}]}]}"
 
@@ -93,7 +103,7 @@ jobs:
           AUTHOR_NAME=$(git log -1 --pretty=format:"%an")
           COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
           
-          curl -s -X POST https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage \
+          curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
             -d chat_id="$TELEGRAM_CHAT_ID" \
             -d text="❌ CI/CD Gagal!%0AProject *lots-netion* gagal dideploy ke VPS ⚠️%0A%0A📝 *Commit:* \`$COMMIT_MESSAGE\`%0A👤 *Author:* $AUTHOR_NAME%0A🔗 [Lihat Commit]($COMMIT_URL)" \
             -d parse_mode=Markdown
@@ -107,6 +117,6 @@ jobs:
           AUTHOR_NAME=$(git log -1 --pretty=format:"%an")
           COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
           
-          curl -s -X POST $DISCORD_WEBHOOK_URL \
+          curl -s -X POST "$DISCORD_WEBHOOK_URL" \
             -H "Content-Type: application/json" \
             -d "{\"username\":\"LOTS-CI/CD\",\"avatar_url\":\"https://github.com/identicons/$AUTHOR_NAME.png\",\"embeds\":[{\"title\":\"❌ CI/CD Failed\",\"description\":\"Project **lots-netion** failed to deploy to VPS ⚠️\",\"color\":16711680,\"fields\":[{\"name\":\"Commit\",\"value\":\"\`$COMMIT_MESSAGE\`\",\"inline\":true},{\"name\":\"Author\",\"value\":\"$AUTHOR_NAME\",\"inline\":true},{\"name\":\"View Commit\",\"value\":\"[Click here]($COMMIT_URL)\",\"inline\":true}]}]}"
