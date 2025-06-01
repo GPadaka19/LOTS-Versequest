@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Mail, Instagram, Youtube } from 'lucide-react';
 import { createLucideIcon } from "lucide-react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faItchIo } from '@fortawesome/free-brands-svg-icons';
+import CommentSection from './CommentSection';
 
 const XIcon = createLucideIcon("X", [
   [
@@ -53,6 +54,7 @@ const ContactSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const currentRef = sectionRef.current;
     const observer = new IntersectionObserver((entries) => {
       const [entry] = entries;
       if (entry.isIntersecting) {
@@ -61,13 +63,13 @@ const ContactSection = () => {
       }
     }, { threshold: 0.1 });
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
   }, []);
@@ -108,28 +110,7 @@ const ContactSection = () => {
             ))}
           </div>
           
-          <div className="mt-12 p-6 bg-white rounded-lg shadow-md">
-            <h3 className="text-xl font-bold mb-4 text-amber-700">Join Our Community</h3>
-            <p className="text-stone-700 mb-6">
-              Subscribe to our newsletter to receive updates, game tips, and exclusive content about 
-              "Legacy of the Sunstone" and our future projects.
-            </p>
-            
-            <form className="flex flex-col md:flex-row gap-4 max-w-lg mx-auto">
-              <input 
-                type="email" 
-                placeholder="Your email address" 
-                className="flex-grow px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                required
-              />
-              <button 
-                type="submit"
-                className="px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-md transition-colors"
-              >
-                Subscribe
-              </button>
-            </form>
-          </div>
+          <CommentSection />
         </div>
       </div>
     </section>
