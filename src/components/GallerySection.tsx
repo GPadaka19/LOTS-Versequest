@@ -9,17 +9,17 @@ interface GalleryImage {
 
 const images: GalleryImage[] = [
   {
-    src: '/gallery/Arka_CU.jpg',
+    src: '/gallery/Arka_CU.webp',
     title: 'Arka',
     description: 'The mysterious warrior with a deep connection to the ancient powers of the Sunstone.'
   },
   {
-    src: '/gallery/DrVictor_CU.jpg',
+    src: '/gallery/DrVictor_CU.webp',
     title: 'Dr. Victor',
     description: 'The brilliant but troubled scientist whose experiments with ancient artifacts led to the discovery of the Sunstone.'
   },
   {
-    src: '/gallery/Dutch Army_CU.jpg',
+    src: '/gallery/Dutch Army_CU.webp',
     title: 'Dutch Army',
     description: 'The elite military force tasked with protecting the Sunstone and maintaining order in the chaotic world.'
   }
