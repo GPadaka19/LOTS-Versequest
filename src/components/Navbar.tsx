@@ -18,6 +18,13 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -39,11 +46,16 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <img 
-              src="/icons/Versequest_White.png"
-              alt="Versequest Logo"
-              className="h-8 md:h-10 object-contain"
-            />
+            <button 
+              onClick={scrollToTop}
+              className="transform transition-transform hover:scale-105 active:scale-95"
+            >
+              <img 
+                src="/icons/Versequest_White.png"
+                alt="Versequest Logo"
+                className="h-8 md:h-10 object-contain"
+              />
+            </button>
           </div>
           
           {/* Desktop Menu */}

@@ -55,7 +55,7 @@ const HeroSection = () => {
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <a 
               href="https://s3.amazonaws.com/example/legacy-of-sunstone.zip" 
-              className="px-8 py-4 bg-amber-600 hover:bg-amber-700 text-white text-lg font-bold rounded-md shadow-lg transform transition-all hover:scale-105 active:scale-95 min-w-[200px]"
+              className="px-8 py-4 bg-amber-600 hover:bg-amber-700 text-stone-900 text-lg font-bold rounded-md shadow-lg transform transition-all hover:scale-105 active:scale-95 min-w-[200px]"
             >
               Download Now
             </a>
