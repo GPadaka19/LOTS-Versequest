@@ -107,7 +107,7 @@ const GallerySection = () => {
                         className="absolute block w-full h-full object-contain bg-black"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div className="absolute bottom-0 left-0 right-0 p-6">
+                        <div className="absolute bottom-0 left-0 right-0 p-6 pb-16">
                           <h3 className="text-2xl font-bold text-amber-400 mb-2">{image.title}</h3>
                           <p className="text-white/90 text-sm md:text-base">{image.description}</p>
                         </div>
