@@ -7,7 +7,6 @@ const images = [
   'https://images.pexels.com/photos/12385131/pexels-photo-12385131.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
   'https://images.pexels.com/photos/3155506/pexels-photo-3155506.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
   'https://images.pexels.com/photos/5409751/pexels-photo-5409751.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  'https://fotomhs.amikom.ac.id/2022/22_11_5020.jpg'
 ];
 
 const GallerySection = () => {
@@ -71,7 +70,7 @@ const GallerySection = () => {
           <div className="mb-12 relative">
             <div id="indicators-carousel" className="relative w-full">
               {/* Carousel wrapper */}
-              <div className="relative h-64 md:h-96 overflow-hidden rounded-lg shadow-2xl">
+              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg shadow-2xl">
                 {images.map((image, index) => (
                   <div 
                     key={index}
@@ -87,7 +86,7 @@ const GallerySection = () => {
                     <img 
                       src={image} 
                       alt={`Game screenshot ${index + 1}`} 
-                      className="absolute block w-full h-full object-cover"
+                      className="absolute block w-full h-full object-contain"
                     />
                   </div>
                 ))}
