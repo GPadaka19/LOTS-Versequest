@@ -3,6 +3,7 @@ import { auth, googleProvider, db } from '../firebase/config';
 import { signInWithPopup, signOut, User } from 'firebase/auth';
 import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, Timestamp, deleteDoc, doc } from 'firebase/firestore';
 import DefaultAvatar from './DefaultAvatar';
+import { Trash2, LogOut } from 'lucide-react';
 
 interface Comment {
   id: string;
@@ -140,7 +141,7 @@ const CommentSection = () => {
 
   return (
     <div className="mt-12 p-6 bg-white rounded-lg shadow-md">
-      <h3 className="text-xl font-bold mb-4 text-amber-700">Community Comments</h3>
+      <h3 className="text-3xl font-bold mb-4 text-amber-700 font-serif">Community Comments</h3>
       
       {!user ? (
         <button
@@ -174,8 +175,9 @@ const CommentSection = () => {
               <p className="font-medium text-amber-600">{user.displayName || 'Anonymous User'}</p>
               <button
                 onClick={handleSignOut}
-                className="text-sm text-amber-600 hover:text-amber-700"
+                className="flex items-center gap-1 text-sm text-red-600 hover:text-red-700 hover:bg-red-50 px-2 py-1 rounded-full transition-all duration-200"
               >
+                <LogOut size={16} />
                 Sign out
               </button>
             </div>
@@ -236,13 +238,14 @@ const CommentSection = () => {
                   {user && user.uid === comment.userId && (
                     <button
                       onClick={() => handleDeleteComment(comment.id, comment.userId)}
-                      className="text-red-600 hover:text-red-700 text-sm"
+                      className="text-red-600 hover:text-red-700 text-sm p-1 hover:bg-red-50 rounded-full transition-colors"
+                      title="Delete comment (Only the author can delete their comment)"
                     >
-                      Delete
+                      <Trash2 size={18} />
                     </button>
                   )}
                 </div>
-                <p className="text-stone-700 mt-1">{comment.text}</p>
+                <p className="text-stone-700 mt-1 text-left">{comment.text}</p>
               </div>
             </div>
           );
