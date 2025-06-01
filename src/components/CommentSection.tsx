@@ -18,22 +18,23 @@ const CommentSection = () => {
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(false);
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
+  // Handle auth state changes
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       console.log('Auth state changed:', user?.photoURL);
       setUser(user);
-      if (isInitialLoad) {
-        setIsInitialLoad(false);
-      }
     });
 
     return () => unsubscribe();
-  }, [isInitialLoad]);
+  }, []);
 
+  // Handle comments subscription
   useEffect(() => {
-    if (isInitialLoad) return;
+    if (!user) {
+      setComments([]); // Clear comments when user is not logged in
+      return;
+    }
 
     const q = query(collection(db, 'comments'), orderBy('timestamp', 'desc'));
     const unsubscribeComments = onSnapshot(q, (snapshot) => {
@@ -55,13 +56,12 @@ const CommentSection = () => {
     });
 
     return () => unsubscribeComments();
-  }, [isInitialLoad]);
+  }, [user]);
 
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       console.log('Sign in successful:', result.user.photoURL);
-      setIsInitialLoad(false);
     } catch (error) {
       console.error('Error signing in with Google:', error);
     }
@@ -70,7 +70,6 @@ const CommentSection = () => {
   const handleSignOut = async () => {
     try {
       await signOut(auth);
-      setComments([]);
     } catch (error) {
       console.error('Error signing out:', error);
     }
