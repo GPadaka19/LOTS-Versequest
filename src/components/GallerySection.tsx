@@ -68,7 +68,7 @@ const GallerySection = () => {
           </h2>
           
           <div className="mb-12 relative">
-            <div id="indicators-carousel" className="relative w-full">
+            <div id="indicators-carousel" className="relative w-full max-w-4xl mx-auto">
               {/* Carousel wrapper */}
               <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg shadow-2xl">
                 {images.map((image, index) => (
@@ -86,7 +86,7 @@ const GallerySection = () => {
                     <img 
                       src={image} 
                       alt={`Game screenshot ${index + 1}`} 
-                      className="absolute block w-full h-full object-contain"
+                      className="absolute block w-full h-full object-contain bg-black"
                     />
                   </div>
                 ))}
