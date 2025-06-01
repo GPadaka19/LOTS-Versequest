@@ -37,6 +37,22 @@ jobs:
           source: "dist,Dockerfile,docker-compose.yml,nginx.conf,.env"
           target: "~/lots-netion"
 
+      - name: Verify .env file on VPS
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/lots-netion
+            if [ -f .env ]; then
+              echo ".env file exists"
+              cat .env
+            else
+              echo "Error: .env file is missing!"
+              exit 1
+            fi
+
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
