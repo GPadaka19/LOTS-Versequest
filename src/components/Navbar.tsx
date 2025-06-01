@@ -60,7 +60,7 @@ const Navbar = () => {
             ))}
             <a 
               href="https://s3.amazonaws.com/example/legacy-of-sunstone.zip"
-              className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-md transition-colors"
+              className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-stone-900 font-semibold rounded-md transition-colors text-center shadow-lg hover:shadow-amber-500/20"
             >
               Download
             </a>
@@ -91,7 +91,7 @@ const Navbar = () => {
             ))}
             <a 
               href="https://s3.amazonaws.com/example/legacy-of-sunstone.zip"
-              className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-md transition-colors text-center"
+              className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-stone-900 font-semibold rounded-md transition-colors text-center shadow-lg hover:shadow-amber-500/20"
             >
               Download Now
             </a>
