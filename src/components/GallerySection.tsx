@@ -40,13 +40,14 @@ const GallerySection = () => {
       }
     }, { threshold: 0.1 });
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+    const currentRef = sectionRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
   }, []);
@@ -94,7 +95,7 @@ const GallerySection = () => {
                       currentImage === index 
                         ? 'opacity-100 translate-x-0' 
                         : index < currentImage 
-                          ? '-translate-x-full opacity-0' 
+                          ? '-translate-x-full opacity-0'
                           : 'translate-x-full opacity-0'
                     }`}
                     data-carousel-item={currentImage === index ? 'active' : undefined}
