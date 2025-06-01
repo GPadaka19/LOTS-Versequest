@@ -25,6 +25,10 @@ const CommentSection = () => {
       setUser(user);
     });
 
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
     const q = query(collection(db, 'comments'), orderBy('timestamp', 'desc'));
     const unsubscribeComments = onSnapshot(q, (snapshot) => {
       const commentsData = snapshot.docs.map(doc => {
@@ -44,10 +48,7 @@ const CommentSection = () => {
       console.error('Error fetching comments:', error);
     });
 
-    return () => {
-      unsubscribe();
-      unsubscribeComments();
-    };
+    return () => unsubscribeComments();
   }, []);
 
   const handleGoogleSignIn = async () => {
@@ -62,6 +63,7 @@ const CommentSection = () => {
   const handleSignOut = async () => {
     try {
       await signOut(auth);
+      setComments([]);
     } catch (error) {
       console.error('Error signing out:', error);
     }
