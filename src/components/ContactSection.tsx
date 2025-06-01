@@ -1,24 +1,50 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Mail, Instagram, Youtube } from 'lucide-react';
+import { createLucideIcon } from "lucide-react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faItchIo } from '@fortawesome/free-brands-svg-icons';
+
+const XIcon = createLucideIcon("X", [
+  [
+    "path",
+    {
+      d: "M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z",
+      stroke: "none",
+      fill: "currentColor",
+    },
+  ],
+]);
 
 const socials = [
   { 
     name: 'Email', 
     icon: <Mail size={24} />, 
-    link: 'mailto:contact@legacyofthesunstone.com',
+    link: 'mailto:versequest.contact@gmail.com',
     color: 'bg-blue-600 hover:bg-blue-700' 
   },
   { 
     name: 'Instagram', 
     icon: <Instagram size={24} />, 
-    link: 'https://instagram.com/legacyofthesunstone',
-    color: 'bg-pink-600 hover:bg-pink-700' 
+    link: 'https://instagram.com/versequest.games',
+    color: 'bg-gradient-to-bl from-[#833ab4] via-[#fd1d1d] to-[#fcb045] hover:opacity-90' 
+  },
+  { 
+    name: 'X', 
+    icon: <XIcon size={24} />, 
+    link: 'https://x.com/versequestgame',
+    color: 'bg-black hover:bg-gray-800' 
   },
   { 
     name: 'YouTube', 
     icon: <Youtube size={24} />, 
-    link: 'https://youtube.com/c/legacyofthesunstone',
+    link: 'https://youtube.com/@versequestgames',
     color: 'bg-red-600 hover:bg-red-700' 
+  },
+  { 
+    name: 'Itch.io', 
+    icon: <FontAwesomeIcon icon={faItchIo} size="lg" />, 
+    link: 'https://versequest.itch.io',
+    color: 'bg-[#fa5c5c] hover:bg-[#e54b4b]' 
   }
 ];
 
