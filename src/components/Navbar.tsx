@@ -51,7 +51,7 @@ const Navbar = () => {
               className="transform transition-transform hover:scale-105 active:scale-95"
             >
               <img 
-                src="/icons/Versequest_White.png"
+                src="/icons/Versequest_White.webp"
                 alt="Versequest Logo"
                 className="h-8 md:h-10 object-contain"
               />
