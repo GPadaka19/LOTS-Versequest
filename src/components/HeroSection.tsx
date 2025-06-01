@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
 
 const HeroSection = () => {
@@ -20,12 +20,13 @@ const HeroSection = () => {
       {/* Video Background */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-b from-stone-900/90 via-stone-900/50 to-stone-900/90 z-10"></div>
+        <div className="absolute inset-0 bg-black/50 z-10"></div>
         <video
           autoPlay
           muted
           loop
           playsInline
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover opacity-70 scale-x-[-1]"
           onError={() => {
             // Silent error handling
             const videoElement = document.querySelector('video');
@@ -34,7 +35,7 @@ const HeroSection = () => {
             }
           }}
         >
-          <source src="https://cdn.coverr.co/videos/coverr-exploring-an-ancient-temple-2584/1080p.mp4" type="video/mp4" />
+          <source src="/video/coverr-bridge-in-the-jungle-3371-1080p.mp4" type="video/mp4" />
         </video>
       </div>
 
