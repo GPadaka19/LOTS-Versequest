@@ -65,6 +65,19 @@ jobs:
             -d text="✅ CI/CD Sukses!%0AProject *lots-netion* berhasil dideploy ke VPS 🎉%0A%0A📝 *Commit:* \`$COMMIT_MESSAGE\`%0A👤 *Author:* $AUTHOR_NAME%0A🔗 [Lihat Commit]($COMMIT_URL)" \
             -d parse_mode=Markdown
 
+      - name: Send Discord notification (Success)
+        if: success()
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          COMMIT_MESSAGE=$(git log -1 --pretty=format:"%s")
+          AUTHOR_NAME=$(git log -1 --pretty=format:"%an")
+          COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
+          
+          curl -s -X POST $DISCORD_WEBHOOK_URL \
+            -H "Content-Type: application/json" \
+            -d "{\"embeds\":[{\"title\":\"✅ CI/CD Success\",\"description\":\"Project **lots-netion** successfully deployed to VPS 🎉\",\"color\":65280,\"fields\":[{\"name\":\"Commit\",\"value\":\"\`$COMMIT_MESSAGE\`\",\"inline\":true},{\"name\":\"Author\",\"value\":\"$AUTHOR_NAME\",\"inline\":true},{\"name\":\"View Commit\",\"value\":\"[Click here]($COMMIT_URL)\",\"inline\":true}]}]}"
+
       - name: Send failure Telegram notification
         if: failure()
         env:
@@ -79,3 +92,16 @@ jobs:
             -d chat_id="$TELEGRAM_CHAT_ID" \
             -d text="❌ CI/CD Gagal!%0AProject *lots-netion* gagal dideploy ke VPS ⚠️%0A%0A📝 *Commit:* \`$COMMIT_MESSAGE\`%0A👤 *Author:* $AUTHOR_NAME%0A🔗 [Lihat Commit]($COMMIT_URL)" \
             -d parse_mode=Markdown
+
+      - name: Send failure Discord notification
+        if: failure()
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          COMMIT_MESSAGE=$(git log -1 --pretty=format:"%s")
+          AUTHOR_NAME=$(git log -1 --pretty=format:"%an")
+          COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
+          
+          curl -s -X POST $DISCORD_WEBHOOK_URL \
+            -H "Content-Type: application/json" \
+            -d "{\"embeds\":[{\"title\":\"❌ CI/CD Failed\",\"description\":\"Project **lots-netion** failed to deploy to VPS ⚠️\",\"color\":16711680,\"fields\":[{\"name\":\"Commit\",\"value\":\"\`$COMMIT_MESSAGE\`\",\"inline\":true},{\"name\":\"Author\",\"value\":\"$AUTHOR_NAME\",\"inline\":true},{\"name\":\"View Commit\",\"value\":\"[Click here]($COMMIT_URL)\",\"inline\":true}]}]}"
