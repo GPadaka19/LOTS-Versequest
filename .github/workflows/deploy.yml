@@ -105,5 +105,3 @@ jobs:
           curl -s -X POST $DISCORD_WEBHOOK_URL \
             -H "Content-Type: application/json" \
             -d "{\"username\":\"LOTS-CI/CD\",\"avatar_url\":\"https://github.com/identicons/$AUTHOR_NAME.png\",\"embeds\":[{\"title\":\"❌ CI/CD Failed\",\"description\":\"Project **lots-netion** failed to deploy to VPS ⚠️\",\"color\":16711680,\"fields\":[{\"name\":\"Commit\",\"value\":\"\`$COMMIT_MESSAGE\`\",\"inline\":true},{\"name\":\"Author\",\"value\":\"$AUTHOR_NAME\",\"inline\":true},{\"name\":\"View Commit\",\"value\":\"[Click here]($COMMIT_URL)\",\"inline\":true}]}]}"
-
-         # Test CI/CD Discord
