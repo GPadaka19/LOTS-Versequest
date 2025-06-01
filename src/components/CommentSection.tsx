@@ -18,17 +18,23 @@ const CommentSection = () => {
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(false);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       console.log('Auth state changed:', user?.photoURL);
       setUser(user);
+      if (isInitialLoad) {
+        setIsInitialLoad(false);
+      }
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [isInitialLoad]);
 
   useEffect(() => {
+    if (isInitialLoad) return;
+
     const q = query(collection(db, 'comments'), orderBy('timestamp', 'desc'));
     const unsubscribeComments = onSnapshot(q, (snapshot) => {
       const commentsData = snapshot.docs.map(doc => {
@@ -49,12 +55,13 @@ const CommentSection = () => {
     });
 
     return () => unsubscribeComments();
-  }, []);
+  }, [isInitialLoad]);
 
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       console.log('Sign in successful:', result.user.photoURL);
+      setIsInitialLoad(false);
     } catch (error) {
       console.error('Error signing in with Google:', error);
     }
