@@ -26,6 +26,13 @@ const HeroSection = () => {
           loop
           playsInline
           className="w-full h-full object-cover"
+          onError={() => {
+            // Silent error handling
+            const videoElement = document.querySelector('video');
+            if (videoElement) {
+              videoElement.style.display = 'none';
+            }
+          }}
         >
           <source src="https://cdn.coverr.co/videos/coverr-exploring-an-ancient-temple-2584/1080p.mp4" type="video/mp4" />
         </video>
