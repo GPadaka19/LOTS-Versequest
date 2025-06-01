@@ -80,6 +80,11 @@ const HeroSection = () => {
       <div className="absolute inset-0 z-10 pointer-events-none">
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-amber-500/10 via-transparent to-transparent animate-pulse"></div>
       </div>
+
+      {/* Video Attribution */}
+      <div className="absolute bottom-2 right-2 text-xs text-stone-400/50 z-20">
+        Video downloaded on <a href="https://coverr.co" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400">Coverr</a>
+      </div>
     </section>
   );
 };
