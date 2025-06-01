@@ -40,7 +40,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center">
           <div className="flex items-center">
             <img 
-              src="/Versequest_White.png"
+              src="/icons/Versequest_White.png"
               alt="Versequest Logo"
               className="h-8 md:h-10 object-contain"
             />
