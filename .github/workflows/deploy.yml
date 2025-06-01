@@ -39,7 +39,7 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "dist,Dockerfile,docker-compose.yml,nginx.conf"
+          source: "dist,Dockerfile,docker-compose.yml,nginx.conf,.env"
           target: "~/lots-netion"
 
       - name: Deploy via SSH
