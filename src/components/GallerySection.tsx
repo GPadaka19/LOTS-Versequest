@@ -1,12 +1,28 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight, Play } from 'lucide-react';
 
-const images = [
-  'https://images.pexels.com/photos/3361480/pexels-photo-3361480.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  'https://images.pexels.com/photos/2842070/pexels-photo-2842070.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  'https://images.pexels.com/photos/12385131/pexels-photo-12385131.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  'https://images.pexels.com/photos/3155506/pexels-photo-3155506.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  'https://images.pexels.com/photos/5409751/pexels-photo-5409751.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+interface GalleryImage {
+  src: string;
+  title: string;
+  description: string;
+}
+
+const images: GalleryImage[] = [
+  {
+    src: '/gallery/Arka_CU.jpg',
+    title: 'Arka',
+    description: 'The mysterious warrior with a deep connection to the ancient powers of the Sunstone.'
+  },
+  {
+    src: '/gallery/DrVictor_CU.jpg',
+    title: 'Dr. Victor',
+    description: 'The brilliant but troubled scientist whose experiments with ancient artifacts led to the discovery of the Sunstone.'
+  },
+  {
+    src: '/gallery/Dutch Army_CU.jpg',
+    title: 'Dutch Army',
+    description: 'The elite military force tasked with protecting the Sunstone and maintaining order in the chaotic world.'
+  }
 ];
 
 const GallerySection = () => {
@@ -83,11 +99,19 @@ const GallerySection = () => {
                     }`}
                     data-carousel-item={currentImage === index ? 'active' : undefined}
                   >
-                    <img 
-                      src={image} 
-                      alt={`Game screenshot ${index + 1}`} 
-                      className="absolute block w-full h-full object-contain bg-black"
-                    />
+                    <div className="relative w-full h-full group">
+                      <img 
+                        src={image.src} 
+                        alt={image.title} 
+                        className="absolute block w-full h-full object-contain bg-black"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="absolute bottom-0 left-0 right-0 p-6">
+                          <h3 className="text-2xl font-bold text-amber-400 mb-2">{image.title}</h3>
+                          <p className="text-white/90 text-sm md:text-base">{image.description}</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
