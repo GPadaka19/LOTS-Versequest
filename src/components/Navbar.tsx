@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
-import logo from '../assets/img/Versequest_White.png';
-
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -42,8 +40,8 @@ const Navbar = () => {
         <div className="flex justify-between items-center">
           <div className="flex items-center">
             <img 
-              src={logo}
-              alt="Versequest_Logo"
+              src="/Versequest_White.png"
+              alt="Versequest Logo"
               className="h-8 md:h-10 object-contain"
             />
           </div>
