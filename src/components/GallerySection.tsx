@@ -62,6 +62,12 @@ const GallerySection = () => {
 
   const openVideoModal = () => {
     setIsVideoModalOpen(true);
+    setTimeout(() => {
+      const iframe = document.querySelector('iframe');
+      if (iframe) {
+        iframe.contentWindow?.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+      }
+    }, 1000);
   };
 
   const closeVideoModal = () => {
@@ -185,7 +191,7 @@ const GallerySection = () => {
             <div className="relative" style={{ paddingBottom: '56.25%' }}>
               <iframe 
                 className="absolute inset-0 w-full h-full"
-                src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=0&enablejsapi=1"
                 title="Game Trailer"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
