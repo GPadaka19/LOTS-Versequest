@@ -1,11 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { DownloadCloud, MonitorSmartphone, Apple, Monitor } from 'lucide-react';
-
-const platforms = [
-  { name: 'Windows', icon: <Monitor size={24} /> },
-  { name: 'macOS', icon: <Apple size={24} /> },
-  { name: 'Linux', icon: <MonitorSmartphone size={24} /> }
-];
 
 const DownloadSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -56,21 +49,23 @@ const DownloadSection = () => {
               href="https://s3.amazonaws.com/example/legacy-of-sunstone.zip" 
               className="inline-flex items-center gap-2 px-8 py-4 bg-white text-amber-800 font-bold rounded-md shadow-lg hover:bg-amber-100 transform transition-all hover:scale-105 active:scale-95"
             >
-              <DownloadCloud size={24} />
-              <span>Download Now</span>
+              <img 
+                src="https://img.icons8.com/color/48/windows-10.png" 
+                alt="Windows 10" 
+                className="w-6 h-6"
+              />
+              <span>Download for Windows</span>
             </a>
           </div>
           
-          <div className="flex flex-wrap justify-center gap-4">
-            {platforms.map((platform, index) => (
-              <div 
-                key={index}
-                className="flex items-center gap-2 bg-amber-900 bg-opacity-50 px-4 py-2 rounded-md"
-              >
-                {platform.icon}
-                <span>{platform.name}</span>
-              </div>
-            ))}
+          <div className="bg-amber-900/30 p-4 rounded-lg max-w-md mx-auto mb-6">
+            <h3 className="font-semibold mb-2">System Requirements:</h3>
+            <ul className="text-sm text-amber-100 space-y-1">
+              <li>• Windows 10 64-bit or later</li>
+              <li>• 8 GB RAM</li>
+              <li>• 4 GB available storage</li>
+              <li>• DirectX 11 compatible graphics card</li>
+            </ul>
           </div>
           
           <p className="mt-6 text-amber-200 text-sm">
