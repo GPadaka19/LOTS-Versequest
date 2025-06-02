@@ -30,7 +30,7 @@ const AboutSection = () => {
       ref={sectionRef}
       className="py-20 relative bg-stone-100"
     >
-      <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/172296/pexels-photo-172296.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')] bg-cover bg-center opacity-5"></div>
+      <div className="absolute inset-0 bg-[url('/background/wood.webp')] bg-cover bg-center opacity-5"></div> 
       
       <div className="container mx-auto px-4">
         <div 
