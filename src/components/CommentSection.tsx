@@ -30,12 +30,13 @@ const CommentSection = () => {
     return () => unsubscribe();
   }, []);
 
-  // Handle comments subscription
+  // Handle comments subscription - PERUBAHAN: Hapus kondisi user check agar guest bisa lihat komentar
   useEffect(() => {
-    if (!user) {
-      setComments([]); // Clear comments when user is not logged in
-      return;
-    }
+    // KODE LAMA: Hanya load komentar jika user sudah login
+    // if (!user) {
+    //   setComments([]); // Clear comments when user is not logged in
+    //   return;
+    // }
 
     const q = query(collection(db, 'comments'), orderBy('timestamp', 'desc'));
     const unsubscribeComments = onSnapshot(q, (snapshot) => {
@@ -57,7 +58,7 @@ const CommentSection = () => {
     });
 
     return () => unsubscribeComments();
-  }, [user]);
+  }, []); // PERUBAHAN: Hapus dependency [user] agar selalu load komentar
 
   const handleGoogleSignIn = async () => {
     try {
@@ -144,12 +145,20 @@ const CommentSection = () => {
       <h3 className="text-3xl font-bold mb-4 text-amber-700 font-serif">Community Comments</h3>
       
       {!user ? (
-        <button
-          onClick={handleGoogleSignIn}
-          className="w-full px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-md transition-colors mb-6"
-        >
-          Sign in with Google to comment
-        </button>
+        // PERUBAHAN: Tambah placeholder untuk guest users
+        <div className="mb-6">
+          <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg mb-4">
+            <p className="text-amber-700 text-center">
+              🔒 Sign in to join the conversation and share your thoughts!
+            </p>
+          </div>
+          <button
+            onClick={handleGoogleSignIn}
+            className="w-full px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-md transition-colors"
+          >
+            Sign in with Google to comment
+          </button>
+        </div>
       ) : (
         <div className="mb-6">
           <div className="flex items-center gap-4 mb-4">
@@ -202,57 +211,66 @@ const CommentSection = () => {
         </div>
       )}
 
-      <div className="space-y-4">
-        {comments.map((comment) => {
-          const photoURL = comment.userPhoto;
-          console.log('Comment photo URL:', photoURL);
-          
-          return (
-            <div key={comment.id} className="flex gap-4 p-4 bg-stone-50 rounded-lg">
-              <div className="relative">
-                {photoURL ? (
-                  <>
-                    <img
-                      key={`comment-photo-${comment.id}`}
-                      src={photoURL}
-                      alt={comment.userName}
-                      className="w-10 h-10 rounded-full object-cover"
-                      onError={handlePhotoError}
-                    />
-                    <div className="hidden">
-                      <DefaultAvatar />
-                    </div>
-                  </>
-                ) : (
-                  <DefaultAvatar />
-                )}
-              </div>
-              <div className="flex-grow">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <p className="font-medium text-amber-600">{comment.userName}</p>
-                    <span className="text-sm text-stone-500">
-                      {formatDate(comment.timestamp)}
-                    </span>
-                  </div>
-                  {user && user.uid === comment.userId && (
-                    <button
-                      onClick={() => handleDeleteComment(comment.id, comment.userId)}
-                      className="text-red-600 hover:text-red-700 text-sm p-1 hover:bg-red-50 rounded-full transition-colors"
-                      title="Delete comment (Only the author can delete their comment)"
-                    >
-                      <Trash2 size={18} />
-                    </button>
+      {/* PERUBAHAN: Tambah informasi jika belum ada komentar */}
+      {comments.length === 0 ? (
+        <div className="text-center py-8">
+          <p className="text-stone-500 text-lg">
+            💬 No comments yet. {!user ? 'Sign in and ' : ''}Be the first to share your thoughts!
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {comments.map((comment) => {
+            const photoURL = comment.userPhoto;
+            console.log('Comment photo URL:', photoURL);
+            
+            return (
+              <div key={comment.id} className="flex gap-4 p-4 bg-stone-50 rounded-lg">
+                <div className="relative">
+                  {photoURL ? (
+                    <>
+                      <img
+                        key={`comment-photo-${comment.id}`}
+                        src={photoURL}
+                        alt={comment.userName}
+                        className="w-10 h-10 rounded-full object-cover"
+                        onError={handlePhotoError}
+                      />
+                      <div className="hidden">
+                        <DefaultAvatar />
+                      </div>
+                    </>
+                  ) : (
+                    <DefaultAvatar />
                   )}
                 </div>
-                <p className="text-stone-700 mt-1 text-left">{comment.text}</p>
+                <div className="flex-grow">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <p className="font-medium text-amber-600">{comment.userName}</p>
+                      <span className="text-sm text-stone-500">
+                        {formatDate(comment.timestamp)}
+                      </span>
+                    </div>
+                    {user && user.uid === comment.userId && (
+                      <button
+                        onClick={() => handleDeleteComment(comment.id, comment.userId)}
+                        className="text-red-600 hover:text-red-700 text-sm p-1 hover:bg-red-50 rounded-full transition-colors"
+                        title="Delete comment (Only the author can delete their comment)"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    )}
+                  </div>
+                  <p className="text-stone-700 mt-1 text-left">{comment.text}</p>
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
 
-export default CommentSection; 
+export default CommentSection;
