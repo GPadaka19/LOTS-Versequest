@@ -41,7 +41,7 @@ const HeroSection = () => {
 
       {/* Content */}
       <div 
-        className={`container mx-auto px-4 text-center relative z-20 transform transition-all duration-1000 ease-out mt-[35vh] md:mt-[30vh] lg:mt-[32vh] scale-[0.99] ${
+        className={`container mx-auto px-4 text-center relative z-20 transform transition-all duration-1000 ease-out mt-[calc(100vh-400px)] scale-[0.99] ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
         }`}
       >
