@@ -41,28 +41,28 @@ const HeroSection = () => {
 
       {/* Content */}
       <div 
-        className={`container mx-auto px-4 text-center relative z-20 transform transition-all duration-1000 ease-out ${
+        className={`container mx-auto px-4 text-center relative z-20 transform transition-all duration-1000 ease-out mt-[35vh] md:mt-[30vh] lg:mt-[32vh] scale-[0.99] ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
         }`}
       >
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-5xl md:text-7xl lg:text-7xl font-bold mb-6 text-amber-500 font-serif leading-tight">
+          <h1 className="text-3xl md:text-5xl lg:text-5xl font-bold mb-4 text-amber-500 font-serif leading-tight">
             Legacy of the Sunstone
           </h1>
-          <p className="text-xl md:text-3xl text-amber-100 mb-12 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-2xl text-amber-100 mb-8 max-w-3xl mx-auto leading-relaxed">
             Uncover the ancient secrets. Survive the traps. Claim the Sunstone.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a 
               href="https://s3.amazonaws.com/example/legacy-of-sunstone.zip" 
-              className="px-8 py-4 bg-amber-600 hover:bg-amber-700 text-stone-900 text-lg font-bold rounded-md shadow-lg transform transition-all hover:scale-105 active:scale-95 min-w-[200px]"
+              className="px-6 py-3 bg-amber-600 hover:bg-amber-700 text-stone-900 text-base font-bold rounded-md shadow-lg transform transition-all hover:scale-105 active:scale-95 min-w-[160px]"
             >
               Download Now
             </a>
             <button 
               onClick={scrollToAbout}
-              className="px-8 py-4 bg-stone-800 hover:bg-stone-700 text-amber-100 text-lg font-bold rounded-md shadow-lg transform transition-all hover:scale-105 active:scale-95 min-w-[200px] border border-amber-500/30"
+              className="px-6 py-3 bg-stone-800 hover:bg-stone-700 text-amber-100 text-base font-bold rounded-md shadow-lg transform transition-all hover:scale-105 active:scale-95 min-w-[160px] border border-amber-500/30"
             >
               Learn More
             </button>
