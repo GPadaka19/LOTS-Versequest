@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -7,7 +7,7 @@ const Footer = () => {
     <footer className="py-8 bg-stone-900 text-stone-400 text-center">
       <div className="container mx-auto px-4">
         <p>
-          &copy; {currentYear} Legacy of the Sunstone. All rights reserved.
+          &copy; {currentYear} Versequest — Legacy of the Sunstone. All rights reserved.
         </p>
         <p className="mt-2 text-sm">
           <a href="#" className="hover:text-amber-400 transition-colors">Privacy Policy</a>

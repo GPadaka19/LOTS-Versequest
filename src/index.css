@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes spin-fast {
+  100% { transform: rotate(360deg); }
+}
+.animate-spin-fast {
+  animation: spin-fast 1s linear infinite;
+}
