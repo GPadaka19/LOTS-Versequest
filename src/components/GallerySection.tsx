@@ -22,7 +22,13 @@ const images: GalleryImage[] = [
     src: '/gallery/Dutch Army_CU.webp',
     title: 'Dutch Army',
     description: 'The elite military force tasked with protecting the Sunstone and maintaining order in the chaotic world.'
-  }
+  },
+  {
+    src: '/gallery/Candi.jpg',
+    title: 'Candi',
+    description: 'CANDIIIIIIII.'
+  },
+  
 ];
 
 const GallerySection = () => {
