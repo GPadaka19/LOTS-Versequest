@@ -19,24 +19,13 @@ const HeroSection = () => {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Video Background */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-stone-900/90 via-stone-900/50 to-stone-900/90 z-10"></div>
-        <div className="absolute inset-0 bg-black/50 z-10"></div>
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="w-full h-full object-cover opacity-70 scale-x-[-1]"
-          onError={() => {
-            // Silent error handling
-            const videoElement = document.querySelector('video');
-            if (videoElement) {
-              videoElement.style.display = 'none';
-            }
-          }}
-        >
-          <source src="/video/coverr-bridge-in-the-jungle-3371-1080p.mp4" type="video/mp4" />
-        </video>
+        <div className="absolute inset-0 bg-gradient-to-l from-stone-900/90 via-stone-900/20 to-stone-900/10 z-10"></div>
+        <img
+          src="/background/Wallpaper_Landscape.jpg"
+          alt="Background"
+          className="w-full h-full object-cover opacity-70 absolute inset-0"
+          style={{ objectPosition: 'center' }}
+        />
       </div>
 
       {/* Content */}
@@ -79,11 +68,6 @@ const HeroSection = () => {
       {/* Animated Particles */}
       <div className="absolute inset-0 z-10 pointer-events-none">
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-amber-500/10 via-transparent to-transparent animate-pulse"></div>
-      </div>
-
-      {/* Video Attribution */}
-      <div className="absolute bottom-2 right-2 text-xs text-stone-400/50 z-20">
-        Video downloaded on <a href="https://coverr.co" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400">Coverr</a>
       </div>
     </section>
   );
