@@ -4,6 +4,7 @@ import { signInWithPopup, signOut, User } from 'firebase/auth';
 import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, Timestamp, deleteDoc, doc } from 'firebase/firestore';
 import DefaultAvatar from './DefaultAvatar';
 import { Trash2, LogOut } from 'lucide-react';
+import UserRoleBadge from './UserRoleBadge';
 
 interface Comment {
   id: string;
@@ -223,7 +224,7 @@ const CommentSection = () => {
           {comments.map((comment) => {
             const photoURL = comment.userPhoto;
             console.log('Comment photo URL:', photoURL);
-            
+            const isWebDevUser = comment.userId === 'z8i4M64NHAO3HBBZSQTRJDC7GSg2';
             return (
               <div key={comment.id} className="flex gap-4 p-4 bg-stone-50 rounded-lg">
                 <div className="relative">
@@ -247,7 +248,11 @@ const CommentSection = () => {
                 <div className="flex-grow">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <p className="font-medium text-amber-600">{comment.userName}</p>
+                      {isWebDevUser ? (
+                        <UserRoleBadge uid={comment.userId} userName={comment.userName} />
+                      ) : (
+                        <p className="user-info font-medium text-amber-600">{comment.userName}</p>
+                      )}
                       <span className="text-sm text-stone-500">
                         {formatDate(comment.timestamp)}
                       </span>
