@@ -247,7 +247,7 @@ const CommentSection = () => {
                 </div>
                 <div className="flex-grow">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-baseline gap-2">
                       {isBadgeUser ? (
                         <UserRoleBadge uid={comment.userId} userName={comment.userName} />
                       ) : (
