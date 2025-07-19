@@ -224,7 +224,7 @@ const CommentSection = () => {
           {comments.map((comment) => {
             const photoURL = comment.userPhoto;
             console.log('Comment photo URL:', photoURL);
-            const isWebDevUser = comment.userId === 'z8i4M64NHAO3HBBZSQTRJDC7GSg2';
+            const isBadgeUser = comment.userId === 'z8i4M64NHAO3HBBZSQTRJDC7GSg2' || comment.userId === 'awpW7OdqHeMwjkkjM37f5560wBh2';
             return (
               <div key={comment.id} className="flex gap-4 p-4 bg-stone-50 rounded-lg">
                 <div className="relative">
@@ -248,7 +248,7 @@ const CommentSection = () => {
                 <div className="flex-grow">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      {isWebDevUser ? (
+                      {isBadgeUser ? (
                         <UserRoleBadge uid={comment.userId} userName={comment.userName} />
                       ) : (
                         <p className="user-info font-medium text-amber-600">{comment.userName}</p>
