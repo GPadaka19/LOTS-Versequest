@@ -21,30 +21,30 @@ const UserRoleBadge: React.FC<UserRoleBadgeProps> = ({ uid, userName, className 
   useEffect(() => {
     const fetchRole = async () => {
       setLoading(true);
-      console.log('[UserRoleBadge] Fetching role for UID:', uid);
+      // console.log('[UserRoleBadge] Fetching role for UID:', uid);
       try {
         const userRef = doc(db, 'user-role', uid);
         const userSnap = await getDoc(userRef);
         if (userSnap.exists()) {
           const data = userSnap.data();
-          console.log('[UserRoleBadge] Firestore data for', uid, ':', data);
+          // console.log('[UserRoleBadge] Firestore data for', uid, ':', data);
           // Web Dev badge
           if (uid === 'z8i4M64NHAO3HBBZSQTRJDC7GSg2' && data.role === 'web-dev') {
             setBadge({ label: 'Web Dev', emoji: WEBDEV_EMOJI_URL });
-            console.log('[UserRoleBadge] Web Dev badge set for', uid);
+            // console.log('[UserRoleBadge] Web Dev badge set for', uid);
           }
           // Game Dev badge
           else if (uid === 'awpW7OdqHeMwjkkjM37f5560wBh2' && data.role === 'game-dev') {
             setBadge({ label: 'Game Dev', emoji: GAMEDEV_EMOJI_URL });
-            console.log('[UserRoleBadge] Game Dev badge set for', uid);
+            // console.log('[UserRoleBadge] Game Dev badge set for', uid);
           } else {
-            console.log('[UserRoleBadge] No badge set for', uid, 'with role', data.role);
+            // console.log('[UserRoleBadge] No badge set for', uid, 'with role', data.role);
           }
         } else {
-          console.log('[UserRoleBadge] No Firestore document found for', uid);
+          // console.log('[UserRoleBadge] No Firestore document found for', uid);
         }
-      } catch (error) {
-        console.error('[UserRoleBadge] Error fetching user role for', uid, ':', error);
+      } catch {
+        // console.error('[UserRoleBadge] Error fetching user role for', uid, ':', error);
       }
       setLoading(false);
     };
@@ -54,9 +54,9 @@ const UserRoleBadge: React.FC<UserRoleBadgeProps> = ({ uid, userName, className 
   useEffect(() => {
     if (!loading) {
       if (badge) {
-        console.log('[UserRoleBadge] Badge will render for', uid, ':', badge);
+        // console.log('[UserRoleBadge] Badge will render for', uid, ':', badge);
       } else {
-        console.log('[UserRoleBadge] No badge will render for', uid);
+        // console.log('[UserRoleBadge] No badge will render for', uid);
       }
     }
   }, [loading, badge, uid]);
