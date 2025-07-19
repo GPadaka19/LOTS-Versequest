@@ -122,7 +122,7 @@ const CommentSection = () => {
       }
     };
     fetchRoles();
-  }, [comments, replies]);
+  }, [comments, replies, userRoles]);
 
   const handleGoogleSignIn = async () => {
     try {
