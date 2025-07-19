@@ -319,7 +319,7 @@ const CommentSection = () => {
                       </button>
                     )}
                   </div>
-                  <p className="text-stone-700 mt-1 text-left">{comment.text}</p>
+                  <p className="text-stone-700 mt-[10px] text-left">{comment.text}</p>
                   <button
                     className="text-xs text-blue-600 hover:underline ml-2"
                     onClick={() => setReplyTo(comment.id)}
@@ -371,22 +371,24 @@ const CommentSection = () => {
                           )}
                         </div>
                         <div className="flex-grow">
-                          <div className="flex items-baseline gap-2">
-                            <UserRoleBadge uid={reply.userId} userName={reply.userName} />
-                            <span className="text-sm text-stone-500">
-                              {reply.timestamp?.toDate ? formatDate(reply.timestamp) : ''}
-                            </span>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-baseline gap-2">
+                              <UserRoleBadge uid={reply.userId} userName={reply.userName} />
+                              <span className="text-sm text-stone-500">
+                                {reply.timestamp?.toDate ? formatDate(reply.timestamp) : ''}
+                              </span>
+                            </div>
                             {user && user.uid === reply.userId && (
                               <button
                                 onClick={() => handleDeleteReply(comment.id, reply.id, reply.userId)}
-                                className="text-red-600 hover:text-red-700 text-sm p-1 hover:bg-red-50 rounded-full transition-colors ml-2"
+                                className="text-red-600 hover:text-red-700 text-sm p-1 hover:bg-red-50 rounded-full transition-colors"
                                 title="Delete reply (Only the author can delete their reply)"
                               >
-                                <Trash2 size={14} />
+                                <Trash2 size={18} />
                               </button>
                             )}
                           </div>
-                          <div className="text-stone-700 mt-1 text-left">{reply.text}</div>
+                          <p className="text-stone-700 mt-[10px] text-left">{reply.text}</p>
                         </div>
                       </div>
                     ))}
