@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { auth, googleProvider, db } from '../firebase/config';
 import { signInWithPopup, signOut, User } from 'firebase/auth';
-import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, Timestamp, deleteDoc, doc } from 'firebase/firestore';
+import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, Timestamp, deleteDoc, doc, getDoc } from 'firebase/firestore';
 import DefaultAvatar from './DefaultAvatar';
 import { Trash2, LogOut } from 'lucide-react';
 import UserRoleBadge from './UserRoleBadge';
@@ -23,6 +23,7 @@ const CommentSection = () => {
   const [replyTo, setReplyTo] = useState<string | null>(null);
   const [replyText, setReplyText] = useState('');
   const [replies, setReplies] = useState<Record<string, Comment[]>>({});
+  const [userRoles, setUserRoles] = useState<Record<string, string>>({});
 
   // Handle auth state changes
   useEffect(() => {
@@ -89,6 +90,39 @@ const CommentSection = () => {
     });
     return () => unsubscribes.forEach(unsub => unsub());
   }, [comments]);
+
+  // Fetch user roles for all reply users
+  useEffect(() => {
+    const fetchRoles = async () => {
+      const userIds = new Set<string>();
+      comments.forEach(comment => {
+        (replies[comment.id] || []).forEach(reply => {
+          if (reply.userId && !userRoles[reply.userId]) {
+            userIds.add(reply.userId);
+          }
+        });
+      });
+      const newRoles: Record<string, string> = {};
+      await Promise.all(Array.from(userIds).map(async (uid) => {
+        try {
+          const userRef = doc(db, 'user-role', uid);
+          const userSnap = await getDoc(userRef);
+          if (userSnap.exists()) {
+            const data = userSnap.data();
+            newRoles[uid] = data.role || '';
+          } else {
+            newRoles[uid] = '';
+          }
+        } catch {
+          newRoles[uid] = '';
+        }
+      }));
+      if (Object.keys(newRoles).length > 0) {
+        setUserRoles(prev => ({ ...prev, ...newRoles }));
+      }
+    };
+    fetchRoles();
+  }, [comments, replies]);
 
   const handleGoogleSignIn = async () => {
     try {
@@ -356,42 +390,55 @@ const CommentSection = () => {
                     </form>
                   )}
                   <div className="ml-8 mt-2 space-y-2">
-                    {(replies[comment.id] || []).map(reply => (
-                      <div key={reply.id} className="flex gap-4 p-4 bg-amber-50 rounded-lg border border-stone-300 border-l-4 border-l-amber-300">
-                        <div className="relative">
-                          {reply.userPhoto ? (
-                            <img
-                              src={reply.userPhoto}
-                              alt={reply.userName}
-                              className="w-10 h-10 rounded-full object-cover"
-                              onError={handlePhotoError}
-                            />
-                          ) : (
-                            <DefaultAvatar />
-                          )}
-                        </div>
-                        <div className="flex-grow">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-baseline gap-2">
-                              <UserRoleBadge uid={reply.userId} userName={reply.userName} />
-                              <span className="text-sm text-stone-500">
-                                {reply.timestamp?.toDate ? formatDate(reply.timestamp) : ''}
-                              </span>
-                            </div>
-                            {user && user.uid === reply.userId && (
-                              <button
-                                onClick={() => handleDeleteReply(comment.id, reply.id, reply.userId)}
-                                className="text-red-600 hover:text-red-700 text-sm p-1 hover:bg-red-50 rounded-full transition-colors"
-                                title="Delete reply (Only the author can delete their reply)"
-                              >
-                                <Trash2 size={18} />
-                              </button>
+                    {(replies[comment.id] || []).map(reply => {
+                      const replyRole = userRoles[reply.userId] || '';
+                      return (
+                        <div
+                          key={reply.id}
+                          className={
+                            `flex gap-4 p-4 bg-amber-50 rounded-lg border border-stone-300 ` +
+                            (replyRole === 'web-dev'
+                              ? 'border-l-4 border-l-amber-300'
+                              : replyRole === 'game-dev'
+                              ? 'border-l-4 border-l-green-300'
+                              : 'border-l-4 border-l-stone-300')
+                          }
+                        >
+                          <div className="relative">
+                            {reply.userPhoto ? (
+                              <img
+                                src={reply.userPhoto}
+                                alt={reply.userName}
+                                className="w-10 h-10 rounded-full object-cover"
+                                onError={handlePhotoError}
+                              />
+                            ) : (
+                              <DefaultAvatar />
                             )}
                           </div>
-                          <p className="text-stone-700 mt-[10px] text-left">{reply.text}</p>
+                          <div className="flex-grow">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-baseline gap-2">
+                                <UserRoleBadge uid={reply.userId} userName={reply.userName} />
+                                <span className="text-sm text-stone-500">
+                                  {reply.timestamp?.toDate ? formatDate(reply.timestamp) : ''}
+                                </span>
+                              </div>
+                              {user && user.uid === reply.userId && (
+                                <button
+                                  onClick={() => handleDeleteReply(comment.id, reply.id, reply.userId)}
+                                  className="text-red-600 hover:text-red-700 text-sm p-1 hover:bg-red-50 rounded-full transition-colors"
+                                  title="Delete reply (Only the author can delete their reply)"
+                                >
+                                  <Trash2 size={18} />
+                                </button>
+                              )}
+                            </div>
+                            <p className="text-stone-700 mt-[10px] text-left">{reply.text}</p>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               </div>
