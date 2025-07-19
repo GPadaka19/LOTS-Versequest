@@ -24,6 +24,7 @@ const CommentSection = () => {
   const [replyText, setReplyText] = useState('');
   const [replies, setReplies] = useState<Record<string, Comment[]>>({});
   const [userRoles, setUserRoles] = useState<Record<string, string>>({});
+  const [confirmDelete, setConfirmDelete] = useState<{ id: string; open: boolean }>({ id: '', open: false });
 
   // Handle auth state changes
   useEffect(() => {
@@ -183,12 +184,21 @@ const CommentSection = () => {
 
   const handleDeleteComment = async (commentId: string, commentUserId: string) => {
     if (!user || user.uid !== commentUserId) return;
-    
+    setConfirmDelete({ id: commentId, open: true });
+  };
+
+  const confirmDeleteComment = async () => {
+    if (!user || !confirmDelete.id) return;
     try {
-      await deleteDoc(doc(db, 'comments', commentId));
+      await deleteDoc(doc(db, 'comments', confirmDelete.id));
     } catch (error) {
       console.error('Error deleting comment:', error);
     }
+    setConfirmDelete({ id: '', open: false });
+  };
+
+  const cancelDeleteComment = () => {
+    setConfirmDelete({ id: '', open: false });
   };
 
   const handleDeleteReply = async (commentId: string, replyId: string, replyUserId: string) => {
@@ -227,226 +237,265 @@ const CommentSection = () => {
     }
   };
 
+  // Modal confirmation for delete comment
+  useEffect(() => {
+    if (confirmDelete.open) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+    return () => {
+      document.body.classList.remove('overflow-hidden');
+    };
+  }, [confirmDelete.open]);
+
   return (
-    <div className="mt-12 p-6 bg-white rounded-lg shadow-md">
-      <h3 className="text-3xl font-bold mb-4 text-amber-700 font-serif">Community Comments</h3>
-      
-      {!user ? (
-        // PERUBAHAN: Tambah placeholder untuk guest users
-        <div className="mb-6">
-          <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg mb-4">
-            <p className="text-amber-700 text-center">
-              🔒 Sign in to join the conversation and share your thoughts!
+    <>
+      <div className="w-full max-w-4xl mx-auto mt-12 p-6 bg-white rounded-lg shadow-md px-4">
+        <h3 className="text-3xl font-bold mb-4 text-amber-700 font-serif">Community Comments</h3>
+        
+        {!user ? (
+          // PERUBAHAN: Tambah placeholder untuk guest users
+          <div className="mb-6">
+            <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg mb-4">
+              <p className="text-amber-700 text-center">
+                🔒 Sign in to join the conversation and share your thoughts!
+              </p>
+            </div>
+            <button
+              onClick={handleGoogleSignIn}
+              className="w-full px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-md transition-colors"
+            >
+              Sign in with Google to comment
+            </button>
+          </div>
+        ) : (
+          <div className="mb-6">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="relative">
+                {user.photoURL ? (
+                  <>
+                    <img
+                      key={`user-photo-${user.uid}`}
+                      src={user.photoURL}
+                      alt={user.displayName || 'User'}
+                      className="w-10 h-10 rounded-full object-cover"
+                      onError={handlePhotoError}
+                    />
+                    <div className="hidden">
+                      <DefaultAvatar />
+                    </div>
+                  </>
+                ) : (
+                  <DefaultAvatar />
+                )}
+              </div>
+              <div>
+                <p className="font-medium text-amber-600">{user.displayName || 'Anonymous User'}</p>
+                <button
+                  onClick={handleSignOut}
+                  className="flex items-center gap-1 text-sm text-red-600 hover:text-red-700 hover:bg-red-50 px-2 py-1 rounded-full transition-all duration-200"
+                >
+                  <LogOut size={16} />
+                  Sign out
+                </button>
+              </div>
+            </div>
+            
+            <form onSubmit={handleSubmitComment} className="flex flex-col gap-4">
+              <textarea
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                placeholder="Write your comment..."
+                className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-500 min-h-[100px] text-black placeholder-gray-900"
+                required
+              />
+              <button
+                type="submit"
+                disabled={loading}
+                className="px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-md transition-colors disabled:opacity-50"
+              >
+                {loading ? 'Posting...' : 'Post Comment'}
+              </button>
+            </form>
+          </div>
+        )}
+
+        {/* PERUBAHAN: Tambah informasi jika belum ada komentar */}
+        {comments.length === 0 ? (
+          <div className="text-center py-8">
+            <p className="text-stone-500 text-lg">
+              💬 No comments yet. {!user ? 'Sign in and ' : ''}Be the first to share your thoughts!
             </p>
           </div>
-          <button
-            onClick={handleGoogleSignIn}
-            className="w-full px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-md transition-colors"
-          >
-            Sign in with Google to comment
-          </button>
-        </div>
-      ) : (
-        <div className="mb-6">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="relative">
-              {user.photoURL ? (
-                <>
-                  <img
-                    key={`user-photo-${user.uid}`}
-                    src={user.photoURL}
-                    alt={user.displayName || 'User'}
-                    className="w-10 h-10 rounded-full object-cover"
-                    onError={handlePhotoError}
-                  />
-                  <div className="hidden">
-                    <DefaultAvatar />
+        ) : (
+          <div className="space-y-4">
+            {comments.map((comment) => {
+              const photoURL = comment.userPhoto;
+              console.log('Comment photo URL:', photoURL);
+              const isBadgeUser = comment.userId === 'z8i4M64NHAO3HBBZSQTRJDC7GSg2' || comment.userId === 'awpW7OdqHeMwjkkjM37f5560wBh2';
+              return (
+                <div key={comment.id} className="flex gap-4 p-4 bg-stone-50 rounded-lg border border-stone-300">
+                  <div className="relative">
+                    {photoURL ? (
+                      <>
+                        <img
+                          key={`comment-photo-${comment.id}`}
+                          src={photoURL}
+                          alt={comment.userName}
+                          className="w-10 h-10 rounded-full object-cover"
+                          onError={handlePhotoError}
+                        />
+                        <div className="hidden">
+                          <DefaultAvatar />
+                        </div>
+                      </>
+                    ) : (
+                      <DefaultAvatar />
+                    )}
                   </div>
-                </>
-              ) : (
-                <DefaultAvatar />
-              )}
+                  <div className="flex-grow">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-baseline gap-2">
+                        {isBadgeUser ? (
+                          <UserRoleBadge uid={comment.userId} userName={comment.userName} />
+                        ) : (
+                          <p className="user-info font-medium text-amber-600">{comment.userName}</p>
+                        )}
+                        <span className="text-sm text-stone-500">
+                          {formatDate(comment.timestamp)}
+                        </span>
+                      </div>
+                      {user && user.uid === comment.userId && (
+                        <button
+                          onClick={() => handleDeleteComment(comment.id, comment.userId)}
+                          className="text-red-600 hover:text-red-700 text-sm p-1 hover:bg-red-50 rounded-full transition-colors"
+                          title="Delete comment (Only the author can delete their comment)"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      )}
+                    </div>
+                    <p className="text-stone-700 mt-[10px] text-left">{comment.text}</p>
+                    <button
+                      className="text-xs text-blue-600 hover:underline ml-2"
+                      onClick={() => setReplyTo(comment.id)}
+                    >
+                      Reply
+                    </button>
+                    {replyTo === comment.id && (
+                      <form
+                        onSubmit={e => handleReplySubmit(e, comment.id)}
+                        className="flex flex-col gap-2 mt-2"
+                      >
+                        <textarea
+                          value={replyText}
+                          onChange={e => setReplyText(e.target.value)}
+                          className="w-full px-2 py-1 border rounded text-stone-700 placeholder-stone-500"
+                          placeholder="Write your reply..."
+                          required
+                        />
+                        <div className="flex gap-2">
+                          <button
+                            type="submit"
+                            className="px-3 py-1 bg-amber-600 text-white rounded"
+                          >
+                            Send
+                          </button>
+                          <button
+                            type="button"
+                            className="px-3 py-1 bg-gray-200 rounded"
+                            onClick={() => { setReplyTo(null); setReplyText(''); }}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </form>
+                    )}
+                    <div className="ml-8 mt-2 space-y-2">
+                      {(replies[comment.id] || []).map(reply => {
+                        const replyRole = userRoles[reply.userId] || '';
+                        return (
+                          <div
+                            key={reply.id}
+                            className={
+                              `flex gap-4 p-4 bg-amber-50 rounded-lg border border-stone-300 ` +
+                              (replyRole === 'web-dev'
+                                ? 'border-l-4 border-l-amber-300'
+                                : replyRole === 'game-dev'
+                                ? 'border-l-4 border-l-green-300'
+                                : 'border-l-4 border-l-stone-300')
+                            }
+                          >
+                            <div className="relative">
+                              {reply.userPhoto ? (
+                                <img
+                                  src={reply.userPhoto}
+                                  alt={reply.userName}
+                                  className="w-10 h-10 rounded-full object-cover"
+                                  onError={handlePhotoError}
+                                />
+                              ) : (
+                                <DefaultAvatar />
+                              )}
+                            </div>
+                            <div className="flex-grow">
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-baseline gap-2">
+                                  <UserRoleBadge uid={reply.userId} userName={reply.userName} />
+                                  <span className="text-sm text-stone-500">
+                                    {reply.timestamp?.toDate ? formatDate(reply.timestamp) : ''}
+                                  </span>
+                                </div>
+                                {user && user.uid === reply.userId && (
+                                  <button
+                                    onClick={() => handleDeleteReply(comment.id, reply.id, reply.userId)}
+                                    className="text-red-600 hover:text-red-700 text-sm p-1 hover:bg-red-50 rounded-full transition-colors"
+                                    title="Delete reply (Only the author can delete their reply)"
+                                  >
+                                    <Trash2 size={18} />
+                                  </button>
+                                )}
+                              </div>
+                              <p className="text-stone-700 mt-[10px] text-left">{reply.text}</p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+      {confirmDelete.open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="bg-gray-100 rounded-lg shadow-lg p-6 w-full max-w-sm mx-auto flex flex-col items-center border border-amber-400">
+            <div className="text-amber-600 mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z" /></svg>
             </div>
-            <div>
-              <p className="font-medium text-amber-600">{user.displayName || 'Anonymous User'}</p>
+            <h2 className="text-lg font-semibold mb-2 text-center">Delete Comment?</h2>
+            <p className="text-stone-600 mb-6 text-center">Are you sure you want to delete this comment? This action cannot be undone.</p>
+            <div className="flex gap-4 w-full justify-center">
               <button
-                onClick={handleSignOut}
-                className="flex items-center gap-1 text-sm text-red-600 hover:text-red-700 hover:bg-red-50 px-2 py-1 rounded-full transition-all duration-200"
+                onClick={confirmDeleteComment}
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 font-semibold transition-colors"
               >
-                <LogOut size={16} />
-                Sign out
+                Yes, Delete
+              </button>
+              <button
+                onClick={cancelDeleteComment}
+                className="px-4 py-2 bg-gray-200 text-stone-700 rounded hover:bg-gray-300 font-semibold transition-colors"
+              >
+                Cancel
               </button>
             </div>
           </div>
-          
-          <form onSubmit={handleSubmitComment} className="flex flex-col gap-4">
-            <textarea
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              placeholder="Write your comment..."
-              className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-500 min-h-[100px] text-black placeholder-gray-900"
-              required
-            />
-            <button
-              type="submit"
-              disabled={loading}
-              className="px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-md transition-colors disabled:opacity-50"
-            >
-              {loading ? 'Posting...' : 'Post Comment'}
-            </button>
-          </form>
         </div>
       )}
-
-      {/* PERUBAHAN: Tambah informasi jika belum ada komentar */}
-      {comments.length === 0 ? (
-        <div className="text-center py-8">
-          <p className="text-stone-500 text-lg">
-            💬 No comments yet. {!user ? 'Sign in and ' : ''}Be the first to share your thoughts!
-          </p>
-        </div>
-      ) : (
-        <div className="space-y-4">
-          {comments.map((comment) => {
-            const photoURL = comment.userPhoto;
-            console.log('Comment photo URL:', photoURL);
-            const isBadgeUser = comment.userId === 'z8i4M64NHAO3HBBZSQTRJDC7GSg2' || comment.userId === 'awpW7OdqHeMwjkkjM37f5560wBh2';
-            return (
-              <div key={comment.id} className="flex gap-4 p-4 bg-stone-50 rounded-lg border border-stone-300">
-                <div className="relative">
-                  {photoURL ? (
-                    <>
-                      <img
-                        key={`comment-photo-${comment.id}`}
-                        src={photoURL}
-                        alt={comment.userName}
-                        className="w-10 h-10 rounded-full object-cover"
-                        onError={handlePhotoError}
-                      />
-                      <div className="hidden">
-                        <DefaultAvatar />
-                      </div>
-                    </>
-                  ) : (
-                    <DefaultAvatar />
-                  )}
-                </div>
-                <div className="flex-grow">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-baseline gap-2">
-                      {isBadgeUser ? (
-                        <UserRoleBadge uid={comment.userId} userName={comment.userName} />
-                      ) : (
-                        <p className="user-info font-medium text-amber-600">{comment.userName}</p>
-                      )}
-                      <span className="text-sm text-stone-500">
-                        {formatDate(comment.timestamp)}
-                      </span>
-                    </div>
-                    {user && user.uid === comment.userId && (
-                      <button
-                        onClick={() => handleDeleteComment(comment.id, comment.userId)}
-                        className="text-red-600 hover:text-red-700 text-sm p-1 hover:bg-red-50 rounded-full transition-colors"
-                        title="Delete comment (Only the author can delete their comment)"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    )}
-                  </div>
-                  <p className="text-stone-700 mt-[10px] text-left">{comment.text}</p>
-                  <button
-                    className="text-xs text-blue-600 hover:underline ml-2"
-                    onClick={() => setReplyTo(comment.id)}
-                  >
-                    Reply
-                  </button>
-                  {replyTo === comment.id && (
-                    <form
-                      onSubmit={e => handleReplySubmit(e, comment.id)}
-                      className="flex flex-col gap-2 mt-2"
-                    >
-                      <textarea
-                        value={replyText}
-                        onChange={e => setReplyText(e.target.value)}
-                        className="w-full px-2 py-1 border rounded text-stone-700 placeholder-stone-500"
-                        placeholder="Write your reply..."
-                        required
-                      />
-                      <div className="flex gap-2">
-                        <button
-                          type="submit"
-                          className="px-3 py-1 bg-amber-600 text-white rounded"
-                        >
-                          Send
-                        </button>
-                        <button
-                          type="button"
-                          className="px-3 py-1 bg-gray-200 rounded"
-                          onClick={() => { setReplyTo(null); setReplyText(''); }}
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    </form>
-                  )}
-                  <div className="ml-8 mt-2 space-y-2">
-                    {(replies[comment.id] || []).map(reply => {
-                      const replyRole = userRoles[reply.userId] || '';
-                      return (
-                        <div
-                          key={reply.id}
-                          className={
-                            `flex gap-4 p-4 bg-amber-50 rounded-lg border border-stone-300 ` +
-                            (replyRole === 'web-dev'
-                              ? 'border-l-4 border-l-amber-300'
-                              : replyRole === 'game-dev'
-                              ? 'border-l-4 border-l-green-300'
-                              : 'border-l-4 border-l-stone-300')
-                          }
-                        >
-                          <div className="relative">
-                            {reply.userPhoto ? (
-                              <img
-                                src={reply.userPhoto}
-                                alt={reply.userName}
-                                className="w-10 h-10 rounded-full object-cover"
-                                onError={handlePhotoError}
-                              />
-                            ) : (
-                              <DefaultAvatar />
-                            )}
-                          </div>
-                          <div className="flex-grow">
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-baseline gap-2">
-                                <UserRoleBadge uid={reply.userId} userName={reply.userName} />
-                                <span className="text-sm text-stone-500">
-                                  {reply.timestamp?.toDate ? formatDate(reply.timestamp) : ''}
-                                </span>
-                              </div>
-                              {user && user.uid === reply.userId && (
-                                <button
-                                  onClick={() => handleDeleteReply(comment.id, reply.id, reply.userId)}
-                                  className="text-red-600 hover:text-red-700 text-sm p-1 hover:bg-red-50 rounded-full transition-colors"
-                                  title="Delete reply (Only the author can delete their reply)"
-                                >
-                                  <Trash2 size={18} />
-                                </button>
-                              )}
-                            </div>
-                            <p className="text-stone-700 mt-[10px] text-left">{reply.text}</p>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
-    </div>
+    </>
   );
 };
 
