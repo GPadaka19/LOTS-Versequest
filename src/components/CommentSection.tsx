@@ -278,7 +278,7 @@ const CommentSection = () => {
             console.log('Comment photo URL:', photoURL);
             const isBadgeUser = comment.userId === 'z8i4M64NHAO3HBBZSQTRJDC7GSg2' || comment.userId === 'awpW7OdqHeMwjkkjM37f5560wBh2';
             return (
-              <div key={comment.id} className="flex gap-4 p-4 bg-stone-50 rounded-lg">
+              <div key={comment.id} className="flex gap-4 p-4 bg-stone-50 rounded-lg border border-stone-300">
                 <div className="relative">
                   {photoURL ? (
                     <>
@@ -357,7 +357,7 @@ const CommentSection = () => {
                   )}
                   <div className="ml-8 mt-2 space-y-2">
                     {(replies[comment.id] || []).map(reply => (
-                      <div key={reply.id} className="flex gap-4 p-4 bg-stone-100 rounded-lg">
+                      <div key={reply.id} className="flex gap-4 p-4 bg-amber-50 rounded-lg border border-stone-300 border-l-4 border-l-amber-300">
                         <div className="relative">
                           {reply.userPhoto ? (
                             <img
