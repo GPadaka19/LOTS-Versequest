@@ -20,6 +20,9 @@ const CommentSection = () => {
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(false);
+  const [replyTo, setReplyTo] = useState<string | null>(null);
+  const [replyText, setReplyText] = useState('');
+  const [replies, setReplies] = useState<Record<string, Comment[]>>({});
 
   // Handle auth state changes
   useEffect(() => {
@@ -60,6 +63,32 @@ const CommentSection = () => {
 
     return () => unsubscribeComments();
   }, []); // PERUBAHAN: Hapus dependency [user] agar selalu load komentar
+
+  // Fetch replies for each comment
+  useEffect(() => {
+    const unsubscribes: Array<() => void> = [];
+    comments.forEach(comment => {
+      const q = collection(db, 'comments', comment.id, 'replies');
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        setReplies(prev => ({
+          ...prev,
+          [comment.id]: snapshot.docs.map(doc => {
+            const data = doc.data();
+            return {
+              id: doc.id,
+              text: data.text || '',
+              userName: data.userName || 'Anonymous',
+              userPhoto: data.userPhoto || '',
+              timestamp: data.timestamp || null,
+              userId: data.userId || '',
+            };
+          })
+        }));
+      });
+      unsubscribes.push(unsubscribe);
+    });
+    return () => unsubscribes.forEach(unsub => unsub());
+  }, [comments]);
 
   const handleGoogleSignIn = async () => {
     try {
@@ -104,6 +133,20 @@ const CommentSection = () => {
     setLoading(false);
   };
 
+  const handleReplySubmit = async (e: React.FormEvent, commentId: string) => {
+    e.preventDefault();
+    if (!user || !replyText.trim()) return;
+    await addDoc(collection(db, 'comments', commentId, 'replies'), {
+      text: replyText,
+      userId: user.uid,
+      userName: user.displayName || 'Anonymous',
+      userPhoto: user.photoURL ? user.photoURL.split('=')[0] + '=s400-c' : '',
+      timestamp: serverTimestamp(),
+    });
+    setReplyText('');
+    setReplyTo(null);
+  };
+
   const handleDeleteComment = async (commentId: string, commentUserId: string) => {
     if (!user || user.uid !== commentUserId) return;
     
@@ -111,6 +154,15 @@ const CommentSection = () => {
       await deleteDoc(doc(db, 'comments', commentId));
     } catch (error) {
       console.error('Error deleting comment:', error);
+    }
+  };
+
+  const handleDeleteReply = async (commentId: string, replyId: string, replyUserId: string) => {
+    if (!user || user.uid !== replyUserId) return;
+    try {
+      await deleteDoc(doc(db, 'comments', commentId, 'replies', replyId));
+    } catch (error) {
+      console.error('Error deleting reply:', error);
     }
   };
 
@@ -198,7 +250,7 @@ const CommentSection = () => {
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               placeholder="Write your comment..."
-              className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-500 min-h-[100px] text-black placeholder-gray-500"
+              className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-500 min-h-[100px] text-black placeholder-gray-900"
               required
             />
             <button
@@ -268,6 +320,77 @@ const CommentSection = () => {
                     )}
                   </div>
                   <p className="text-stone-700 mt-1 text-left">{comment.text}</p>
+                  <button
+                    className="text-xs text-blue-600 hover:underline ml-2"
+                    onClick={() => setReplyTo(comment.id)}
+                  >
+                    Reply
+                  </button>
+                  {replyTo === comment.id && (
+                    <form
+                      onSubmit={e => handleReplySubmit(e, comment.id)}
+                      className="flex flex-col gap-2 mt-2"
+                    >
+                      <textarea
+                        value={replyText}
+                        onChange={e => setReplyText(e.target.value)}
+                        className="w-full px-2 py-1 border rounded text-stone-700 placeholder-stone-500"
+                        placeholder="Write your reply..."
+                        required
+                      />
+                      <div className="flex gap-2">
+                        <button
+                          type="submit"
+                          className="px-3 py-1 bg-amber-600 text-white rounded"
+                        >
+                          Send
+                        </button>
+                        <button
+                          type="button"
+                          className="px-3 py-1 bg-gray-200 rounded"
+                          onClick={() => { setReplyTo(null); setReplyText(''); }}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </form>
+                  )}
+                  <div className="ml-8 mt-2 space-y-2">
+                    {(replies[comment.id] || []).map(reply => (
+                      <div key={reply.id} className="flex gap-4 p-4 bg-stone-100 rounded-lg">
+                        <div className="relative">
+                          {reply.userPhoto ? (
+                            <img
+                              src={reply.userPhoto}
+                              alt={reply.userName}
+                              className="w-10 h-10 rounded-full object-cover"
+                              onError={handlePhotoError}
+                            />
+                          ) : (
+                            <DefaultAvatar />
+                          )}
+                        </div>
+                        <div className="flex-grow">
+                          <div className="flex items-baseline gap-2">
+                            <UserRoleBadge uid={reply.userId} userName={reply.userName} />
+                            <span className="text-sm text-stone-500">
+                              {reply.timestamp?.toDate ? formatDate(reply.timestamp) : ''}
+                            </span>
+                            {user && user.uid === reply.userId && (
+                              <button
+                                onClick={() => handleDeleteReply(comment.id, reply.id, reply.userId)}
+                                className="text-red-600 hover:text-red-700 text-sm p-1 hover:bg-red-50 rounded-full transition-colors ml-2"
+                                title="Delete reply (Only the author can delete their reply)"
+                              >
+                                <Trash2 size={14} />
+                              </button>
+                            )}
+                          </div>
+                          <div className="text-stone-700 mt-1 text-left">{reply.text}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             );
