@@ -29,7 +29,7 @@ const CommentSection = () => {
   // Handle auth state changes
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      console.log('Auth state changed:', user?.photoURL);
+      // console.log('Auth state changed:', user?.photoURL);
       setUser(user);
     });
 
@@ -48,7 +48,7 @@ const CommentSection = () => {
     const unsubscribeComments = onSnapshot(q, (snapshot) => {
       const commentsData = snapshot.docs.map(doc => {
         const data = doc.data();
-        console.log('Comment data:', data);
+        // console.log('Comment data:', data);
         return {
           id: doc.id,
           text: data.text || '',
@@ -59,8 +59,8 @@ const CommentSection = () => {
         };
       }) as Comment[];
       setComments(commentsData);
-    }, (error) => {
-      console.error('Error fetching comments:', error);
+    }, (/* error */) => {
+      // console.error('Error fetching comments:', error);
     });
 
     return () => unsubscribeComments();
@@ -76,6 +76,7 @@ const CommentSection = () => {
           ...prev,
           [comment.id]: snapshot.docs.map(doc => {
             const data = doc.data();
+            // console.log('Reply data:', data);
             return {
               id: doc.id,
               text: data.text || '',
@@ -110,11 +111,14 @@ const CommentSection = () => {
           const userSnap = await getDoc(userRef);
           if (userSnap.exists()) {
             const data = userSnap.data();
+            // console.log('UserRole fetch:', uid, data);
             newRoles[uid] = data.role || '';
           } else {
+            // console.log('UserRole fetch: not found', uid);
             newRoles[uid] = '';
           }
         } catch {
+          // console.error('UserRole fetch error:', uid, err);
           newRoles[uid] = '';
         }
       }));
@@ -127,19 +131,16 @@ const CommentSection = () => {
 
   const handleGoogleSignIn = async () => {
     try {
-      const result = await signInWithPopup(auth, googleProvider);
-      console.log('Sign in successful:', result.user.photoURL);
-    } catch (error) {
-      console.error('Error signing in with Google:', error);
-    }
+      await signInWithPopup(auth, googleProvider);
+      // console.log('Sign in successful:', result.user.photoURL);
+    } catch {/* ignore */}
   };
 
   const handleSignOut = async () => {
     try {
       await signOut(auth);
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
+      // console.log('Sign out successful');
+    } catch {/* ignore */}
   };
 
   const handleSubmitComment = async (e: React.FormEvent) => {
@@ -151,7 +152,7 @@ const CommentSection = () => {
       let photoURL = '';
       if (user.photoURL) {
         photoURL = user.photoURL.split('=')[0] + '=s400-c';
-        console.log('Modified photo URL:', photoURL);
+        // console.log('Modified photo URL:', photoURL);
       }
       
       await addDoc(collection(db, 'comments'), {
@@ -162,24 +163,26 @@ const CommentSection = () => {
         userId: user.uid
       });
       setComment('');
-    } catch (error) {
-      console.error('Error adding comment:', error);
-    }
+      // console.log('Comment added');
+    } catch {/* ignore */}
     setLoading(false);
   };
 
   const handleReplySubmit = async (e: React.FormEvent, commentId: string) => {
     e.preventDefault();
     if (!user || !replyText.trim()) return;
-    await addDoc(collection(db, 'comments', commentId, 'replies'), {
-      text: replyText,
-      userId: user.uid,
-      userName: user.displayName || 'Anonymous',
-      userPhoto: user.photoURL ? user.photoURL.split('=')[0] + '=s400-c' : '',
-      timestamp: serverTimestamp(),
-    });
-    setReplyText('');
-    setReplyTo(null);
+    try {
+      await addDoc(collection(db, 'comments', commentId, 'replies'), {
+        text: replyText,
+        userId: user.uid,
+        userName: user.displayName || 'Anonymous',
+        userPhoto: user.photoURL ? user.photoURL.split('=')[0] + '=s400-c' : '',
+        timestamp: serverTimestamp(),
+      });
+      setReplyText('');
+      setReplyTo(null);
+      // console.log('Reply added');
+    } catch {/* ignore */}
   };
 
   const handleDeleteComment = async (commentId: string, commentUserId: string) => {
@@ -191,9 +194,8 @@ const CommentSection = () => {
     if (!user || !confirmDelete.id) return;
     try {
       await deleteDoc(doc(db, 'comments', confirmDelete.id));
-    } catch (error) {
-      console.error('Error deleting comment:', error);
-    }
+      // console.log('Comment deleted:', confirmDelete.id);
+    } catch {/* ignore */}
     setConfirmDelete({ id: '', open: false });
   };
 
@@ -205,9 +207,8 @@ const CommentSection = () => {
     if (!user || user.uid !== replyUserId) return;
     try {
       await deleteDoc(doc(db, 'comments', commentId, 'replies', replyId));
-    } catch (error) {
-      console.error('Error deleting reply:', error);
-    }
+      // console.log('Reply deleted:', replyId);
+    } catch {/* ignore */}
   };
 
   const formatDate = (timestamp: Timestamp | null) => {
@@ -221,15 +222,13 @@ const CommentSection = () => {
       const minutes = String(date.getMinutes()).padStart(2, '0');
       
       return `${day}/${month}/${year} ${hours}:${minutes}`;
-    } catch (error) {
-      console.error('Error formatting date:', error);
-      return 'Invalid date';
-    }
+    } catch {/* ignore */}
+    return 'Invalid date';
   };
 
   const handlePhotoError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     const target = e.target as HTMLImageElement;
-    console.error('Error loading photo:', target.src);
+    // console.error('Error loading photo:', target.src);
     target.style.display = 'none';
     const nextSibling = target.nextElementSibling as HTMLElement;
     if (nextSibling) {
@@ -332,8 +331,7 @@ const CommentSection = () => {
           <div className="space-y-4">
             {comments.map((comment) => {
               const photoURL = comment.userPhoto;
-              console.log('Comment photo URL:', photoURL);
-              const isBadgeUser = comment.userId === 'z8i4M64NHAO3HBBZSQTRJDC7GSg2' || comment.userId === 'awpW7OdqHeMwjkkjM37f5560wBh2';
+              // console.log('Comment photo URL:', photoURL);
               return (
                 <div key={comment.id} className="flex gap-4 p-4 bg-stone-50 rounded-lg border border-stone-300">
                   <div className="relative">
@@ -357,11 +355,7 @@ const CommentSection = () => {
                   <div className="flex-grow">
                     <div className="flex items-center justify-between">
                       <div className="flex items-baseline gap-2">
-                        {isBadgeUser ? (
-                          <UserRoleBadge uid={comment.userId} userName={comment.userName} />
-                        ) : (
-                          <p className="user-info font-medium text-amber-600">{comment.userName}</p>
-                        )}
+                        <UserRoleBadge uid={comment.userId} userName={comment.userName} />
                         <span className="text-sm text-stone-500">
                           {formatDate(comment.timestamp)}
                         </span>
