@@ -34,10 +34,7 @@ const HeroSection = () => {
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
         }`}
       >
-        <div className="max-w-5xl mx-auto">
-          <h1 className="text-3xl md:text-5xl lg:text-5xl font-bold mb-4 text-amber-500 font-serif leading-tight">
-            Legacy of the Sunstone
-          </h1>
+        <div className="max-w-5xl -ml-20 -mt-20">
           <p className="text-lg md:text-2xl text-amber-100 mb-8 max-w-3xl mx-auto leading-relaxed">
             Uncover the ancient secrets. Survive the traps. Claim the Sunstone.
           </p>
