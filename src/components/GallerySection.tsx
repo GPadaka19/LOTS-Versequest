@@ -9,26 +9,30 @@ interface GalleryImage {
 
 const images: GalleryImage[] = [
   {
-    src: '/gallery/Arka_CU.webp',
+    src: '/gallery/Arka.webp',
     title: 'Arka',
     description: 'The mysterious warrior with a deep connection to the ancient powers of the Sunstone.'
   },
   {
-    src: '/gallery/DrVictor_CU.webp',
+    src: '/gallery/DrVictor.webp',
     title: 'Dr. Victor',
     description: 'The brilliant but troubled scientist whose experiments with ancient artifacts led to the discovery of the Sunstone.'
   },
   {
-    src: '/gallery/Dutch Army_CU.webp',
+    src: '/gallery/DutchArmy.webp',
     title: 'Dutch Army',
     description: 'The elite military force tasked with protecting the Sunstone and maintaining order in the chaotic world.'
   },
   {
-    src: '/gallery/Candi.jpg',
-    title: 'Candi',
-    description: 'CANDIIIIIIII.'
+    src: '/gallery/TM018.webp',
+    title: 'Temple',
+    description: ''
   },
-  
+  {
+    src: '/gallery/TM018.webp',
+    title: 'Temple',
+    description: ''
+  }
 ];
 
 const GallerySection = () => {
@@ -90,12 +94,7 @@ const GallerySection = () => {
         <div 
           className={`transition-all duration-1000 ease-out ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}
-        >
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center text-amber-500 font-serif">
-            Screenshots & Trailer
-          </h2>
-          
+          }`}>
           <div className="mb-12 relative">
             <div id="indicators-carousel" className="relative w-full max-w-4xl mx-auto">
               {/* Carousel wrapper */}
