@@ -3,7 +3,7 @@ import { auth, googleProvider, db } from '../firebase/config';
 import { signInWithPopup, signOut, User } from 'firebase/auth';
 import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, Timestamp, deleteDoc, doc, getDoc } from 'firebase/firestore';
 import DefaultAvatar from './DefaultAvatar';
-import { Trash2, LogOut } from 'lucide-react';
+import { Trash2, LogOut, Reply } from 'lucide-react';
 import UserRoleBadge from './UserRoleBadge';
 
 interface Comment {
@@ -279,23 +279,26 @@ const CommentSection = () => {
                 {formatDate(comment.timestamp)}
               </span>
             </div>
-            {user && user.uid === comment.userId && (
+            <div className="flex items-center gap-1">
               <button
-                onClick={() => handleDeleteComment(comment.id, comment.userId)}
-                className="text-red-600 hover:text-red-700 text-sm p-1 hover:bg-red-50 rounded-full transition-colors"
-                title="Delete comment (Only the author can delete their comment)"
+                onClick={() => setReplyTo(comment.id)}
+                className="text-blue-600 hover:text-blue-700 text-sm p-1 hover:bg-blue-50 rounded-full transition-colors"
+                title="Reply"
               >
-                <Trash2 size={18} />
+                <Reply size={18} />
               </button>
-            )}
+              {user && user.uid === comment.userId && (
+                <button
+                  onClick={() => handleDeleteComment(comment.id, comment.userId)}
+                  className="text-red-600 hover:text-red-700 text-sm p-1 hover:bg-red-50 rounded-full transition-colors"
+                  title="Delete comment (Only the author can delete their comment)"
+                >
+                  <Trash2 size={18} />
+                </button>
+              )}
+            </div>
           </div>
           <p className="text-stone-700 mt-[10px] text-left">{comment.text}</p>
-          <button
-            className="text-xs text-blue-600 hover:underline ml-2"
-            onClick={() => setReplyTo(comment.id)}
-          >
-            Reply
-          </button>
           {replyTo === comment.id && (
             <form
               onSubmit={e => handleReplySubmit(e, comment.id)}
