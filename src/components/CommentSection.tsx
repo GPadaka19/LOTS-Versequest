@@ -25,6 +25,8 @@ const CommentSection = () => {
   const [replies, setReplies] = useState<Record<string, Comment[]>>({});
   const [userRoles, setUserRoles] = useState<Record<string, string>>({});
   const [confirmDelete, setConfirmDelete] = useState<{ id: string; open: boolean }>({ id: '', open: false });
+  const [showReplyWarning, setShowReplyWarning] = useState(false);
+  const [confirmDeleteReply, setConfirmDeleteReply] = useState<{ commentId: string; replyId: string; open: boolean }>({ commentId: '', replyId: '', open: false });
 
   // Handle auth state changes
   useEffect(() => {
@@ -170,7 +172,11 @@ const CommentSection = () => {
 
   const handleReplySubmit = async (e: React.FormEvent, commentId: string) => {
     e.preventDefault();
-    if (!user || !replyText.trim()) return;
+    if (!user) {
+      setShowReplyWarning(true);
+      return;
+    }
+    if (!replyText.trim()) return;
     try {
       await addDoc(collection(db, 'comments', commentId, 'replies'), {
         text: replyText,
@@ -205,10 +211,19 @@ const CommentSection = () => {
 
   const handleDeleteReply = async (commentId: string, replyId: string, replyUserId: string) => {
     if (!user || user.uid !== replyUserId) return;
+    setConfirmDeleteReply({ commentId, replyId, open: true });
+  };
+
+  const confirmDeleteReplyAction = async () => {
+    if (!user || !confirmDeleteReply.commentId || !confirmDeleteReply.replyId) return;
     try {
-      await deleteDoc(doc(db, 'comments', commentId, 'replies', replyId));
-      // console.log('Reply deleted:', replyId);
+      await deleteDoc(doc(db, 'comments', confirmDeleteReply.commentId, 'replies', confirmDeleteReply.replyId));
     } catch {/* ignore */}
+    setConfirmDeleteReply({ commentId: '', replyId: '', open: false });
+  };
+
+  const cancelDeleteReply = () => {
+    setConfirmDeleteReply({ commentId: '', replyId: '', open: false });
   };
 
   const formatDate = (timestamp: Timestamp | null) => {
@@ -320,7 +335,7 @@ const CommentSection = () => {
                 </button>
                 <button
                   type="button"
-                  className="px-3 py-1 bg-gray-200 rounded"
+                  className="px-3 py-1 bg-red-600 text-white rounded"
                   onClick={() => { setReplyTo(null); setReplyText(''); }}
                 >
                   Cancel
@@ -471,12 +486,15 @@ const CommentSection = () => {
       </div>
       {confirmDelete.open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="bg-gray-100 rounded-lg shadow-lg p-6 w-full max-w-sm mx-auto flex flex-col items-center border border-amber-400">
+          <div className="bg-gray-100 rounded-lg shadow-lg p-6 w-full max-w-lg mx-auto flex flex-col items-center border border-amber-400">
             <div className="text-amber-600 mb-4">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z" /></svg>
             </div>
             <h2 className="text-lg font-semibold mb-2 text-center">Delete Comment?</h2>
-            <p className="text-stone-600 mb-6 text-center">Are you sure you want to delete this comment? This action cannot be undone.</p>
+            <p className="text-stone-600 mb-6 text-center">
+              Are you sure you want to delete this comment?<br />
+              This action cannot be undone.
+            </p>
             <div className="flex gap-4 w-full justify-center">
               <button
                 onClick={confirmDeleteComment}
@@ -489,6 +507,59 @@ const CommentSection = () => {
                 className="px-4 py-2 bg-gray-200 text-stone-700 rounded hover:bg-gray-300 font-semibold transition-colors"
               >
                 Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {confirmDeleteReply.open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="bg-gray-100 rounded-lg shadow-lg p-6 w-full max-w-lg mx-auto flex flex-col items-center border border-amber-400">
+            <div className="text-amber-600 mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z" /></svg>
+            </div>
+            <h2 className="text-lg font-semibold mb-2 text-center">Delete Reply?</h2>
+            <p className="text-stone-600 mb-6 text-center">
+              Are you sure you want to delete this reply?<br />
+              This action cannot be undone.
+            </p>
+            <div className="flex gap-4 w-full justify-center">
+              <button
+                onClick={confirmDeleteReplyAction}
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 font-semibold transition-colors"
+              >
+                Yes, Delete
+              </button>
+              <button
+                onClick={cancelDeleteReply}
+                className="px-4 py-2 bg-gray-200 text-stone-700 rounded hover:bg-gray-300 font-semibold transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {showReplyWarning && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="bg-gray-100 rounded-lg shadow-lg p-6 w-full max-w-lg mx-auto flex flex-col items-center border border-amber-400">
+            <div className="text-amber-600 mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z" /></svg>
+            </div>
+            <h2 className="text-lg font-semibold mb-2 text-center">Sign In Required</h2>
+            <p className="text-stone-600 mb-6 text-center">You must be signed in to reply to a comment.</p>
+            <div className="flex gap-4 w-full justify-center">
+              <button
+                onClick={() => setShowReplyWarning(false)}
+                className="px-4 py-2 bg-gray-200 text-stone-700 rounded hover:bg-gray-300 font-semibold transition-colors"
+              >
+                Close
+              </button>
+              <button
+                onClick={() => { setShowReplyWarning(false); handleGoogleSignIn(); }}
+                className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-md transition-colors"
+              >
+                Sign in with Google to comment
               </button>
             </div>
           </div>
