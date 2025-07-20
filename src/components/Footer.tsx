@@ -5,7 +5,12 @@ const Footer = () => {
   
   return (
     <footer className="py-8 bg-stone-900 text-stone-400 text-center">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 flex flex-col items-center">
+        <img
+          src="/icons/Logo_Name.webp"
+          alt="Versequest Logo"
+          className="mb-4 h-16 w-auto"
+        />
         <p>
           &copy; {currentYear} Versequest — Legacy of the Sunstone. All rights reserved.
         </p>
