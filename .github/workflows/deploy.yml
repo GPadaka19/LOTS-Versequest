@@ -1,5 +1,9 @@
 name: Build & CI/CD VPS
 
+concurrency:
+  group: deploy-vps-main
+  cancel-in-progress: false
+
 on:
   push:
     branches:
