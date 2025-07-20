@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { db } from '../firebase/config';
 import { doc, getDoc } from 'firebase/firestore';
 
@@ -15,70 +15,58 @@ const GAMEDEV_EMOJI_URL =
   'https://em-content.zobj.net/source/apple/419/video-game_1f3ae.png';
 
 const UserRoleBadge: React.FC<UserRoleBadgeProps> = ({ uid, userName, className = '' }) => {
-  const [badge, setBadge] = useState<null | { label: string; emoji: string }>(null);
+  const [role, setRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchRole = async () => {
       setLoading(true);
-      console.log('[UserRoleBadge] Fetching role for UID:', uid);
       try {
         const userRef = doc(db, 'user-role', uid);
         const userSnap = await getDoc(userRef);
         if (userSnap.exists()) {
           const data = userSnap.data();
-          console.log('[UserRoleBadge] Firestore data for', uid, ':', data);
-          // Web Dev badge
-          if (data.role === 'web-dev') {
-            setBadge({ label: 'Web Dev', emoji: WEBDEV_EMOJI_URL });
-            console.log('[UserRoleBadge] Web Dev badge set for', uid);
-          }
-          // Game Dev badge
-          else if (data.role === 'game-dev') {
-            setBadge({ label: 'Game Dev', emoji: GAMEDEV_EMOJI_URL });
-            console.log('[UserRoleBadge] Game Dev badge set for', uid);
-          } else {
-            console.log('[UserRoleBadge] No badge set for', uid, 'with role', data.role);
-          }
+          setRole(data.role || null);
         } else {
-          console.log('[UserRoleBadge] No Firestore document found for', uid);
+          setRole(null);
         }
-      } catch (error) {
-        console.error('[UserRoleBadge] Error fetching user role for', uid, ':', error);
+      } catch {
+        setRole(null);
       }
       setLoading(false);
     };
     fetchRole();
   }, [uid]);
 
-  useEffect(() => {
-    if (!loading) {
-      if (badge) {
-        console.log('[UserRoleBadge] Badge will render for', uid, ':', badge);
-      } else {
-        console.log('[UserRoleBadge] No badge will render for', uid);
-      }
+  const badge = useMemo(() => {
+    if (role === 'web-dev') {
+      return { label: 'Web Dev', emoji: WEBDEV_EMOJI_URL, badgeClass: 'bg-amber-200 text-amber-700' };
     }
-  }, [loading, badge, uid]);
+    if (role === 'game-dev') {
+      return { label: 'Game Dev', emoji: GAMEDEV_EMOJI_URL, badgeClass: 'bg-green-200 text-green-700' };
+    }
+    return null;
+  }, [role]);
+
+  const usernameColor = useMemo(() => {
+    if (!loading && role === 'game-dev') return 'text-green-700';
+    if (!loading && role === 'web-dev') return 'text-amber-700';
+    return 'text-stone-700';
+  }, [loading, role]);
 
   return (
-    <span className={`user-info font-medium text-amber-600 ${className}`}>
+    <span className={`user-info font-medium ${usernameColor} ${className}`}>
       {userName}
       {!loading && badge && (
         <span
-          className={`text-xs 
-            ${badge.label === 'Web Dev' ? 'bg-amber-200 text-amber-700' : ''}
-            ${badge.label === 'Game Dev' ? 'bg-green-200 text-green-700' : ''}
-            w-[90px] justify-center
-            py-0.5 rounded-full font-medium flex items-center gap-1 ml-2`
-          }
+          className={`text-xs ${badge.badgeClass} w-[90px] justify-center py-0.5 rounded-full font-medium flex items-center gap-1 ml-2`}
         >
           <img
             src={badge.emoji}
             className="w-4 h-4 inline-block"
             alt={badge.label}
           />
-          {badge.label.trim()}
+          {badge.label}
         </span>
       )}
     </span>
