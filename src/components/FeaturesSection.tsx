@@ -49,7 +49,7 @@ const FeaturesSection = () => {
       id="features" 
       className="py-20 relative bg-stone-200"
     >
-      <div className="absolute inset-0 bg-[url('/background/mountain.webp')] bg-fixed bg-cover bg-center opacity-10"></div>
+      <div className="absolute inset-0 bg-[url('/background/Wallpaper_Landscape.webp')] bg-fixed bg-cover bg-center opacity-10"></div>
       
       <div className="container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center text-amber-800 font-serif">
