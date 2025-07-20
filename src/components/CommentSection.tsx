@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { auth, googleProvider, db } from '../firebase/config';
 import { signInWithPopup, signOut, User } from 'firebase/auth';
 import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, Timestamp, deleteDoc, doc, getDoc } from 'firebase/firestore';
@@ -248,6 +248,139 @@ const CommentSection = () => {
     };
   }, [confirmDelete.open]);
 
+  // Memoize comments and replies mapping for performance
+  const renderedComments = useMemo(() => comments.map((comment) => {
+    const photoURL = comment.userPhoto;
+    return (
+      <div key={comment.id} className="flex gap-4 p-4 bg-stone-50 rounded-lg border border-stone-300">
+        <div className="relative">
+          {photoURL ? (
+            <>
+              <img
+                key={`comment-photo-${comment.id}`}
+                src={photoURL}
+                alt={comment.userName}
+                className="w-10 h-10 rounded-full object-cover"
+                onError={handlePhotoError}
+              />
+              <div className="hidden">
+                <DefaultAvatar />
+              </div>
+            </>
+          ) : (
+            <DefaultAvatar />
+          )}
+        </div>
+        <div className="flex-grow">
+          <div className="flex items-center justify-between">
+            <div className="flex items-baseline gap-2">
+              <UserRoleBadge uid={comment.userId} userName={comment.userName} />
+              <span className="text-sm text-stone-500">
+                {formatDate(comment.timestamp)}
+              </span>
+            </div>
+            {user && user.uid === comment.userId && (
+              <button
+                onClick={() => handleDeleteComment(comment.id, comment.userId)}
+                className="text-red-600 hover:text-red-700 text-sm p-1 hover:bg-red-50 rounded-full transition-colors"
+                title="Delete comment (Only the author can delete their comment)"
+              >
+                <Trash2 size={18} />
+              </button>
+            )}
+          </div>
+          <p className="text-stone-700 mt-[10px] text-left">{comment.text}</p>
+          <button
+            className="text-xs text-blue-600 hover:underline ml-2"
+            onClick={() => setReplyTo(comment.id)}
+          >
+            Reply
+          </button>
+          {replyTo === comment.id && (
+            <form
+              onSubmit={e => handleReplySubmit(e, comment.id)}
+              className="flex flex-col gap-2 mt-2"
+            >
+              <textarea
+                value={replyText}
+                onChange={e => setReplyText(e.target.value)}
+                className="w-full px-2 py-1 border rounded text-stone-700 placeholder-stone-500"
+                placeholder="Write your reply..."
+                required
+              />
+              <div className="flex gap-2">
+                <button
+                  type="submit"
+                  className="px-3 py-1 bg-amber-600 text-white rounded"
+                >
+                  Send
+                </button>
+                <button
+                  type="button"
+                  className="px-3 py-1 bg-gray-200 rounded"
+                  onClick={() => { setReplyTo(null); setReplyText(''); }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          )}
+          <div className="ml-8 mt-2 space-y-2">
+            {(replies[comment.id] || []).map(reply => {
+              const replyRole = userRoles[reply.userId] || '';
+              return (
+                <div
+                  key={reply.id}
+                  className={
+                    `flex gap-4 p-4 bg-amber-50 rounded-lg border border-stone-300 ` +
+                    (replyRole === 'web-dev'
+                      ? 'border-l-4 border-l-amber-300'
+                      : replyRole === 'game-dev'
+                      ? 'border-l-4 border-l-green-300'
+                      : 'border-l-4 border-l-stone-300')
+                  }
+                >
+                  <div className="relative">
+                    {reply.userPhoto ? (
+                      <img
+                        src={reply.userPhoto}
+                        alt={reply.userName}
+                        className="w-10 h-10 rounded-full object-cover"
+                        onError={handlePhotoError}
+                      />
+                    ) : (
+                      <DefaultAvatar />
+                    )}
+                  </div>
+                  <div className="flex-grow">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-baseline gap-2">
+                        <UserRoleBadge uid={reply.userId} userName={reply.userName} />
+                        <span className="text-sm text-stone-500">
+                          {reply.timestamp?.toDate ? formatDate(reply.timestamp) : ''}
+                        </span>
+                      </div>
+                      {user && user.uid === reply.userId && (
+                        <button
+                          onClick={() => handleDeleteReply(comment.id, reply.id, reply.userId)}
+                          className="text-red-600 hover:text-red-700 text-sm p-1 hover:bg-red-50 rounded-full transition-colors"
+                          title="Delete reply (Only the author can delete their reply)"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      )}
+                    </div>
+                    <p className="text-stone-700 mt-[10px] text-left">{reply.text}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  }), [comments, replies, user, replyTo, replyText, userRoles]);
+
   return (
     <>
       <div className="w-full max-w-4xl mx-auto mt-12 p-6 bg-white rounded-lg shadow-md px-4">
@@ -329,138 +462,7 @@ const CommentSection = () => {
           </div>
         ) : (
           <div className="space-y-4">
-            {comments.map((comment) => {
-              const photoURL = comment.userPhoto;
-              // console.log('Comment photo URL:', photoURL);
-              return (
-                <div key={comment.id} className="flex gap-4 p-4 bg-stone-50 rounded-lg border border-stone-300">
-                  <div className="relative">
-                    {photoURL ? (
-                      <>
-                        <img
-                          key={`comment-photo-${comment.id}`}
-                          src={photoURL}
-                          alt={comment.userName}
-                          className="w-10 h-10 rounded-full object-cover"
-                          onError={handlePhotoError}
-                        />
-                        <div className="hidden">
-                          <DefaultAvatar />
-                        </div>
-                      </>
-                    ) : (
-                      <DefaultAvatar />
-                    )}
-                  </div>
-                  <div className="flex-grow">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-baseline gap-2">
-                        <UserRoleBadge uid={comment.userId} userName={comment.userName} />
-                        <span className="text-sm text-stone-500">
-                          {formatDate(comment.timestamp)}
-                        </span>
-                      </div>
-                      {user && user.uid === comment.userId && (
-                        <button
-                          onClick={() => handleDeleteComment(comment.id, comment.userId)}
-                          className="text-red-600 hover:text-red-700 text-sm p-1 hover:bg-red-50 rounded-full transition-colors"
-                          title="Delete comment (Only the author can delete their comment)"
-                        >
-                          <Trash2 size={18} />
-                        </button>
-                      )}
-                    </div>
-                    <p className="text-stone-700 mt-[10px] text-left">{comment.text}</p>
-                    <button
-                      className="text-xs text-blue-600 hover:underline ml-2"
-                      onClick={() => setReplyTo(comment.id)}
-                    >
-                      Reply
-                    </button>
-                    {replyTo === comment.id && (
-                      <form
-                        onSubmit={e => handleReplySubmit(e, comment.id)}
-                        className="flex flex-col gap-2 mt-2"
-                      >
-                        <textarea
-                          value={replyText}
-                          onChange={e => setReplyText(e.target.value)}
-                          className="w-full px-2 py-1 border rounded text-stone-700 placeholder-stone-500"
-                          placeholder="Write your reply..."
-                          required
-                        />
-                        <div className="flex gap-2">
-                          <button
-                            type="submit"
-                            className="px-3 py-1 bg-amber-600 text-white rounded"
-                          >
-                            Send
-                          </button>
-                          <button
-                            type="button"
-                            className="px-3 py-1 bg-gray-200 rounded"
-                            onClick={() => { setReplyTo(null); setReplyText(''); }}
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </form>
-                    )}
-                    <div className="ml-8 mt-2 space-y-2">
-                      {(replies[comment.id] || []).map(reply => {
-                        const replyRole = userRoles[reply.userId] || '';
-                        return (
-                          <div
-                            key={reply.id}
-                            className={
-                              `flex gap-4 p-4 bg-amber-50 rounded-lg border border-stone-300 ` +
-                              (replyRole === 'web-dev'
-                                ? 'border-l-4 border-l-amber-300'
-                                : replyRole === 'game-dev'
-                                ? 'border-l-4 border-l-green-300'
-                                : 'border-l-4 border-l-stone-300')
-                            }
-                          >
-                            <div className="relative">
-                              {reply.userPhoto ? (
-                                <img
-                                  src={reply.userPhoto}
-                                  alt={reply.userName}
-                                  className="w-10 h-10 rounded-full object-cover"
-                                  onError={handlePhotoError}
-                                />
-                              ) : (
-                                <DefaultAvatar />
-                              )}
-                            </div>
-                            <div className="flex-grow">
-                              <div className="flex items-center justify-between">
-                                <div className="flex items-baseline gap-2">
-                                  <UserRoleBadge uid={reply.userId} userName={reply.userName} />
-                                  <span className="text-sm text-stone-500">
-                                    {reply.timestamp?.toDate ? formatDate(reply.timestamp) : ''}
-                                  </span>
-                                </div>
-                                {user && user.uid === reply.userId && (
-                                  <button
-                                    onClick={() => handleDeleteReply(comment.id, reply.id, reply.userId)}
-                                    className="text-red-600 hover:text-red-700 text-sm p-1 hover:bg-red-50 rounded-full transition-colors"
-                                    title="Delete reply (Only the author can delete their reply)"
-                                  >
-                                    <Trash2 size={18} />
-                                  </button>
-                                )}
-                              </div>
-                              <p className="text-stone-700 mt-[10px] text-left">{reply.text}</p>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+            {renderedComments}
           </div>
         )}
       </div>
