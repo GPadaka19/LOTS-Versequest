@@ -21,7 +21,7 @@ const HeroSection = () => {
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-l from-stone-900/90 via-stone-900/20 to-stone-900/10 z-10"></div>
         <img
-          src="/background/Wallpaper_Landscape.jpg"
+          src="/background/Wallpaper_Landscape.webp"
           alt="Background"
           className="w-full h-full object-cover opacity-70 absolute inset-0"
           style={{ objectPosition: 'center' }}
