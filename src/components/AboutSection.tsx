@@ -30,7 +30,7 @@ const AboutSection = () => {
       ref={sectionRef}
       className="py-20 relative bg-stone-100"
     >
-      <div className="absolute inset-0 bg-[url('/background/Wallpaper_Landscape.webp')] bg-cover bg-center opacity-5"></div> 
+      <div className="absolute inset-0 bg-[url('/background/Wallpaper_Landscape.webp')] bg-cover bg-center opacity-5 bg-fixed"></div> 
       
       <div className="container mx-auto px-4">
         <div 
