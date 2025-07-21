@@ -43,13 +43,13 @@ jobs:
 
       - name: Copy dist & docker files to VPS
         uses: appleboy/scp-action@v0.1.4
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        source: "dist,Dockerfile,docker-compose.yml,nginx.conf,.env"
+        target: "~/lots-netion"
+        
         with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "dist,Dockerfile,docker-compose.yml,nginx.conf,.env"
-          target: "~/lots-netion"
-
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
