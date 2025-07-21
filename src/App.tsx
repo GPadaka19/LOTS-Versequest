@@ -19,14 +19,16 @@ function App() {
       <div className="relative bg-stone-900 text-stone-100 min-h-screen">
         <div className="absolute inset-0 bg-[url('/background/Wallpaper_Landscape.webp')] opacity-10 bg-fixed"></div>
         <Navbar />
-        <main className="relative">
+        <main>
           <HeroSection />
-          <AboutSection />
-          <GallerySection />
-          <FeaturesSection />
-          <DeveloperSection />
-          <DownloadSection />
-          <ContactSection />
+          <div className="relative z-10 bg-stone-900">
+            <AboutSection />
+            <GallerySection />
+            <FeaturesSection />
+            <DeveloperSection />
+            <DownloadSection />
+            <ContactSection />
+          </div>
         </main>
         <Footer />
       </div>
