@@ -37,7 +37,7 @@ const DeveloperSection = () => {
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center text-amber-500 font-serif">
+          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center text-amber-500 font-serif">
             Meet the Developers
           </h2>
           
@@ -82,7 +82,7 @@ const DeveloperSection = () => {
           </div>
 
           <div className="mt-12 bg-secondary bg-opacity-80 p-8 rounded-lg shadow-lg">
-            <p className="text-lg text-gray-100 leading-relaxed text-center">
+            <p className="text-xl text-gray-100 leading-relaxed text-justify">
               We are passionate game developers from Amikom Yogyakarta University, 
               dedicated to creating immersive adventure experiences. "Legacy of the Sunstone" 
               is our debut title, combining our love for game development, 
