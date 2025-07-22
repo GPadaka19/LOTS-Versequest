@@ -42,7 +42,7 @@ const AboutSection = () => {
             About the Game
           </h2>
           
-          <div className="bg-extraAccent bg-opacity-90 p-8 rounded-lg shadow-lg">
+          <div className="bg-secondaryAccent p-8 rounded-lg shadow-lg">
             <p className="text-lg leading-relaxed mb-6 text-white text-justify">
               <span className="text-xl font-bold text-accent">Legacy of the Sunstone</span> is an 
               adventure-puzzle game that takes you on a thrilling journey through ancient temples, 
