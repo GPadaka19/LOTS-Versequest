@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const AboutSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -28,7 +28,7 @@ const AboutSection = () => {
     <section 
       id="about" 
       ref={sectionRef}
-      className="py-20 relative bg-stone-100"
+      className="py-20 relative bg-base"
     >
       <div className="absolute inset-0 bg-[url('/background/Wallpaper_Landscape.webp')] bg-cover bg-center opacity-5 bg-fixed"></div> 
       
@@ -38,18 +38,18 @@ const AboutSection = () => {
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center text-amber-800 font-serif">
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center text-accent font-serif">
             About the Game
           </h2>
           
-          <div className="bg-white bg-opacity-90 p-8 rounded-lg shadow-lg">
-            <p className="text-lg leading-relaxed mb-6 text-stone-800">
-              <span className="text-xl font-semibold text-amber-700">Legacy of the Sunstone</span> is an 
+          <div className="bg-extraAccent bg-opacity-90 p-8 rounded-lg shadow-lg">
+            <p className="text-lg leading-relaxed mb-6 text-white text-justify">
+              <span className="text-xl font-bold text-accent">Legacy of the Sunstone</span> is an 
               adventure-puzzle game that takes you on a thrilling journey through ancient temples, 
               forgotten civilizations, and mysterious tombs in search of the legendary Sunstone artifact.
             </p>
             
-            <p className="text-lg leading-relaxed mb-8 text-stone-800">
+            <p className="text-lg leading-relaxed mb-8 text-white text-justify">
               As an intrepid archaeologist on the trail of the fabled Sunstone, you'll navigate treacherous 
               environments, solve intricate puzzles, evade deadly traps, and uncover the secrets of a lost 
               civilization. Will you claim the Sunstone and reveal its true power, or will you become another 
@@ -71,9 +71,9 @@ const AboutSection = () => {
                   desc: 'Uncover an engrossing story through ancient texts, artifacts, and encounters with other characters seeking the Sunstone.'
                 }
               ].map((item, index) => (
-                <div key={index} className="bg-stone-50 p-6 rounded-md shadow-md">
-                  <h3 className="text-xl font-bold mb-2 text-amber-700">{item.title}</h3>
-                  <p className="text-stone-700">{item.desc}</p>
+                <div key={index} className="bg-secondary p-6 rounded-md shadow-md">
+                  <h3 className="text-xl font-bold mb-2 text-accent">{item.title}</h3>
+                  <p className="text-white">{item.desc}</p>
                 </div>
               ))}
             </div>
