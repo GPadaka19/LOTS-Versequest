@@ -1,0 +1,80 @@
+import { useState } from 'react';
+
+interface GalleryItem {
+  src: string;
+  title: string;
+  description: string[];
+}
+
+const galleryData: GalleryItem[] = [
+  {
+    src: '/gallery/Arka.webp',
+    title: 'Arka',
+    description: [
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit,'
+    ]
+  },
+  {
+    src: '/gallery/DrVictor.webp',
+    title: 'Dr. Victor',
+    description: [
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit,'
+    ]
+  },
+  {
+    src: '/gallery/DutchArmy.webp',
+    title: 'Dutch Army',
+    description: [
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit,'
+    ]
+  }
+];
+
+export default function GallerySection() {
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const activeMode = galleryData[activeIndex];
+
+  return (
+    <section className="relative h-screen w-full overflow-hidden text-accent">
+      {/* Background */}
+      <div
+        className="absolute inset-0 bg-cover bg-center transition-all duration-500"
+        style={{ backgroundImage: `url(${activeMode.src})` }}
+      >
+        <div className="absolute inset-0 bg-black bg-opacity-60" />
+      </div>
+
+      {/* Content Overlay */}
+      <div className="relative z-10 h-full flex">
+        {/* Left - Thumbnail List */}
+        <div className="w-1/4 p-8 flex flex-col gap-4 mt-12">
+          <div className="my-1 text-center text-4xl font-bold text-accent">Character</div>
+          {galleryData.map((mode: GalleryItem, index: number) => (
+            <button
+              key={index}
+              onClick={() => setActiveIndex(index)}
+              className={`border-2 transition-all w-full aspect-[16/9] flex flex-col justify-end overflow-hidden ${
+                activeIndex === index ? 'border-accent' : 'border-white/40 hover:border-amber-200'
+              }`}
+            >
+              <div className="w-full h-3/4">
+                <img src={mode.src} alt={mode.title} className="w-full aspect-[16/9] object-cover" />
+              </div>
+              <div className="w-full h-1/4 flex items-center text-left">
+                <span className="text-accent text-lg font-serif font-bold truncate px-1">{mode.title}</span>
+              </div>
+            </button>
+          ))}
+        </div>
+
+        {/* Right - Description */}
+        <div className="w-3/4 p-12 flex flex-col justify-start items-end">
+          <h2 className="text-4xl font-serif font-bold mb-6">{activeMode.title}</h2>
+          {activeMode.description.map((line: string, idx: number) => (
+            <p key={idx} className="mt-6 text-2xl font-bold text-orange-400">{line}</p>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
