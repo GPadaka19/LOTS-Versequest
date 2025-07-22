@@ -91,19 +91,20 @@ const ContactSection = () => {
     <section 
       id="contact" 
       ref={sectionRef}
-      className="py-20 bg-stone-100"
+      className="py-10 relative bg-base"
     >
+      <div className="absolute inset-0 bg-[url('/background/Wallpaper_Landscape.webp')] bg-cover bg-center opacity-5 bg-fixed pointer-events-none"></div>
       <div className="container mx-auto px-4">
         <div 
           className={`max-w-4xl mx-auto text-center transition-all duration-1000 ease-out ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-amber-800 font-serif">
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-accent font-serif">
             Contact & Follow Us
           </h2>
           
-          <p className="text-lg text-stone-700 mb-10 max-w-2xl mx-auto">
+          <p className="text-lg text-white mb-10 max-w-2xl mx-auto">
             Have questions about "Legacy of the Sunstone"? Want to share your experience or report an issue? 
             We'd love to hear from you!
           </p>
