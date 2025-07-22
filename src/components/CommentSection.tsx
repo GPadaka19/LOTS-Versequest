@@ -402,13 +402,12 @@ const CommentSection = () => {
   return (
     <>
       <div className="w-full max-w-4xl mx-auto mt-12 p-6 bg-white rounded-lg shadow-md px-4">
-        <h3 className="text-3xl font-bold mb-4 text-amber-700 font-serif">Community Comments</h3>
+        <h3 className="text-4xl font-bold mb-12 text-accent font-serif">Community Comments</h3>
         
         {!user ? (
-          // PERUBAHAN: Tambah placeholder untuk guest users
           <div className="mb-6">
             <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg mb-4">
-              <p className="text-amber-700 text-center">
+              <p className="text-accent text-center">
                 🔒 Sign in to join the conversation and share your thoughts!
               </p>
             </div>
