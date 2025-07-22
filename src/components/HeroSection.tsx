@@ -37,7 +37,7 @@ const HeroSection = () => {
         }`}
       >
         <div className="max-w-5xl -ml-20 -mt-20">
-          <p className="text-lg md:text-2xl text-amber-100 mb-8 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-2xl text-white mb-8 max-w-3xl mx-auto leading-relaxed">
             Uncover the ancient secrets. Survive the traps. Claim the Sunstone.
           </p>
           
@@ -50,7 +50,7 @@ const HeroSection = () => {
             </a>
             <button 
               onClick={scrollToAbout}
-              className="px-6 py-3 bg-stone-800 hover:bg-stone-700 text-amber-100 text-base font-bold rounded-md shadow-lg transform transition-all hover:scale-105 active:scale-95 min-w-[160px] border border-amber-500/30"
+              className="px-6 py-3 bg-stone-800 hover:bg-stone-700 text-amber-600 font-bold rounded-md shadow-lg transform transition-all hover:scale-105 active:scale-95 min-w-[160px]"
             >
               Learn More
             </button>

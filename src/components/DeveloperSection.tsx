@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const DeveloperSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -28,8 +28,9 @@ const DeveloperSection = () => {
     <section 
       id="developer" 
       ref={sectionRef}
-      className="py-20 bg-stone-900 text-white"
+      className="py-20 relative bg-base text-white"
     >
+      <div className="absolute inset-0 bg-[url('/background/Wallpaper_Landscape.webp')] bg-cover bg-center opacity-5 bg-fixed pointer-events-none"></div>
       <div className="container mx-auto px-4">
         <div 
           className={`max-w-6xl mx-auto transition-all duration-1000 ease-out ${
@@ -42,7 +43,7 @@ const DeveloperSection = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Developer 1 */}
-            <div className="bg-stone-800 bg-opacity-80 p-8 rounded-lg shadow-lg flex flex-col items-center">
+            <div className="bg-secondary bg-opacity-80 p-8 rounded-lg shadow-lg flex flex-col items-center">
               <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-amber-600 flex-shrink-0 mb-6">
                 <img 
                   src="https://fotomhs.amikom.ac.id/2022/22_82_1395.jpg" 
@@ -61,7 +62,7 @@ const DeveloperSection = () => {
             </div>
 
             {/* Developer 2 */}
-            <div className="bg-stone-800 bg-opacity-80 p-8 rounded-lg shadow-lg flex flex-col items-center">
+            <div className="bg-secondary bg-opacity-80 p-8 rounded-lg shadow-lg flex flex-col items-center">
               <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-amber-600 flex-shrink-0 mb-6">
                 <img 
                   src="https://fotomhs.amikom.ac.id/2022/22_82_1428.jpg" 
@@ -80,9 +81,9 @@ const DeveloperSection = () => {
             </div>
           </div>
 
-          <div className="mt-12 bg-stone-800 bg-opacity-80 p-8 rounded-lg shadow-lg">
+          <div className="mt-12 bg-secondary bg-opacity-80 p-8 rounded-lg shadow-lg">
             <p className="text-lg text-gray-100 leading-relaxed text-center">
-              We are passionate game developers from Universitas Amikom Yogyakarta, 
+              We are passionate game developers from Amikom Yogyakarta University, 
               dedicated to creating immersive adventure experiences. "Legacy of the Sunstone" 
               is our debut title, combining our love for game development, 
               ancient mysteries, and challenging puzzles. Our goal is to transport players 

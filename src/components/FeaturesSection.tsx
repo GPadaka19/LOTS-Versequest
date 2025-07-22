@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Compass, Puzzle, Sword } from 'lucide-react';
 
 const features = [
@@ -47,12 +47,12 @@ const FeaturesSection = () => {
   return (
     <section 
       id="features" 
-      className="py-20 relative bg-stone-200"
+      className="py-20 relative bg-base"
     >
-      <div className="absolute inset-0 bg-[url('/background/Wallpaper_Landscape.webp')] bg-fixed bg-cover bg-center opacity-10"></div>
+      <div className="absolute inset-0 bg-[url('/background/Wallpaper_Landscape.webp')] bg-cover bg-center opacity-5 bg-fixed pointer-events-none"></div>
       
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center text-amber-800 font-serif">
+        <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center text-accent font-serif">
           Game Features
         </h2>
         
@@ -61,16 +61,16 @@ const FeaturesSection = () => {
             <div 
               key={index}
               ref={(el) => (featureRefs.current[index] = el)}
-              className={`bg-white bg-opacity-90 rounded-lg shadow-lg p-8 transform transition-all duration-700 ease-out ${
+              className={`bg-secondary bg-opacity-90 rounded-lg shadow-lg p-8 transform transition-all duration-700 ease-out ${
                 visibleFeatures.includes(index) 
                   ? 'opacity-100 translate-y-0' 
                   : 'opacity-0 translate-y-16'
               }`}
               style={{ transitionDelay: `${index * 200}ms` }}
             >
-              <div className="text-amber-600 mb-4">{feature.icon}</div>
-              <h3 className="text-xl font-bold mb-3 text-amber-800">{feature.title}</h3>
-              <p className="text-stone-700">{feature.description}</p>
+              <div className="text-accent mb-4">{feature.icon}</div>
+              <h3 className="text-xl font-bold mb-3 text-accent">{feature.title}</h3>
+              <p className="text-white">{feature.description}</p>
             </div>
           ))}
         </div>

@@ -47,7 +47,7 @@ const Navbar = () => {
   return (
     <nav 
       className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-stone-900/95 backdrop-blur-sm border-b border-amber-500/10 py-2' : 'bg-transparent py-4'
+        isScrolled ? 'bg-base backdrop-blur-sm border-b border-amber-500/100 py-2' : 'bg-transparent py-4'
       }`}
     >
       <div className="container mx-auto px-4">
@@ -67,11 +67,11 @@ const Navbar = () => {
           
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            {['about', 'gallery', 'features', 'developer', 'download', 'contact'].map((item) => (
+            {['about', 'gallery', 'features', 'developer', 'contact'].map((item) => (
               <button 
                 key={item}
                 onClick={() => scrollToSection(item)}
-                className="text-amber-100 hover:text-amber-400 transition-colors capitalize relative group"
+                className="text-accent hover:text-amber-400 transition-colors capitalize relative group"
               >
                 {item}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-amber-500 transition-all group-hover:w-full"></span>
@@ -79,7 +79,7 @@ const Navbar = () => {
             ))}
             <a 
               href="https://s3.amazonaws.com/example/legacy-of-sunstone.zip"
-              className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-stone-900 font-semibold rounded-md transition-colors text-center shadow-lg hover:shadow-amber-500/20"
+              className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-primary font-semibold rounded-md transition-colors text-center shadow-lg hover:shadow-amber-500/20"
             >
               Download
             </a>
