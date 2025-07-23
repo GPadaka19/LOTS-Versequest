@@ -20,12 +20,16 @@ const galleryData: GalleryItem[] = [
   }
 ];
 
-export default function GallerySection() {
+interface CharacterGalleryProps {
+  compact?: boolean;
+}
+
+export default function GallerySection({ compact = false }: CharacterGalleryProps) {
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const activeMode = galleryData[activeIndex];
 
   return (
-    <section className="relative h-screen w-full overflow-hidden text-accent">
+    <section className={compact ? "relative h-[25vh] min-h-[120px] w-full overflow-hidden text-accent" : "relative h-screen w-full overflow-hidden text-accent"}>
       {/* Background */}
       <div
         className="absolute inset-0 bg-cover bg-center transition-all duration-500"
@@ -33,12 +37,11 @@ export default function GallerySection() {
       >
         <div className="absolute inset-0 bg-black bg-opacity-60" />
       </div>
-
       {/* Content Overlay */}
-      <div className="relative z-10 h-full flex">
+      <div className={compact ? "relative z-10 h-full flex" : "relative z-10 h-full flex"}>
         {/* Left - Thumbnail List */}
-        <div className="w-1/4 p-8 flex flex-col gap-4 mt-12">
-          <div className="my-1 text-center text-4xl font-bold text-accent">Character</div>
+        <div className={compact ? "w-1/4 p-2 flex flex-col gap-2 mt-2" : "w-1/4 p-8 flex flex-col gap-4 mt-12"}>
+          <div className={compact ? "my-1 text-center text-lg font-bold text-accent" : "my-1 text-center text-4xl font-bold text-accent"}>Character</div>
           {galleryData.map((mode: GalleryItem, index: number) => (
             <button
               key={index}
@@ -51,15 +54,14 @@ export default function GallerySection() {
                 <img src={mode.src} alt={mode.title} className="w-full aspect-[16/9] object-cover" />
               </div>
               <div className="w-full h-1/4 flex items-center text-left">
-                <span className="text-accent text-lg font-serif font-bold truncate px-1">{mode.title}</span>
+                <span className={compact ? "text-accent text-xs font-serif font-bold truncate px-1" : "text-accent text-lg font-serif font-bold truncate px-1"}>{mode.title}</span>
               </div>
             </button>
           ))}
         </div>
-
         {/* Right - Description */}
-        <div className="w-3/4 p-12 flex flex-col justify-start items-end">
-          <h2 className="text-4xl font-serif font-bold mb-6">{activeMode.title}</h2>
+        <div className={compact ? "w-3/4 p-2 flex flex-col justify-start items-end" : "w-3/4 p-12 flex flex-col justify-start items-end"}>
+          <h2 className={compact ? "text-lg font-serif font-bold mb-2" : "text-4xl font-serif font-bold mb-6"}>{activeMode.title}</h2>
         </div>
       </div>
     </section>

@@ -33,7 +33,11 @@ const mapData: MapGalleryItem[] = [
   },
 ];
 
-export default function MapGallery() {
+interface MapGalleryProps {
+  compact?: boolean;
+}
+
+export default function MapGallery({ compact = false }: MapGalleryProps) {
   const [activeMapIdx, setActiveMapIdx] = useState<number>(0);
   const [activeImgIdx, setActiveImgIdx] = useState<number>(0);
   const map = mapData[activeMapIdx];
@@ -52,7 +56,7 @@ export default function MapGallery() {
   }
 
   return (
-    <section className="relative h-screen w-full overflow-hidden text-accent">
+    <section className={compact ? "relative h-[25vh] min-h-[120px] w-full overflow-hidden text-accent" : "relative h-screen w-full overflow-hidden text-accent"}>
       {/* Background */}
       <div
         className="absolute inset-0 bg-cover bg-center transition-all duration-500"
@@ -60,12 +64,11 @@ export default function MapGallery() {
       >
         <div className="absolute inset-0 bg-black bg-opacity-60" />
       </div>
-
       {/* Content Overlay */}
-      <div className="relative z-10 h-full flex">
+      <div className={compact ? "relative z-10 h-full flex" : "relative z-10 h-full flex"}>
         {/* Left - Thumbnail List */}
-        <div className="w-1/4 p-8 flex flex-col gap-4 mt-12">
-          <div className="my-1 text-center text-4xl font-bold text-accent">Map</div>
+        <div className={compact ? "w-1/4 p-2 flex flex-col gap-2 mt-2" : "w-1/4 p-8 flex flex-col gap-4 mt-12"}>
+          <div className={compact ? "my-1 text-center text-lg font-bold text-accent" : "my-1 text-center text-4xl font-bold text-accent"}>Map</div>
           {mapData.map((m, idx) => (
             <button
               key={m.code}
@@ -99,15 +102,14 @@ export default function MapGallery() {
                 <img src={activeMapIdx === idx ? m.images[activeImgIdx] : m.images[0]} alt={m.name} className="w-full aspect-[16/9] object-cover" />
               </div>
               <div className="w-full h-1/4 flex items-center text-left">
-                <span className="text-accent text-lg font-serif font-bold truncate px-1">{m.name}</span>
+                <span className={compact ? "text-accent text-xs font-serif font-bold truncate px-1" : "text-accent text-lg font-serif font-bold truncate px-1"}>{m.name}</span>
               </div>
             </button>
           ))}
         </div>
-
         {/* Right - Main Image & Description */}
-        <div className="w-3/4 p-12 flex flex-col justify-start items-end">
-          <h2 className="text-4xl font-serif font-bold mb-6">{map.name}</h2>
+        <div className={compact ? "w-3/4 p-2 flex flex-col justify-start items-end" : "w-3/4 p-12 flex flex-col justify-start items-end"}>
+          <h2 className={compact ? "text-lg font-serif font-bold mb-2" : "text-4xl font-serif font-bold mb-6"}>{map.name}</h2>
         </div>
       </div>
     </section>
