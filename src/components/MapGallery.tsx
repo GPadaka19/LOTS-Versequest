@@ -96,7 +96,7 @@ export default function MapGallery() {
                 </>
               )}
               <div className="w-full h-3/4">
-                <img src={m.images[0]} alt={m.name} className="w-full aspect-[16/9] object-cover" />
+                <img src={activeMapIdx === idx ? m.images[activeImgIdx] : m.images[0]} alt={m.name} className="w-full aspect-[16/9] object-cover" />
               </div>
               <div className="w-full h-1/4 flex items-center text-left">
                 <span className="text-accent text-lg font-serif font-bold truncate px-1">{m.name}</span>
