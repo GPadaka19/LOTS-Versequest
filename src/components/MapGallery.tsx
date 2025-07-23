@@ -5,7 +5,6 @@ interface MapGalleryItem {
   code: string;
   name: string;
   images: string[];
-  description: string[];
 }
 
 const mapData: MapGalleryItem[] = [
@@ -17,9 +16,6 @@ const mapData: MapGalleryItem[] = [
       '/gallery/EJ002.webp',
       '/gallery/EJ003.webp',
     ],
-    description: [
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit,'
-    ]
   },
   {
     code: 'TM',
@@ -27,9 +23,6 @@ const mapData: MapGalleryItem[] = [
     images: [
       '/gallery/TM001.webp','/gallery/TM002.webp','/gallery/TM003.webp','/gallery/TM004.webp','/gallery/TM005.webp','/gallery/TM006.webp','/gallery/TM007.webp','/gallery/TM008.webp','/gallery/TM009.webp','/gallery/TM010.webp','/gallery/TM011.webp','/gallery/TM013.webp','/gallery/TM014.webp','/gallery/TM015.webp','/gallery/TM016.webp','/gallery/TM017.webp','/gallery/TM018.webp',
     ],
-    description: [
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit,'
-    ]
   },
   {
     code: 'UG',
@@ -37,9 +30,6 @@ const mapData: MapGalleryItem[] = [
     images: [
       '/gallery/UG001.webp','/gallery/UG002.webp','/gallery/UG003.webp','/gallery/UG004.webp','/gallery/UG005.webp',
     ],
-    description: [
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit,'
-    ]
   },
 ];
 
@@ -118,9 +108,6 @@ export default function MapGallery() {
         {/* Right - Main Image & Description */}
         <div className="w-3/4 p-12 flex flex-col justify-start items-end">
           <h2 className="text-4xl font-serif font-bold mb-6">{map.name}</h2>
-          {map.description.map((line: string, idx: number) => (
-            <p key={idx} className="mt-6 text-2xl font-bold text-orange-400">{line}</p>
-          ))}
         </div>
       </div>
     </section>

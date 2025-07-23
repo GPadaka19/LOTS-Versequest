@@ -3,30 +3,20 @@ import { useState } from 'react';
 interface GalleryItem {
   src: string;
   title: string;
-  description: string[];
 }
 
 const galleryData: GalleryItem[] = [
   {
     src: '/gallery/Arka.webp',
     title: 'Arka',
-    description: [
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit,'
-    ]
   },
   {
     src: '/gallery/DrVictor.webp',
     title: 'Dr. Victor',
-    description: [
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit,'
-    ]
   },
   {
     src: '/gallery/DutchArmy.webp',
     title: 'Dutch Army',
-    description: [
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit,'
-    ]
   }
 ];
 
@@ -70,9 +60,6 @@ export default function GallerySection() {
         {/* Right - Description */}
         <div className="w-3/4 p-12 flex flex-col justify-start items-end">
           <h2 className="text-4xl font-serif font-bold mb-6">{activeMode.title}</h2>
-          {activeMode.description.map((line: string, idx: number) => (
-            <p key={idx} className="mt-6 text-2xl font-bold text-orange-400">{line}</p>
-          ))}
         </div>
       </div>
     </section>
