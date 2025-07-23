@@ -23,11 +23,24 @@ function App() {
         <div className="absolute inset-0 bg-[url('/background/Wallpaper_Landscape.webp')] opacity-10 bg-fixed"></div>
         <Navbar />
         <main>
-          <HeroSection />
-          <div className="relative z-10 bg-stone-900">
+          {/* Portrait: 4 sections stacked, each 25% height */}
+          <div className="hidden portrait:grid portrait:grid-rows-4 portrait:h-screen">
+            <HeroSection compact />
+            <AboutSection compact />
+            <CharacterGallery compact />
+            <MapGallery compact />
+          </div>
+
+          {/* Landscape: normal full-height sections */}
+          <div className="portrait:hidden">
+            <HeroSection />
             <AboutSection />
             <CharacterGallery />
             <MapGallery />
+            {/* Section lain */}
+          </div>
+          {/* Section lain tetap di luar portrait/landscape switch */}
+          <div className="relative z-10 bg-stone-900">
             <FeaturesSection />
             <DeveloperSection />
             <DownloadSection />
