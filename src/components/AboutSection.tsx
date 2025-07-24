@@ -57,7 +57,7 @@ const AboutSection = ({ compact = false }: AboutSectionProps) => {
             artifact known as the Sunstone—an ancient relic from the Majapahit Empire said to hold immense magical powers capable of altering human 
             consciousness, unlocking latent memories, and restoring lost knowledge.
             </p>
-            <p className={compact ? "text-sm leading-tight mb-10 text-white text-justify line-clamp-3" : "text-lg leading-relaxed text-white text-justify"}>
+            <p className={compact ? "text-sm leading-tight mb-6 text-white text-justify line-clamp-3" : "text-lg leading-relaxed mb-8 text-white text-justify"}>
             As you traverse ancient temples, evade colonial patrols, and solve cryptic puzzles, your journey will be shadowed by your former mentor,
             Dr. Victor, who has aligned with Dutch colonial forces to seize the artifact for his own ambitions. Will you uncover the true Sunstone 
             and change the fate of the future—or become another casualty of its curse?
