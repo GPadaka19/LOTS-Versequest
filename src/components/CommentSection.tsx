@@ -401,7 +401,7 @@ const CommentSection = () => {
 
   return (
     <>
-      <div className="w-full max-w-4xl mx-auto mt-12 p-6 bg-white rounded-lg shadow-md px-4">
+      <div className="w-full max-w-md sm:max-w-2xl md:max-w-4xl mx-auto mt-8 sm:mt-12 p-4 sm:p-4 md:p-6 bg-white rounded-lg shadow-md">
         <h3 className="text-4xl font-bold mb-12 text-accent font-serif">Community Comments</h3>
         
         {!user ? (

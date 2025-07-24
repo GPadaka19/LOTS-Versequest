@@ -31,7 +31,7 @@ const DownloadSection = () => {
       className="py-20 relative bg-base text-white"
     >
       <div className="absolute inset-0 bg-[url('/background/Wallpaper_Landscape.webp')] bg-cover bg-center opacity-5 bg-fixed pointer-events-none"></div>
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 max-w-md sm:max-w-2xl md:max-w-4xl">
         <div 
           className={`max-w-4xl mx-auto text-center transition-all duration-1000 ease-out ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'

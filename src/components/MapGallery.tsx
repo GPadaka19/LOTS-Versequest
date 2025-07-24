@@ -67,7 +67,7 @@ export default function MapGallery({ compact = false }: MapGalleryProps) {
       {/* Content Overlay */}
       <div className={compact ? "relative z-10 h-full flex" : "relative z-10 h-full flex"}>
         {/* Left - Thumbnail List */}
-        <div className={compact ? "w-1/4 p-2 flex flex-col gap-2 mt-2" : "w-1/4 p-8 flex flex-col gap-4 mt-12"}>
+        <div className={compact ? "w-1/4 p-2 flex flex-col gap-2 mt-2" : "w-1/4 p-2 sm:p-8 flex flex-col gap-1 sm:gap-4 mt-2 sm:mt-12"}>
           <div className={compact ? "my-1 text-center text-lg font-bold text-accent" : "my-1 text-center text-4xl font-bold text-accent"}>Map</div>
           {mapData.map((m, idx) => (
             <button
@@ -81,7 +81,7 @@ export default function MapGallery({ compact = false }: MapGalleryProps) {
               {activeMapIdx === idx && (
                 <>
                   <button
-                    className="absolute left-1 top-1/2 -translate-y-1/2 z-10 bg-base/80 hover:bg-accent text-accent hover:text-base border border-accent rounded-full p-1 transition"
+                    className="absolute left-1 top-1/2 -translate-y-1/2 z-10 bg-base/80 hover:bg-accent text-accent hover:text-base border border-accent rounded-full p-0.5 sm:p-2 transition"
                     onClick={e => { e.stopPropagation(); prevImage(); }}
                     aria-label="Previous image"
                     type="button"
@@ -89,7 +89,7 @@ export default function MapGallery({ compact = false }: MapGalleryProps) {
                     <ChevronLeft size={18} />
                   </button>
                   <button
-                    className="absolute right-1 top-1/2 -translate-y-1/2 z-10 bg-base/80 hover:bg-accent text-accent hover:text-base border border-accent rounded-full p-1 transition"
+                    className="absolute right-1 top-1/2 -translate-y-1/2 z-10 bg-base/80 hover:bg-accent text-accent hover:text-base border border-accent rounded-full p-0.5 sm:p-2 transition"
                     onClick={e => { e.stopPropagation(); nextImage(); }}
                     aria-label="Next image"
                     type="button"
@@ -99,7 +99,7 @@ export default function MapGallery({ compact = false }: MapGalleryProps) {
                 </>
               )}
               <div className="w-full h-3/4">
-                <img src={activeMapIdx === idx ? m.images[activeImgIdx] : m.images[0]} alt={m.name} className="w-full aspect-[16/9] object-cover" />
+                <img src={activeMapIdx === idx ? m.images[activeImgIdx] : m.images[0]} alt={m.name} className="w-12 h-8 sm:w-full sm:aspect-[16/9] object-cover mx-auto" />
               </div>
               <div className="w-full h-1/4 flex items-center text-left">
                 <span className={compact ? "text-accent text-xs font-serif font-bold truncate px-1" : "text-accent text-lg font-serif font-bold truncate px-1"}>{m.name}</span>

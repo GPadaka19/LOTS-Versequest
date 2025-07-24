@@ -62,7 +62,7 @@ const HeroSection = ({ compact = false }: HeroSectionProps) => {
 
   return (
     <section 
-      className={compact ? "sticky top-0 h-[25vh] min-h-[120px] flex items-center justify-center overflow-hidden z-0" : "sticky top-0 min-h-screen flex items-center justify-center overflow-hidden z-0"}
+      className={compact ? "sticky top-0 h-[25vh] min-h-[120px] flex items-center justify-center overflow-hidden z-0" : "sticky top-0 min-h-[60vh] md:min-h-screen flex items-center justify-center overflow-hidden z-0"}
     >
       {/* Video Background */}
       <div className="absolute inset-0">
@@ -77,34 +77,34 @@ const HeroSection = ({ compact = false }: HeroSectionProps) => {
 
       {/* Content */}
       <div 
-        className={`container mx-auto px-4 text-center relative z-20 transform transition-all duration-1000 ease-out ${compact ? 'mt-64 scale-90' : 'mt-[calc(100vh-400px)] scale-[0.99]'} ${
+        className={`container mx-auto px-4 text-center relative z-20 transform transition-all duration-1000 ease-out ${compact ? 'mt-8 sm:mt-16 scale-90' : 'mt-8 sm:mt-[calc(100vh-400px)] scale-[0.99]'} ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
         }`}
       >
-        <div className={compact ? "max-w-xl -ml-2 -mt-2" : "max-w-5xl -ml-20 -mt-20"}>
+        <div className={compact ? "max-w-full px-4" : "max-w-full px-4 md:px-0"}>
           {/* Play Button (Lucide PlayCircle) */}
           <button
             onClick={openVideoModal}
-            className="flex justify-center mb-4 mx-auto"
+            className="flex justify-center mb-2 sm:mb-4 mx-auto"
             aria-label="Watch on YouTube"
             type="button"
           >
-            <PlayCircle size={compact ? 32 : 48} className="text-accent hover:scale-110 transition-transform cursor-pointer" />
+            <PlayCircle size={compact ? 28 : 40} className="text-accent hover:scale-110 transition-transform cursor-pointer" />
           </button>
-          <p className={compact ? "text-base text-white mb-2 max-w-xl mx-auto leading-tight" : "text-lg md:text-2xl text-white mb-8 max-w-3xl mx-auto leading-relaxed"}>
+          <p className={compact ? "text-xs sm:text-sm text-white mb-2 max-w-full mx-auto leading-tight break-words" : "text-base sm:text-lg md:text-2xl text-white mb-4 sm:mb-8 max-w-full mx-auto leading-relaxed break-words"}>
             Uncover the ancient secrets. Survive the traps. Claim the Sunstone.
           </p>
           {!compact && (
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 justify-center items-center">
               <a 
                 href="https://s3.amazonaws.com/example/legacy-of-sunstone.zip" 
-                className="px-6 py-3 bg-amber-600 hover:bg-amber-700 text-stone-900 text-base font-bold rounded-md shadow-lg transform transition-all hover:scale-105 active:scale-95 min-w-[160px]"
+                className="px-4 sm:px-6 py-2 sm:py-3 bg-amber-600 hover:bg-amber-700 text-stone-900 text-sm sm:text-base font-bold rounded-md shadow-lg transform transition-all hover:scale-105 active:scale-95 min-w-[120px] sm:min-w-[160px]"
               >
                 Download Now
               </a>
               <button 
                 onClick={scrollToAbout}
-                className="px-6 py-3 bg-stone-800 hover:bg-stone-700 text-amber-600 font-bold rounded-md shadow-lg transform transition-all hover:scale-105 active:scale-95 min-w-[160px]"
+                className="px-4 sm:px-6 py-2 sm:py-3 bg-stone-800 hover:bg-stone-700 text-amber-600 font-bold rounded-md shadow-lg transform transition-all hover:scale-105 active:scale-95 min-w-[120px] sm:min-w-[160px]"
               >
                 Learn More
               </button>
