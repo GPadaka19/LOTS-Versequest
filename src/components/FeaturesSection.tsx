@@ -1,21 +1,31 @@
 import { useEffect, useRef, useState } from 'react';
-import { Compass, Puzzle, Sword } from 'lucide-react';
+import { Compass, Puzzle, Swords, BookOpen, Gamepad2} from 'lucide-react';
 
 const features = [
   {
     icon: <Compass size={36} />,
     title: 'Explore Ancient Temples',
-    description: 'Venture through meticulously designed ancient temples filled with hidden passages, deadly traps, and priceless treasures. Each location tells a story of the past civilizations that created them.'
+    description: 'Journey through atmospheric ruins such as the Penataran Temple complex and underground sanctuaries. These spaces are filled with hidden entrances, dangerous traps, and symbolic clues, all presented with cinematic realism and traditional Indonesian aesthetics.'
   },
   {
     icon: <Puzzle size={36} />,
     title: 'Solve Intricate Puzzles',
-    description: 'Challenge your mind with a variety of puzzles that integrate seamlessly with the environment. Decipher ancient languages, manipulate mechanisms, and uncover the secrets needed to progress.'
+    description: 'From mechanical glyph puzzles to aligning disappearing pathways, each challenge is deeply integrated into the narrative and architecture. Use your torch to illuminate clues and your journal to collect insights and unravel mysteries.'
   },
   {
-    icon: <Sword size={36} />,
+    icon: <Swords size={36} />,
     title: 'Battle Forgotten Guardians',
-    description: 'Encounter and overcome ancient guardians that protect the temples. Use your wits and the environment to your advantage as you face these formidable foes on your quest for the Sunstone.'
+    description: 'Face ancient guardians and Dutch soldiers who patrol the ruins. Whether through stealth takedowns, clever distractions, or engaging in direct duels using your Keris, combat encourages creativity and careful planning.'
+  },
+  {
+    icon: <Gamepad2 size={36} />,
+    title: 'Dynamic Gameplay Loop',
+    description: 'Face ancient guardians and Dutch soldiers who patrol the ruins. Whether through stealth takedowns, clever distractions, or engaging in direct duels using your Keris, combat encourages creativity and careful planning.'
+  },
+  {
+    icon: <BookOpen  size={36} />,
+    title: 'Authentic World-Building',
+    description: 'Face ancient guardians and Dutch soldiers who patrol the ruins. Whether through stealth takedowns, clever distractions, or engaging in direct duels using your Keris, combat encourages creativity and careful planning.'
   }
 ];
 
