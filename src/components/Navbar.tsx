@@ -71,7 +71,7 @@ const Navbar = () => {
               <button 
                 key={item}
                 onClick={() => scrollToSection(item)}
-                className="text-accent hover:text-amber-400 transition-colors capitalize relative group"
+                className="custom-base-accent hover:text-amber-400 transition-colors capitalize relative group"
               >
                 {item}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-amber-500 transition-all group-hover:w-full"></span>
