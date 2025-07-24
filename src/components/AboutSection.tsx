@@ -36,28 +36,28 @@ const AboutSection = ({ compact = false }: AboutSectionProps) => {
     >
       <div className="absolute inset-0 bg-[url('/background/Wallpaper_Landscape.webp')] bg-cover bg-center opacity-5 bg-fixed"></div> 
       
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-2 md:px-4">
         <div 
-          className={`max-w-full mx-auto transition-all duration-1000 ease-out ${
+          className={`max-w-4xl mx-auto transition-all duration-1000 ease-out ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}
+          } -mt-8`}
         >
-          <h2 className={compact ? "text-xs sm:text-base font-bold mb-2 text-center text-accent font-serif" : "text-base sm:text-lg md:text-2xl font-bold mb-4 sm:mb-8 text-center text-accent font-serif"}>
+          <h2 className={compact ? "text-xl font-bold mb-2 text-center text-accent font-serif" : "text-3xl md:text-4xl font-bold mb-8 text-center text-accent font-serif"}>
             About the Game
           </h2>
           
-          <div className={compact ? "bg-secondaryAccent px-2 py-4 rounded-lg shadow-lg" : "bg-secondaryAccent p-2 sm:p-4 md:p-8 rounded-lg shadow-lg"}>
-            <p className={compact ? "text-xs sm:text-xs leading-tight mb-2 text-white text-justify break-words" : "text-xs sm:text-sm leading-relaxed mb-3 sm:mb-5 text-white text-justify break-words"}>
+          <div className={compact ? "bg-secondaryAccent px-2 py-12 rounded-lg shadow-lg" : "bg-secondaryAccent p-8 rounded-lg shadow-lg"}>
+            <p className={compact ? "text-sm leading-tight mb-2 text-white text-justify" : "text-lg leading-relaxed mb-6 text-white text-justify"}>
               <span className="custom-base-accent text-accent">Legacy of the Sunstone</span> is a third-person action-adventure game that combines 
               historical exploration, intricate puzzles, stealth tactics, and emotional narrative into a cinematic experience set 
               in the ancient world.
             </p>
-            <p className={compact ? "text-xs sm:text-xs leading-tight mb-2 text-white text-justify line-clamp-3 break-words" : "text-xs sm:text-sm leading-relaxed mb-3 sm:mb-6 text-white text-justify break-words"}>
+            <p className={compact ? "text-sm leading-tight mb-2 text-white text-justify line-clamp-3" : "text-lg leading-relaxed mb-8 text-white text-justify"}>
             In the game, you play as Arka Widjaya, a young archaeologist from a dystopian future who travels back in time to uncover the legendary 
             artifact known as the Sunstone—an ancient relic from the Majapahit Empire said to hold immense magical powers capable of altering human 
             consciousness, unlocking latent memories, and restoring lost knowledge.
             </p>
-            <p className={compact ? "text-xs sm:text-xs leading-tight mb-2 text-white text-justify line-clamp-3 break-words" : "text-xs sm:text-sm leading-relaxed text-white text-justify break-words"}>
+            <p className={compact ? "text-sm leading-tight mb-10 text-white text-justify line-clamp-3" : "text-lg leading-relaxed text-white text-justify"}>
             As you traverse ancient temples, evade colonial patrols, and solve cryptic puzzles, your journey will be shadowed by your former mentor,
             Dr. Victor, who has aligned with Dutch colonial forces to seize the artifact for his own ambitions. Will you uncover the true Sunstone 
             and change the fate of the future—or become another casualty of its curse?

@@ -40,7 +40,7 @@ export default function GallerySection({ compact = false }: CharacterGalleryProp
       {/* Content Overlay */}
       <div className={compact ? "relative z-10 h-full flex" : "relative z-10 h-full flex"}>
         {/* Left - Thumbnail List */}
-        <div className={compact ? "w-1/4 p-2 flex flex-col gap-2 mt-2" : "w-1/4 p-2 sm:p-8 flex flex-col gap-1 sm:gap-4 mt-2 sm:mt-12"}>
+        <div className={compact ? "w-1/4 p-2 flex flex-col gap-2 mt-2" : "w-1/4 p-8 flex flex-col gap-4 mt-12"}>
           <div className={compact ? "my-1 text-center text-lg font-bold text-accent" : "my-1 text-center text-4xl font-bold text-accent"}>Character</div>
           {galleryData.map((mode: GalleryItem, index: number) => (
             <button
@@ -51,7 +51,7 @@ export default function GallerySection({ compact = false }: CharacterGalleryProp
               }`}
             >
               <div className="w-full h-3/4">
-                <img src={mode.src} alt={mode.title} className="w-12 h-8 sm:w-full sm:aspect-[16/9] object-cover mx-auto" />
+                <img src={mode.src} alt={mode.title} className="w-full aspect-[16/9] object-cover" />
               </div>
               <div className="w-full h-1/4 flex items-center text-left">
                 <span className={compact ? "text-accent text-xs font-serif font-bold truncate px-1" : "text-accent text-lg font-serif font-bold truncate px-1"}>{mode.title}</span>
