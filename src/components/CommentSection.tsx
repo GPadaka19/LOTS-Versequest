@@ -5,6 +5,16 @@ import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, Timest
 import DefaultAvatar from './DefaultAvatar';
 import { Trash2, LogOut, Reply } from 'lucide-react';
 import UserRoleBadge from './UserRoleBadge';
+import ReactDOM from 'react-dom';
+
+function CenteredModal({ children }: { children: React.ReactNode }) {
+  return ReactDOM.createPortal(
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
+      {children}
+    </div>,
+    document.body
+  );
+}
 
 interface Comment {
   id: string;
@@ -484,8 +494,8 @@ const CommentSection = () => {
         )}
       </div>
       {confirmDelete.open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="bg-gray-100 rounded-lg shadow-lg p-6 w-full max-w-md mx-auto flex flex-col items-center border border-amber-400">
+        <CenteredModal>
+          <div className="bg-gray-100 rounded-lg shadow-lg p-4 sm:p-6 w-full max-w-xs sm:max-w-md mx-auto flex flex-col items-center border border-amber-400">
             <div className="text-amber-600 mb-4">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z" /></svg>
             </div>
@@ -509,11 +519,11 @@ const CommentSection = () => {
               </button>
             </div>
           </div>
-        </div>
+        </CenteredModal>
       )}
       {confirmDeleteReply.open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="bg-gray-100 rounded-lg shadow-lg p-6 w-full max-w-md mx-auto flex flex-col items-center border border-amber-400">
+        <CenteredModal>
+          <div className="bg-gray-100 rounded-lg shadow-lg p-4 sm:p-6 w-full max-w-xs sm:max-w-md mx-auto flex flex-col items-center border border-amber-400">
             <div className="text-amber-600 mb-4">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z" /></svg>
             </div>
@@ -537,11 +547,11 @@ const CommentSection = () => {
               </button>
             </div>
           </div>
-        </div>
+        </CenteredModal>
       )}
       {showReplyWarning && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="bg-gray-100 rounded-lg shadow-lg p-6 w-full max-w-md mx-auto flex flex-col items-center border border-amber-400">
+        <CenteredModal>
+          <div className="bg-gray-100 rounded-lg shadow-lg p-4 sm:p-6 w-full max-w-xs sm:max-w-md mx-auto flex flex-col items-center border border-amber-400">
             <div className="text-amber-600 mb-4">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z" /></svg>
             </div>
@@ -562,7 +572,7 @@ const CommentSection = () => {
               </button>
             </div>
           </div>
-        </div>
+        </CenteredModal>
       )}
     </>
   );
