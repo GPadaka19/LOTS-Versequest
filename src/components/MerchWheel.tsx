@@ -3,6 +3,8 @@
 import { useRef, useState } from 'react';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase/config';
+import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
+import { useEffect } from 'react';
 
 interface MerchItem {
   id: string;
@@ -32,6 +34,33 @@ const MerchWheel = () => {
   const [result, setResult] = useState<MerchItem | null>(null);
   const [error, setError] = useState<string | null>(null);
   const stripRef = useRef<HTMLDivElement>(null);
+
+  // Auth and role state
+  const [user, setUser] = useState<User | null>(null);
+  const [role, setRole] = useState<string | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
+      setAuthLoading(false);
+      if (firebaseUser) {
+        getDoc(doc(db, 'user-role', firebaseUser.uid)).then((snap) => {
+          if (snap.exists()) {
+            setRole(snap.data().role || null);
+          } else {
+            setRole(null);
+          }
+        });
+      } else {
+        setRole(null);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const canSpin = user && (role === 'web-dev' || role === 'game-dev');
 
   const fetchStock = async () => {
     const result: MerchItem[] = [];
@@ -137,11 +166,16 @@ const MerchWheel = () => {
       </div>
       <button
         onClick={handleSpin}
-        disabled={spinning}
+        disabled={spinning || !canSpin}
         className="mt-8 px-8 py-3 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg shadow-lg transition-colors disabled:opacity-50"
       >
         {spinning ? 'Rolling...' : 'Open Case'}
       </button>
+      {!canSpin && !authLoading && (
+        <div className="mt-4 text-red-400 font-semibold">
+          Hanya user dengan role <b>Web Dev</b> atau <b>Game Dev</b> yang bisa spin.
+        </div>
+      )}
       {error && <p className="mt-4 text-red-500 font-semibold">{error}</p>}
       {result && (
         <div className="mt-8 text-center">
