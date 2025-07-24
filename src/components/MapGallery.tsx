@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface MapGalleryItem {
@@ -41,6 +41,16 @@ export default function MapGallery({ compact = false }: MapGalleryProps) {
   const [activeMapIdx, setActiveMapIdx] = useState<number>(0);
   const [activeImgIdx, setActiveImgIdx] = useState<number>(0);
   const map = mapData[activeMapIdx];
+
+  useEffect(() => {
+    // Preload all images in mapData
+    mapData.forEach(map =>
+      map.images.forEach(src => {
+        const img = new window.Image();
+        img.src = src;
+      })
+    );
+  }, []);
 
   // Reset image index when map changes
   function handleMapChange(idx: number) {
