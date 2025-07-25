@@ -5,10 +5,9 @@ import ReactDOM from 'react-dom';
 
 interface HeroSectionProps {
   compact?: boolean;
-  navbar?: React.ReactNode;
 }
 
-const HeroSection = ({ compact = false, navbar }: HeroSectionProps) => {
+const HeroSection = ({ compact = false }: HeroSectionProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
@@ -31,7 +30,7 @@ const HeroSection = ({ compact = false, navbar }: HeroSectionProps) => {
     return ReactDOM.createPortal(
       (
         <div
-          className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-[9999]"
+          className="fixed inset-0 bg-black bg-opacity-80 flex items-end justify-start"
           onClick={close}
         >
           <div
@@ -65,8 +64,6 @@ const HeroSection = ({ compact = false, navbar }: HeroSectionProps) => {
     <section 
       className={compact ? "sticky top-0 h-[25vh] min-h-[120px] flex items-center justify-center overflow-hidden z-0" : "sticky top-0 min-h-screen flex items-center justify-center overflow-hidden z-0"}
     >
-      {/* Navbar if provided */}
-      {navbar}
       {/* Video Background */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-l from-stone-900/90 via-stone-900/20 to-stone-900/10 z-10"></div>
@@ -80,11 +77,9 @@ const HeroSection = ({ compact = false, navbar }: HeroSectionProps) => {
 
       {/* Content */}
       <div 
-        className={`container mx-auto px-4 text-center relative z-20 transform transition-all duration-1000 ease-out ${compact ? 'mt-64 scale-90' : 'mt-[calc(100vh-400px)] scale-[0.99]'} ${
-          isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
-        }`}
+        className={`container mx-auto px-4 text-center relative z-20 transform transition-all duration-1000 ease-out ${compact ? 'mt-16 scale-95' : 'mt-32 md:mt-40 lg:mt-48 scale-100'} ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}
       >
-        <div className={compact ? "max-w-xl -ml-2 -mt-2" : "max-w-5xl -ml-20 -mt-20"}>
+        <div className={compact ? "max-w-xl ml-0 mt-72" : "mt-72 ml-0"}>
           {/* Play Button (Lucide PlayCircle) */}
           <button
             onClick={openVideoModal}
@@ -94,7 +89,7 @@ const HeroSection = ({ compact = false, navbar }: HeroSectionProps) => {
           >
             <PlayCircle size={compact ? 32 : 48} className="text-accent hover:scale-110 transition-transform cursor-pointer" />
           </button>
-          <p className={compact ? "text-base text-white mb-2 max-w-xl mx-auto leading-tight" : "text-lg md:text-2xl text-white mb-8 max-w-3xl mx-auto leading-relaxed"}>
+          <p className={compact ? "text-base text-white mb-12 max-w-xl mx-auto leading-tight" : "text-lg md:text-2xl text-white mb-8 max-w-3xl mx-auto leading-relaxed"}>
             Uncover the ancient secrets. Survive the traps. Claim the Sunstone.
           </p>
           {!compact && (
