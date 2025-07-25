@@ -150,7 +150,7 @@ const MerchWheel = () => {
 
   return (
     <div
-      className={`min-h-screen flex flex-col items-center justify-center bg-stone-900 text-white px-4 py-10 transition-transform duration-300 ${
+      className={`h-128 flex flex-col items-center justify-center bg-stone-900 text-white px-4 py-10 transition-transform duration-300 ${
         isZoomed ? 'scale-[1.2]' : ''
       }`}
     >
