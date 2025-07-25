@@ -39,7 +39,7 @@ const AboutSection = ({ compact = false }: AboutSectionProps) => {
       
       <div className="container mx-auto px-2 md:px-4">
         <div 
-          className={`max-w-4xl mx-auto transition-all duration-1000 ease-out ${
+          className={`max-w-6xl mx-auto transition-all duration-1000 ease-out ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           } -mt-8`}
         >
@@ -64,10 +64,10 @@ const AboutSection = ({ compact = false }: AboutSectionProps) => {
             and change the fate of the future—or become another casualty of its curse?
             </p>
             
-            <div className={compact ? "grid grid-cols-1 md:grid-cols-3 gap-2" : "grid grid-cols-1 md:grid-cols-3 gap-6"}>
+            <div className={compact ? "grid grid-cols-1 md:grid-cols-3 gap-2 text-justify" : "grid grid-cols-1 md:grid-cols-3 gap-6"}>
               {[
                 {
-                  title: 'Immersive Historical Exploration',
+                  title: 'Immersive Historical Exploratio',
                   desc: 'Navigate lush tropical jungles and authentically recreated ruins inspired by the grandeur of ancient Majapahit architecture. From sacred temples to forgotten underground altars, each environment offers vertical navigation and strategic stealth elements to support your quest.'
                 },
                 {
@@ -79,9 +79,9 @@ const AboutSection = ({ compact = false }: AboutSectionProps) => {
                   desc: 'Experience an emotionally driven story of betrayal, redemption, and hope as you uncover the past to save the future. Dialogue, artifacts, and environmental storytelling gradually reveal the deep lore behind the Sunstone and its mythical origins.'
                 }
               ].map((item, index) => (
-                <div key={index} className={compact ? "bg-secondary p-2 rounded-md shadow-md" : "bg-secondary p-6 rounded-md shadow-md"}>
+                <div key={index} className={compact ? "bg-secondary p-2 rounded-md shadow-md text-justify" : "bg-secondary p-6 rounded-md shadow-md"}>
                   <h3 className={compact ? "text-xs font-bold mb-1 text-accent" : "text-xl font-bold mb-2 text-accent"}>{item.title}</h3>
-                  <p className={compact ? "text-xs text-white" : "text-white"}>{item.desc}</p>
+                  <p className={compact ? "text-xs text-white text-justify" : "text-white text-justify"}>{item.desc}</p>
                 </div>
               ))}
             </div>
