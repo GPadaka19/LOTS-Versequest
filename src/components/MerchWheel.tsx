@@ -154,7 +154,7 @@ const MerchWheel = () => {
         isZoomed ? 'scale-[1.2]' : ''
       }`}
     >
-      <h1 className="text-5xl font-bold mb-8">Gacha Merchandise (LOTS)</h1>
+      <h1 className="text-5xl font-bold mb-16">Gacha Merchandise</h1>
 
       <div className="relative w-full max-w-6xl overflow-hidden border-4 border-stone-700 rounded-lg shadow-lg bg-stone-800">
         <div className="flex py-4 px-2" ref={stripRef}></div>
@@ -166,7 +166,7 @@ const MerchWheel = () => {
         disabled={spinning || !canSpin}
         className="mt-8 px-8 py-3 bg-amber-500 hover:bg-amber-600 text-3xl font-bold rounded-lg shadow-lg transition-colors disabled:opacity-50"
       >
-        {spinning ? 'Rolling...' : 'Open Case'}
+        {spinning ? 'Rolling...' : 'Open Chest'}
       </button>
 
       {!canSpin && !authLoading && (
