@@ -24,7 +24,9 @@ function MainContent() {
 
   return (
     <div className="relative bg-stone-900 text-stone-100 min-h-screen">
-      <div className="absolute inset-0 bg-[url('/background/Wallpaper_Landscape.webp')] opacity-10 bg-fixed"></div>
+      {/* <div className="absolute inset-0 bg-[url('/background/Wallpaper_Landscape.webp')] opacity-10 bg-fixed"></div> */}
+      {/* Render Navbar globally for landscape/desktop, and for mobile in portrait */}
+      {((!isPortrait) || (isPortrait && isMobile)) && <Navbar />}
       {canShowMerchWheel && (
         <div className="relative z-20">
           <MerchWheel />
@@ -33,7 +35,7 @@ function MainContent() {
       <main>
         {/* Portrait: 4 sections stacked, each 25% height */}
         <div className="hidden portrait:grid portrait:grid-rows-4 portrait:h-screen">
-          <HeroSection compact navbar={isMobile ? <Navbar /> : undefined} />
+          <HeroSection compact />
           <CharacterGallery compact />
           <MapGallery compact />
           <AboutSection compact />
@@ -41,7 +43,7 @@ function MainContent() {
 
         {/* Landscape: normal full-height sections */}
         <div className="portrait:hidden">
-          <HeroSection navbar={<Navbar />} />
+          <HeroSection />
           <AboutSection />
           <CharacterGallery />
           <MapGallery />
