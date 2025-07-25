@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+// import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface MapGalleryItem {
   code: string;
@@ -52,18 +52,21 @@ export default function MapGallery({ compact = false }: MapGalleryProps) {
     );
   }, []);
 
+  // Auto next image every 3 seconds for active map
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveImgIdx((prev) => (prev === map.images.length - 1 ? 0 : prev + 1));
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [activeMapIdx, map.images.length]);
+
   // Reset image index when map changes
   function handleMapChange(idx: number) {
     setActiveMapIdx(idx);
     setActiveImgIdx(0);
   }
 
-  function nextImage() {
-    setActiveImgIdx((prev) => (prev === map.images.length - 1 ? 0 : prev + 1));
-  }
-  function prevImage() {
-    setActiveImgIdx((prev) => (prev === 0 ? map.images.length - 1 : prev - 1));
-  }
+  // fungsi navigasi manual dihapus karena sudah auto
 
   return (
     <section className={compact ? "relative h-[25vh] min-h-[120px] w-full overflow-hidden text-accent" : "relative h-screen w-full overflow-hidden text-accent"}>
@@ -87,27 +90,7 @@ export default function MapGallery({ compact = false }: MapGalleryProps) {
                 activeMapIdx === idx ? 'border-accent' : 'border-white/40 hover:border-amber-200'
               }`}
             >
-              {/* Prev/Next only on active thumbnail */}
-              {activeMapIdx === idx && (
-                <>
-                  <button
-                    className="absolute left-1 top-1/2 -translate-y-1/2 z-10 bg-base/80 hover:bg-accent text-accent hover:text-base border border-accent rounded-full p-1 transition"
-                    onClick={e => { e.stopPropagation(); prevImage(); }}
-                    aria-label="Previous image"
-                    type="button"
-                  >
-                    <ChevronLeft size={18} />
-                  </button>
-                  <button
-                    className="absolute right-1 top-1/2 -translate-y-1/2 z-10 bg-base/80 hover:bg-accent text-accent hover:text-base border border-accent rounded-full p-1 transition"
-                    onClick={e => { e.stopPropagation(); nextImage(); }}
-                    aria-label="Next image"
-                    type="button"
-                  >
-                    <ChevronRight size={18} />
-                  </button>
-                </>
-              )}
+              {/* Navigasi manual dihapus */}
               <div className="w-full h-3/4">
                 <img src={activeMapIdx === idx ? m.images[activeImgIdx] : m.images[0]} alt={m.name} className="w-full aspect-[16/9] object-cover" />
               </div>
