@@ -14,7 +14,6 @@ import ColorGuide from './components/ColorGuide';
 import { useUserRole } from './hooks/useUserRole';
 import { useIsPortrait } from './hooks/useIsPortrait';
 import { useIsMobile } from './hooks/useIsMobile';
-import React from 'react';
 
 function MainContent() {
   const { user, role } = useUserRole();
