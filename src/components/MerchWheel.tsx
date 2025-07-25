@@ -34,6 +34,7 @@ const MerchWheel = () => {
   const [authLoading, setAuthLoading] = useState(true);
 
   const [isZoomed, setIsZoomed] = useState(false);
+  const [showResultModal, setShowResultModal] = useState(false);
 
   useEffect(() => {
     const auth = getAuth();
@@ -82,6 +83,7 @@ const MerchWheel = () => {
     setSpinning(true);
     setResult(null);
     setError(null);
+    setShowResultModal(false);
 
     try {
       const availableItems = await fetchStock();
@@ -137,6 +139,7 @@ const MerchWheel = () => {
         if (snap.exists() && snap.data().stock > 0) {
           await updateDoc(ref, { stock: snap.data().stock - 1 });
           setResult(winningItem);
+          setShowResultModal(true);
         } else {
           setError('Stok tidak tersedia.');
         }
@@ -148,9 +151,32 @@ const MerchWheel = () => {
     }
   };
 
+  function renderResultModal() {
+    if (!result || !showResultModal) return null;
+    return (
+      <div className="absolute inset-0 z-40 flex items-center justify-center bg-black/80">
+        <div className="bg-stone-900 rounded-lg shadow-lg p-6 max-w-2xl w-full flex flex-col items-center border-2 border-amber-400">
+          <div className="custom-base-accent-2 mb-8 w-full">Kamu mendapatkan</div>
+          <div className="flex flex-row items-center justify-center w-full gap-8">
+            <img src={result.image} alt={result.name} width={320} height={320} className="rounded-lg shadow" />
+            <div className="flex flex-col items-center gap-4">
+              <div className="text-3xl font-bold p-4 rounded bg-secondary border-stone-500 custom-base-accent text-center min-w-[160px]">{result.name}</div>
+              <button
+                onClick={() => setShowResultModal(false)}
+                className="px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-md shadow-lg transition-colors w-full"
+              >
+                Tutup
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
-      className={`h-128 flex flex-col items-center justify-center bg-stone-900 text-white px-4 py-10 transition-transform duration-300 ${
+      className={`relative h-128 flex flex-col items-center justify-center bg-stone-900 text-white px-4 py-10 transition-transform duration-300 ${
         isZoomed ? 'scale-[1.2]' : ''
       }`}
     >
@@ -177,15 +203,7 @@ const MerchWheel = () => {
 
       {error && <p className="mt-4 text-red-500 font-semibold">{error}</p>}
 
-      {result && (
-        <div className="mt-8 text-center">
-          <div className="text-4xl mb-5">Kamu mendapatkan:</div>
-          <div className="flex flex-col items-center mt-2">
-            <img src={result.image} alt={result.name} width={264} height={264} className="rounded-lg shadow mb-2" />
-            <div className="text-3xl font-bold p-4 my-5 rounded bg-stone-700 border border-stone-500">{result.name}</div>
-          </div>
-        </div>
-      )}
+      {renderResultModal()}
     </div>
   );
 };
