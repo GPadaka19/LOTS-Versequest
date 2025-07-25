@@ -13,6 +13,8 @@
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-brands-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@stagewise-plugins/react": "^0.6.2",
+    "@stagewise/toolbar-react": "^0.6.2",
     "canvas-confetti": "^1.9.3",
     "cwebp-bin": "^8.0.0",
     "firebase": "^11.8.1",
