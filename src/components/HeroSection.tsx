@@ -5,9 +5,10 @@ import ReactDOM from 'react-dom';
 
 interface HeroSectionProps {
   compact?: boolean;
+  navbar?: React.ReactNode;
 }
 
-const HeroSection = ({ compact = false }: HeroSectionProps) => {
+const HeroSection = ({ compact = false, navbar }: HeroSectionProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
@@ -64,6 +65,8 @@ const HeroSection = ({ compact = false }: HeroSectionProps) => {
     <section 
       className={compact ? "sticky top-0 h-[25vh] min-h-[120px] flex items-center justify-center overflow-hidden z-0" : "sticky top-0 min-h-screen flex items-center justify-center overflow-hidden z-0"}
     >
+      {/* Navbar if provided */}
+      {navbar}
       {/* Video Background */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-l from-stone-900/90 via-stone-900/20 to-stone-900/10 z-10"></div>
