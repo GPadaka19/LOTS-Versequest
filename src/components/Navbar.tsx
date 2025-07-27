@@ -82,7 +82,7 @@ const Navbar = () => {
               </button>
             ))}
             <a 
-              href="https://s3.amazonaws.com/example/legacy-of-sunstone.zip"
+              href="https://drive.google.com/open?id=1HDxpAwvnNJJo4Rdv_AuLHQXpFYFrAZSO&usp=drive_fs"
               className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-primary font-semibold rounded-md transition-colors text-center shadow-lg hover:shadow-amber-500/20"
             >
               Download
@@ -113,7 +113,7 @@ const Navbar = () => {
               </button>
             ))}
             <a 
-              href="https://s3.amazonaws.com/example/legacy-of-sunstone.zip"
+              href="https://drive.google.com/open?id=1HDxpAwvnNJJo4Rdv_AuLHQXpFYFrAZSO&usp=drive_fs"
               className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-stone-900 font-semibold rounded-md transition-colors text-center shadow-lg hover:shadow-amber-500/20"
             >
               Download Now
