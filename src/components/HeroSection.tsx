@@ -95,7 +95,7 @@ const HeroSection = ({ compact = false }: HeroSectionProps) => {
           {!compact && (
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <a 
-                href="https://s3.amazonaws.com/example/legacy-of-sunstone.zip" 
+                href="https://drive.google.com/open?id=1HDxpAwvnNJJo4Rdv_AuLHQXpFYFrAZSO&usp=drive_fs" 
                 className="px-6 py-3 bg-amber-600 hover:bg-amber-700 text-stone-900 text-base font-bold rounded-md shadow-lg transform transition-all hover:scale-105 active:scale-95 min-w-[160px]"
               >
                 Download Now
