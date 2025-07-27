@@ -12,7 +12,11 @@ interface MerchItem {
   image: string;
 }
 
-const initialMerchIds = ['m_kartuNama', 'm_stickerA', 'm_stickerB', 'm_coklat'];
+const initialMerchIds = [
+  'm_kartuNamaA', 'm_kartuNamaB', 'm_kartuNamaC', 'm_kartuNamaD', 'm_kartuNamaE',
+  'm_kartuNamaF', 'm_kartuNamaG', 'm_kartuNamaH', 'm_kartuNamaI',
+  'm_stickerA', 'm_stickerB', 'm_coklat'
+];
 
 const imageMap: Record<string, string> = {
   m_kartuNamaA: '/merch/kartuNamaA.webp',
