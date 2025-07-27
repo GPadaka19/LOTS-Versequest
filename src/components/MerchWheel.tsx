@@ -15,7 +15,15 @@ interface MerchItem {
 const initialMerchIds = ['m_kartuNama', 'm_stickerA', 'm_stickerB', 'm_coklat'];
 
 const imageMap: Record<string, string> = {
-  m_kartuNama: '/background/Wallpaper_Landscape.webp',
+  m_kartuNamaA: '/merch/kartuNamaA.webp',
+  m_kartuNamaB: '/merch/kartuNamaB.webp',
+  m_kartuNamaC: '/merch/kartuNamaC.webp',
+  m_kartuNamaD: '/merch/kartuNamaD.webp',
+  m_kartuNamaE: '/merch/kartuNamaE.webp',
+  m_kartuNamaF: '/merch/kartuNamaF.webp',
+  m_kartuNamaG: '/merch/kartuNamaG.webp',
+  m_kartuNamaH: '/merch/kartuNamaH.webp',
+  m_kartuNamaI: '/merch/kartuNamaI.webp',
   m_stickerA: '/merch/Stiker_1.webp',
   m_stickerB: '/merch/Stiker_2.webp',
   m_coklat: '/merch/coklat.webp',
