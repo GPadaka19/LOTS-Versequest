@@ -63,7 +63,7 @@ const DownloadSection = () => {
             <h3 className="font-semibold mb-2">System Requirements:</h3>
             <ul className="text-lg text-white space-y-1">
               <li>• Windows 10 64-bit or later</li>
-              <li>• 16 GB RAM</li>
+              <li>• 8 GB RAM</li>
               <li>• 10 GB available storage</li>
               <li>• DirectX 12 compatible graphics card</li>
             </ul>
