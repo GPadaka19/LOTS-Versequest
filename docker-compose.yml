@@ -1,12 +1,12 @@
 version: '3.8'
 
 services:
-  lots-netion:
+  lots-versequest:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: lots-netion
-    image: lots-netion:latest
+    container_name: lots-versequest
+    image: lots-versequest:latest
     ports:
       - "3001:80"
     restart: always
