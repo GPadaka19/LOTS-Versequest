@@ -39,7 +39,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            rm -rf ~/lots-netion
+            rm -rf ~/lots-versequest
 
       - name: Copy dist & docker files to VPS
         uses: appleboy/scp-action@v0.1.4
@@ -48,7 +48,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "dist,Dockerfile,docker-compose.yml,nginx.conf,.env"
-          target: "~/lots-netion"
+          target: "~/lots-versequest"
         
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.0
@@ -57,7 +57,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd ~/lots-netion
+            cd ~/lots-versequest
             sudo docker compose down
             sudo docker compose build
             sudo docker compose up -d
@@ -75,7 +75,7 @@ jobs:
           
           curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
             -d chat_id="$TELEGRAM_CHAT_ID" \
-            -d text="✅ CI/CD Sukses!%0AProject *lots-netion* berhasil dideploy ke VPS 🎉%0A%0A📝 *Commit:* \`$COMMIT_MESSAGE\`%0A👤 *Author:* $AUTHOR_NAME%0A🔗 [Lihat Commit]($COMMIT_URL)" \
+            -d text="✅ CI/CD Sukses!%0AProject *lots-versequest* berhasil dideploy ke VPS 🎉%0A%0A📝 *Commit:* \`$COMMIT_MESSAGE\`%0A👤 *Author:* $AUTHOR_NAME%0A🔗 [Lihat Commit]($COMMIT_URL)" \
             -d parse_mode=Markdown
 
       - name: Send Discord notification (Success)
@@ -89,7 +89,7 @@ jobs:
           
           curl -s -X POST "$DISCORD_WEBHOOK_URL" \
             -H "Content-Type: application/json" \
-            -d "{\"username\":\"LOTS-CI/CD\",\"avatar_url\":\"https://github.com/identicons/$AUTHOR_NAME.png\",\"embeds\":[{\"title\":\"✅ CI/CD Success\",\"description\":\"Project **lots-netion** successfully deployed to VPS 🎉\",\"color\":65280,\"fields\":[{\"name\":\"Commit\",\"value\":\"\`$COMMIT_MESSAGE\`\",\"inline\":true},{\"name\":\"Author\",\"value\":\"$AUTHOR_NAME\",\"inline\":true},{\"name\":\"View Commit\",\"value\":\"[Click here]($COMMIT_URL)\",\"inline\":true}]}]}"
+            -d "{\"username\":\"LOTS-CI/CD\",\"avatar_url\":\"https://github.com/identicons/$AUTHOR_NAME.png\",\"embeds\":[{\"title\":\"✅ CI/CD Success\",\"description\":\"Project **lots-versequest** successfully deployed to VPS 🎉\",\"color\":65280,\"fields\":[{\"name\":\"Commit\",\"value\":\"\`$COMMIT_MESSAGE\`\",\"inline\":true},{\"name\":\"Author\",\"value\":\"$AUTHOR_NAME\",\"inline\":true},{\"name\":\"View Commit\",\"value\":\"[Click here]($COMMIT_URL)\",\"inline\":true}]}]}"
 
       - name: Send failure Telegram notification
         if: failure()
@@ -103,7 +103,7 @@ jobs:
           
           curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
             -d chat_id="$TELEGRAM_CHAT_ID" \
-            -d text="❌ CI/CD Gagal!%0AProject *lots-netion* gagal dideploy ke VPS ⚠️%0A%0A📝 *Commit:* \`$COMMIT_MESSAGE\`%0A👤 *Author:* $AUTHOR_NAME%0A🔗 [Lihat Commit]($COMMIT_URL)" \
+            -d text="❌ CI/CD Gagal!%0AProject *lots-versequest* gagal dideploy ke VPS ⚠️%0A%0A📝 *Commit:* \`$COMMIT_MESSAGE\`%0A👤 *Author:* $AUTHOR_NAME%0A🔗 [Lihat Commit]($COMMIT_URL)" \
             -d parse_mode=Markdown
 
       - name: Send failure Discord notification
@@ -117,4 +117,4 @@ jobs:
           
           curl -s -X POST "$DISCORD_WEBHOOK_URL" \
             -H "Content-Type: application/json" \
-            -d "{\"username\":\"LOTS-CI/CD\",\"avatar_url\":\"https://github.com/identicons/$AUTHOR_NAME.png\",\"embeds\":[{\"title\":\"❌ CI/CD Failed\",\"description\":\"Project **lots-netion** failed to deploy to VPS ⚠️\",\"color\":16711680,\"fields\":[{\"name\":\"Commit\",\"value\":\"\`$COMMIT_MESSAGE\`\",\"inline\":true},{\"name\":\"Author\",\"value\":\"$AUTHOR_NAME\",\"inline\":true},{\"name\":\"View Commit\",\"value\":\"[Click here]($COMMIT_URL)\",\"inline\":true}]}]}"
+            -d "{\"username\":\"LOTS-CI/CD\",\"avatar_url\":\"https://github.com/identicons/$AUTHOR_NAME.png\",\"embeds\":[{\"title\":\"❌ CI/CD Failed\",\"description\":\"Project **lots-versequest** failed to deploy to VPS ⚠️\",\"color\":16711680,\"fields\":[{\"name\":\"Commit\",\"value\":\"\`$COMMIT_MESSAGE\`\",\"inline\":true},{\"name\":\"Author\",\"value\":\"$AUTHOR_NAME\",\"inline\":true},{\"name\":\"View Commit\",\"value\":\"[Click here]($COMMIT_URL)\",\"inline\":true}]}]}"
