@@ -35,21 +35,28 @@ function MainContent() {
         </div>
       )}
       <main>
-        {/* Portrait: 4 sections stacked, each 25% height */}
-        <div className="hidden portrait:grid portrait:grid-rows-4 portrait:h-screen">
-          <HeroSection compact />
-          <CharacterGallery compact />
-          <MapGallery compact />
-          <AboutSection compact />
-        </div>
-
-        {/* Landscape: normal full-height sections */}
-        <div className="portrait:hidden">
-          <HeroSection />
-          <AboutSection />
-          <CharacterGallery />
-          <MapGallery />
-        </div>
+        {/* Render only one layout to avoid duplicate IDs for anchors */}
+        {isPortrait ? (
+          // Portrait: 4 sections stacked, each 25% height
+          <div className="grid grid-rows-4 h-screen">
+            <HeroSection compact />
+            <div id="gallery">
+              <CharacterGallery compact />
+              <MapGallery compact />
+            </div>
+            <AboutSection compact />
+          </div>
+        ) : (
+          // Landscape: normal full-height sections
+          <div>
+            <HeroSection />
+            <AboutSection />
+            <div id="gallery">
+              <CharacterGallery />
+              <MapGallery />
+            </div>
+          </div>
+        )}
         {/* Section lain tetap di luar portrait/landscape switch */}
         <div className="relative z-10 bg-stone-900">
           <FeaturesSection />
