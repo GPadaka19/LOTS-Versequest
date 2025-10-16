@@ -1,113 +1,221 @@
-import { useRef, useState } from 'react';
-import confetti from 'canvas-confetti';
+'use client';
 
-const merchItems = ['stiker', 'gantungan kunci', 'photocard', 'paket (semua merch)'];
+import { useRef, useState, useEffect } from 'react';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { db } from '../firebase/config';
+import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 
-const rarityMap: Record<string, string> = {
-  common: 'bg-stone-400',
-  rare: 'bg-indigo-500',
-  epic: 'bg-pink-500',
-  mythical: 'bg-yellow-400 text-black font-bold',
+interface MerchItem {
+  id: string;
+  name: string;
+  stock: number;
+  image: string;
+}
+
+const initialMerchIds = [
+  'm_kartuNamaA', 'm_kartuNamaB', 'm_kartuNamaC', 'm_kartuNamaD', 'm_kartuNamaE',
+  'm_kartuNamaF', 'm_kartuNamaG', 'm_kartuNamaH', 'm_kartuNamaI',
+  'm_stickerA', 'm_stickerB', 'm_coklat'
+];
+
+const imageMap: Record<string, string> = {
+  m_kartuNamaA: '/merch/kartuNamaA.webp',
+  m_kartuNamaB: '/merch/kartuNamaB.webp',
+  m_kartuNamaC: '/merch/kartuNamaC.webp',
+  m_kartuNamaD: '/merch/kartuNamaD.webp',
+  m_kartuNamaE: '/merch/kartuNamaE.webp',
+  m_kartuNamaF: '/merch/kartuNamaF.webp',
+  m_kartuNamaG: '/merch/kartuNamaG.webp',
+  m_kartuNamaH: '/merch/kartuNamaH.webp',
+  m_kartuNamaI: '/merch/kartuNamaI.webp',
+  m_stickerA: '/merch/Stiker_1.webp',
+  m_stickerB: '/merch/Stiker_2.webp',
+  m_coklat: '/merch/coklat.webp',
 };
 
-function getRarity(item: string): keyof typeof rarityMap {
-  if (item === 'stiker') return 'common';
-  if (item === 'photocard') return 'rare';
-  if (item === 'gantungan kunci') return 'epic';
-  return 'mythical'; // paket (semua merch)
-}
+const ITEM_WIDTH = 256 + 16; // w-64 + mx-2
 
 const MerchWheel = () => {
   const [spinning, setSpinning] = useState(false);
-  const [result, setResult] = useState<{ name: string; rarity: string } | null>(null);
+  const [result, setResult] = useState<MerchItem | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const stripRef = useRef<HTMLDivElement>(null);
 
-  const handleSpin = () => {
+  const [user, setUser] = useState<User | null>(null);
+  const [role, setRole] = useState<string | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
+
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [showResultModal, setShowResultModal] = useState(false);
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      setUser(firebaseUser);
+      setAuthLoading(false);
+      if (firebaseUser) {
+        const snap = await getDoc(doc(db, 'user-role', firebaseUser.uid));
+        setRole(snap.exists() ? snap.data().role || null : null);
+      } else {
+        setRole(null);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // Detect 1080x1920 or 1920x1080 and zoom
+  useEffect(() => {
+    const checkZoom = () => {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      setIsZoomed((w === 1080 && h === 1920) || (w === 1920 && h === 1080));
+    };
+
+    checkZoom();
+    window.addEventListener('resize', checkZoom);
+    return () => window.removeEventListener('resize', checkZoom);
+  }, []);
+
+  const canSpin = user && (role === 'web-dev' || role === 'game-dev');
+
+  const fetchStock = async () => {
+    const result: MerchItem[] = [];
+    for (const id of initialMerchIds) {
+      const snap = await getDoc(doc(db, 'merch_stock', id));
+      if (snap.exists()) {
+        const data = snap.data();
+        result.push({ id, name: data.name, stock: data.stock, image: imageMap[id] });
+      }
+    }
+    return result.filter((item) => item.stock > 0);
+  };
+
+  const handleSpin = async () => {
     if (spinning) return;
     setSpinning(true);
     setResult(null);
+    setError(null);
+    setShowResultModal(false);
 
-    const totalBoxes = 100;
-    const centerIndex = Math.floor(totalBoxes / 2);
-    const strip = stripRef.current;
-
-    if (strip) {
-      strip.innerHTML = '';
-
-      const elements: HTMLDivElement[] = [];
-      for (let i = 0; i < totalBoxes; i++) {
-        const item = merchItems[Math.floor(Math.random() * merchItems.length)];
-        const rarity = getRarity(item);
-        const div = document.createElement('div');
-        div.className = `w-32 h-32 mx-2 flex items-center justify-center rounded text-white text-sm shrink-0 ${rarityMap[rarity]}`;
-        div.innerText = item;
-        elements.push(div);
+    try {
+      const availableItems = await fetchStock();
+      if (availableItems.length === 0) {
+        setError('Stok habis semua!');
+        setSpinning(false);
+        return;
       }
 
-      const selected = elements[centerIndex];
-      strip.dataset.result = selected.innerText;
-
-      elements.forEach(el => strip.appendChild(el));
-
-      const boxWidth = 128;
-      const marginX = 16;
-      const totalMove = (boxWidth + marginX) * centerIndex;
-
-      strip.animate(
-        [
-          { transform: `translateX(0px)` },
-          { transform: `translateX(-${totalMove}px)` },
-        ],
-        {
-          duration: 6000,
-          easing: 'cubic-bezier(0.1, 0.9, 0.2, 1)',
-          fill: 'forwards',
-        }
+      const winningItem = availableItems[Math.floor(Math.random() * availableItems.length)];
+      const totalBoxes = 60;
+      const items: MerchItem[] = Array.from({ length: totalBoxes }, () =>
+        availableItems[Math.floor(Math.random() * availableItems.length)]
       );
 
-      setTimeout(() => {
-        const winnerName = selected.innerText;
-        const winnerRarity = getRarity(winnerName);
-        setResult({ name: winnerName, rarity: winnerRarity });
-        confetti({
-          particleCount: 120,
-          spread: 80,
-          origin: { y: 0.7 },
-        });
+      const centerIndex = Math.floor(totalBoxes / 2);
+      items[centerIndex] = winningItem;
+
+      const strip = stripRef.current;
+      if (!strip) return;
+
+      strip.innerHTML = '';
+      items.forEach((item) => {
+        const div = document.createElement('div');
+        div.className =
+          'w-64 h-64 mx-2 flex flex-col items-center justify-center rounded text-white text-2xl shrink-0 bg-stone-700 border border-stone-500';
+        const img = document.createElement('img');
+        img.src = item.image;
+        img.className = 'w-64 h-64 object-contain mb-1';
+        div.appendChild(img);
+        const text = document.createElement('div');
+        text.innerText = item.name;
+        div.appendChild(text);
+        strip.appendChild(div);
+      });
+
+      await new Promise((r) => setTimeout(r, 50)); // wait DOM render
+
+      const container = strip.parentElement;
+      if (!container) return;
+
+      const translateX = container.offsetWidth / 2 - (centerIndex * ITEM_WIDTH + ITEM_WIDTH / 2);
+
+      strip.animate([{ transform: `translateX(0px)` }, { transform: `translateX(${translateX}px)` }], {
+        duration: 6400,
+        easing: 'cubic-bezier(0.1, 0.9, 0.2, 1)',
+        fill: 'forwards',
+      });
+
+      setTimeout(async () => {
+        const ref = doc(db, 'merch_stock', winningItem.id);
+        const snap = await getDoc(ref);
+        if (snap.exists() && snap.data().stock > 0) {
+          await updateDoc(ref, { stock: snap.data().stock - 1 });
+          setResult(winningItem);
+          setShowResultModal(true);
+        } else {
+          setError('Stok tidak tersedia.');
+        }
         setSpinning(false);
-      }, 6000);
+      }, 6400);
+    } catch {
+      setError('Terjadi kesalahan.');
+      setSpinning(false);
     }
   };
 
+  function renderResultModal() {
+    if (!result || !showResultModal) return null;
+    return (
+      <div className="absolute inset-0 z-40 flex items-center justify-center bg-black/80">
+        <div className="bg-stone-900 rounded-lg shadow-lg p-6 max-w-2xl w-full flex flex-col items-center border-2 border-amber-400">
+          <div className="custom-base-accent-2 mb-8 w-full">Kamu mendapatkan</div>
+          <div className="flex flex-row items-center justify-center w-full gap-8">
+            <img src={result.image} alt={result.name} width={320} height={320} className="rounded-lg shadow" />
+            <div className="flex flex-col items-center gap-4">
+              <div className="text-3xl font-bold p-4 rounded bg-secondary border-stone-500 custom-base-accent text-center min-w-[160px]">{result.name}</div>
+              <button
+                onClick={() => setShowResultModal(false)}
+                className="px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-md shadow-lg transition-colors w-full"
+              >
+                Tutup
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-stone-900 text-white px-4 py-10">
-      <h1 className="text-3xl font-bold mb-8">Gacha Merchandise</h1>
+    <div
+      className={`relative h-128 flex flex-col items-center justify-center bg-stone-900 text-white px-4 py-10 transition-transform duration-300 ${
+        isZoomed ? 'scale-[1.2]' : ''
+      }`}
+    >
+      <h1 className="text-5xl font-bold mb-16">Gacha Merchandise</h1>
 
       <div className="relative w-full max-w-6xl overflow-hidden border-4 border-stone-700 rounded-lg shadow-lg bg-stone-800">
-        <div
-          className="flex py-4 px-2 transition-transform duration-1000 ease-out"
-          ref={stripRef}
-        ></div>
-
-        <div className="absolute top-0 bottom-0 left-1/2 w-1 border-l-4 border-amber-400 transform -translate-x-1/2 z-10" />
+        <div className="flex py-4 px-2" ref={stripRef}></div>
+        <div className="absolute top-0 bottom-0 left-1/2 w-1 border-l-4 border-accent transform -translate-x-1/2 z-10" />
       </div>
 
       <button
         onClick={handleSpin}
-        disabled={spinning}
-        className="mt-8 px-8 py-3 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg shadow-lg transition-colors disabled:opacity-50"
+        disabled={spinning || !canSpin}
+        className="mt-8 px-8 py-3 bg-amber-500 hover:bg-amber-600 text-3xl font-bold rounded-lg shadow-lg transition-colors disabled:opacity-50"
       >
-        {spinning ? 'Rolling...' : 'Open Case'}
+        {spinning ? 'Rolling...' : 'Open Chest'}
       </button>
 
-      {result && (
-        <div className="mt-8 text-center">
-          <div className="text-xl">Kamu mendapatkan:</div>
-          <div className={`text-3xl font-bold mt-2 p-4 rounded ${rarityMap[result.rarity]}`}>
-            {result.name} ({result.rarity})
-          </div>
+      {!canSpin && !authLoading && (
+        <div className="mt-4 text-red-600 font-semibold">
+          Hanya user dengan role <b>Web Dev</b> atau <b>Game Dev</b> yang bisa spin.
         </div>
       )}
+
+      {error && <p className="mt-4 text-red-500 font-semibold">{error}</p>}
+
+      {renderResultModal()}
     </div>
   );
 };

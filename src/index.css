@@ -8,3 +8,18 @@
 .animate-spin-fast {
   animation: spin-fast 1s linear infinite;
 }
+
+.custom-base-accent {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: bold;
+  color: rgb(234 169 29); /* #EAA91D */
+}
+
+.custom-base-accent-2 {
+  font-size: 3rem;
+  line-height: 1rem;
+  font-weight: bold;
+  color: rgb(234 169 29); /* #EAA91D */
+  text-align: center;
+}
