@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 const DownloadSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const downloadUrl = (import.meta.env.VITE_LOTS_INSTALLER as string) || '#';
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -47,7 +48,7 @@ const DownloadSection = () => {
           
           <div className="mb-10">
             <a 
-              href="https://drive.google.com/open?id=1HDxpAwvnNJJo4Rdv_AuLHQXpFYFrAZSO&usp=drive_fs" 
+              href={downloadUrl} 
               className="inline-flex items-center gap-2 px-8 py-4 bg-white text-accent font-bold rounded-md shadow-lg hover:bg-amber-100 transform transition-all hover:scale-105 active:scale-95"
             >
               <img 
