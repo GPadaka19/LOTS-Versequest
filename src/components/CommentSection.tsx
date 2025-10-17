@@ -4,7 +4,10 @@ import { signInWithPopup, signOut, User } from 'firebase/auth';
 import { collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, Timestamp, deleteDoc, doc, getDoc } from 'firebase/firestore';
 import DefaultAvatar from './DefaultAvatar';
 import { Trash2, LogOut, Reply } from 'lucide-react';
-import UserRoleBadge from './UserRoleBadge';
+// UserRoleBadge temporarily disabled. To re-enable:
+// 1) Uncomment the import below
+// 2) Uncomment the JSX usages where noted further below
+// import UserRoleBadge from './UserRoleBadge';
 import ReactDOM from 'react-dom';
 
 function CenteredModal({ children }: { children: React.ReactNode }) {
@@ -297,9 +300,11 @@ const CommentSection = () => {
           )}
         </div>
         <div className="flex-grow">
-          <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between">
             <div className="flex items-baseline gap-2">
-              <UserRoleBadge uid={comment.userId} userName={comment.userName} />
+              {/* UserRoleBadge disabled. To re-enable, uncomment the next line and the import at top. */}
+              {/* <UserRoleBadge uid={comment.userId} userName={comment.userName} /> */}
+              <span className="font-medium text-stone-700">{comment.userName}</span>
               <span className="text-sm text-stone-500">
                 {formatDate(comment.timestamp)}
               </span>
@@ -383,7 +388,9 @@ const CommentSection = () => {
                   <div className="flex-grow">
                     <div className="flex items-center justify-between">
                       <div className="flex items-baseline gap-2">
-                        <UserRoleBadge uid={reply.userId} userName={reply.userName} />
+                        {/* UserRoleBadge disabled. To re-enable, uncomment the next line and the import at top. */}
+                        {/* <UserRoleBadge uid={reply.userId} userName={reply.userName} /> */}
+                        <span className="font-medium text-stone-700">{reply.userName}</span>
                         <span className="text-sm text-stone-500">
                           {reply.timestamp?.toDate ? formatDate(reply.timestamp) : ''}
                         </span>
