@@ -66,12 +66,12 @@ const DownloadSection = () => {
               <li>• Windows 10 64-bit or later</li>
               <li>• 8 GB RAM</li>
               <li>• 10 GB available storage</li>
-              <li>• DirectX 12 compatible graphics card</li>
+              <li>• DirectX 11/12 compatible graphics card</li>
             </ul>
           </div>
           
           <p className="mt-6 text-accent text-sm">
-            Version 0.1.0 | 5 GB | Beta Test on July 28, 2025
+            Version 0.2.0 | 1.16 GB | Beta Test on Oct 20, 2025
           </p>
         </div>
       </div>
