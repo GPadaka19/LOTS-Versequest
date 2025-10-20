@@ -41,7 +41,7 @@ const HeroSection = ({ compact = false }: HeroSectionProps) => {
             <div className="relative" style={{ paddingBottom: '56.25%' }}>
               <iframe
                 className="absolute inset-0 w-full h-full"
-                src="https://youtu.be/t9mXSEFhiYs?si=qwavDPQEso8EZxkI"
+                src="https://www.youtube.com/watch?v=iJFvXSn4eks"
                 title="Game Trailer"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
