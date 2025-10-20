@@ -280,7 +280,7 @@ const CommentSection = () => {
   const renderedComments = useMemo(() => comments.map((comment) => {
     const photoURL = comment.userPhoto;
     return (
-      <div key={comment.id} className="flex gap-4 p-4 bg-stone-50 rounded-lg border border-stone-300">
+      <div key={comment.id} className="flex gap-4 p-4 bg-stone-700 rounded-lg border border-stone-600">
         <div className="relative">
           {photoURL ? (
             <>
@@ -304,8 +304,8 @@ const CommentSection = () => {
             <div className="flex items-baseline gap-2">
               {/* UserRoleBadge disabled. To re-enable, uncomment the next line and the import at top. */}
               {/* <UserRoleBadge uid={comment.userId} userName={comment.userName} /> */}
-              <span className="font-medium text-stone-700">{comment.userName}</span>
-              <span className="text-sm text-stone-500">
+              <span className="font-medium text-stone-100">{comment.userName}</span>
+              <span className="text-sm text-stone-400">
                 {formatDate(comment.timestamp)}
               </span>
             </div>
@@ -328,7 +328,7 @@ const CommentSection = () => {
               )}
             </div>
           </div>
-          <p className="text-stone-700 mt-[10px] text-left">{comment.text}</p>
+          <p className="text-stone-100 mt-[10px] text-left">{comment.text}</p>
           {replyTo === comment.id && (
             <form
               onSubmit={e => handleReplySubmit(e, comment.id)}
@@ -337,7 +337,7 @@ const CommentSection = () => {
               <textarea
                 value={replyText}
                 onChange={e => setReplyText(e.target.value)}
-                className="w-full px-2 py-1 border rounded text-stone-700 placeholder-stone-500"
+                className="w-full px-2 py-1 border rounded text-stone-100 placeholder-stone-400 bg-stone-600 border-stone-500"
                 placeholder="Write your reply..."
                 required
               />
@@ -365,12 +365,12 @@ const CommentSection = () => {
                 <div
                   key={reply.id}
                   className={
-                    `flex gap-4 p-4 bg-amber-50 rounded-lg border border-stone-300 ` +
+                    `flex gap-4 p-4 bg-amber-900 rounded-lg border border-stone-600 ` +
                     (replyRole === 'web-dev'
-                      ? 'border-l-4 border-l-amber-300'
+                      ? 'border-l-4 border-l-amber-500'
                       : replyRole === 'game-dev'
-                      ? 'border-l-4 border-l-green-300'
-                      : 'border-l-4 border-l-stone-300')
+                      ? 'border-l-4 border-l-green-500'
+                      : 'border-l-4 border-l-stone-500')
                   }
                 >
                   <div className="relative">
@@ -390,8 +390,8 @@ const CommentSection = () => {
                       <div className="flex items-baseline gap-2">
                         {/* UserRoleBadge disabled. To re-enable, uncomment the next line and the import at top. */}
                         {/* <UserRoleBadge uid={reply.userId} userName={reply.userName} /> */}
-                        <span className="font-medium text-stone-700">{reply.userName}</span>
-                        <span className="text-sm text-stone-500">
+                        <span className="font-medium text-stone-100">{reply.userName}</span>
+                        <span className="text-sm text-stone-400">
                           {reply.timestamp?.toDate ? formatDate(reply.timestamp) : ''}
                         </span>
                       </div>
@@ -405,7 +405,7 @@ const CommentSection = () => {
                         </button>
                       )}
                     </div>
-                    <p className="text-stone-700 mt-[10px] text-left">{reply.text}</p>
+                    <p className="text-stone-100 mt-[10px] text-left">{reply.text}</p>
                   </div>
                 </div>
               );
@@ -418,13 +418,13 @@ const CommentSection = () => {
 
   return (
     <>
-      <div className="w-full max-w-4xl mx-auto mt-12 p-6 bg-white rounded-lg shadow-md px-4">
-        <h3 className="text-4xl font-bold mb-12 text-accent font-serif">Community Comments</h3>
+      <div className="w-full max-w-4xl mx-auto mt-12 p-6 bg-stone-800 rounded-lg shadow-md px-4">
+        <h3 className="text-4xl font-bold mb-12 text-stone-100 font-serif">Community Comments</h3>
         
         {!user ? (
           <div className="mb-6">
-            <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg mb-4">
-              <p className="text-accent text-center">
+            <div className="p-4 bg-amber-900 border border-amber-700 rounded-lg mb-4">
+              <p className="text-amber-100 text-center">
                 🔒 Sign in to join the conversation and share your thoughts!
               </p>
             </div>
@@ -457,7 +457,7 @@ const CommentSection = () => {
                 )}
               </div>
               <div>
-                <p className="font-medium text-amber-600">{user.displayName || 'Anonymous User'}</p>
+                <p className="font-medium text-amber-300">{user.displayName || 'Anonymous User'}</p>
                 <button
                   onClick={handleSignOut}
                   className="flex items-center gap-1 text-sm text-red-600 hover:text-red-700 hover:bg-red-50 px-2 py-1 rounded-full transition-all duration-200"
@@ -473,7 +473,7 @@ const CommentSection = () => {
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 placeholder="Write your comment..."
-                className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-500 min-h-[100px] text-black placeholder-gray-900"
+                className="w-full px-4 py-2 rounded-md border border-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-500 min-h-[100px] text-stone-100 placeholder-stone-400 bg-stone-600"
                 required
               />
               <button
@@ -490,7 +490,7 @@ const CommentSection = () => {
         {/* PERUBAHAN: Tambah informasi jika belum ada komentar */}
         {comments.length === 0 ? (
           <div className="text-center py-8">
-            <p className="text-stone-500 text-lg">
+            <p className="text-stone-400 text-lg">
               💬 No comments yet. {!user ? 'Sign in and ' : ''}Be the first to share your thoughts!
             </p>
           </div>
@@ -502,12 +502,12 @@ const CommentSection = () => {
       </div>
       {confirmDelete.open && (
         <CenteredModal>
-          <div className="bg-gray-100 rounded-lg shadow-lg p-4 sm:p-6 w-full max-w-xs sm:max-w-md mx-auto flex flex-col items-center border border-amber-400">
+          <div className="bg-stone-800 rounded-lg shadow-lg p-4 sm:p-6 w-full max-w-xs sm:max-w-md mx-auto flex flex-col items-center border border-amber-600">
             <div className="text-amber-600 mb-4">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z" /></svg>
             </div>
             <h2 className="text-lg font-semibold mb-2 text-center">Delete Comment?</h2>
-            <p className="text-stone-600 mb-6 text-center">
+            <p className="text-stone-300 mb-6 text-center">
               Are you sure you want to delete this comment?<br />
               This action cannot be undone.
             </p>
@@ -520,7 +520,7 @@ const CommentSection = () => {
               </button>
               <button
                 onClick={cancelDeleteComment}
-                className="px-4 py-2 bg-gray-200 text-stone-700 rounded hover:bg-gray-300 font-semibold transition-colors"
+                className="px-4 py-2 bg-stone-600 text-stone-100 rounded hover:bg-stone-500 font-semibold transition-colors"
               >
                 Cancel
               </button>
@@ -530,12 +530,12 @@ const CommentSection = () => {
       )}
       {confirmDeleteReply.open && (
         <CenteredModal>
-          <div className="bg-gray-100 rounded-lg shadow-lg p-4 sm:p-6 w-full max-w-xs sm:max-w-md mx-auto flex flex-col items-center border border-amber-400">
+          <div className="bg-stone-800 rounded-lg shadow-lg p-4 sm:p-6 w-full max-w-xs sm:max-w-md mx-auto flex flex-col items-center border border-amber-600">
             <div className="text-amber-600 mb-4">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z" /></svg>
             </div>
             <h2 className="text-lg font-semibold mb-2 text-center">Delete Reply?</h2>
-            <p className="text-stone-600 mb-6 text-center">
+            <p className="text-stone-300 mb-6 text-center">
               Are you sure you want to delete this reply?<br />
               This action cannot be undone.
             </p>
@@ -548,7 +548,7 @@ const CommentSection = () => {
               </button>
               <button
                 onClick={cancelDeleteReply}
-                className="px-4 py-2 bg-gray-200 text-stone-700 rounded hover:bg-gray-300 font-semibold transition-colors"
+                className="px-4 py-2 bg-stone-600 text-stone-100 rounded hover:bg-stone-500 font-semibold transition-colors"
               >
                 Cancel
               </button>
@@ -558,16 +558,16 @@ const CommentSection = () => {
       )}
       {showReplyWarning && (
         <CenteredModal>
-          <div className="bg-gray-100 rounded-lg shadow-lg p-4 sm:p-6 w-full max-w-xs sm:max-w-md mx-auto flex flex-col items-center border border-amber-400">
+          <div className="bg-stone-800 rounded-lg shadow-lg p-4 sm:p-6 w-full max-w-xs sm:max-w-md mx-auto flex flex-col items-center border border-amber-600">
             <div className="text-amber-600 mb-4">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z" /></svg>
             </div>
             <h2 className="text-lg font-semibold mb-2 text-center">Sign In Required</h2>
-            <p className="text-stone-600 mb-6 text-center">You must be signed in to reply to a comment.</p>
+            <p className="text-stone-300 mb-6 text-center">You must be signed in to reply to a comment.</p>
             <div className="flex gap-4 w-full justify-center">
               <button
                 onClick={() => setShowReplyWarning(false)}
-                className="px-4 py-2 bg-gray-200 text-stone-700 rounded hover:bg-gray-300 font-semibold transition-colors"
+                className="px-4 py-2 bg-stone-600 text-stone-100 rounded hover:bg-stone-500 font-semibold transition-colors"
               >
                 Close
               </button>
