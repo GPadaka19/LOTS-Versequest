@@ -1,5 +1,3 @@
-import { StagewiseToolbar } from '@stagewise/toolbar-react';
-import ReactPlugin from '@stagewise-plugins/react';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import AboutSection from './components/AboutSection';
@@ -73,7 +71,6 @@ function MainContent() {
 function App() {
   return (
     <>
-      <StagewiseToolbar config={{ plugins: [ReactPlugin] }} />
       <Router>
         <Routes>
           <Route path="/merch-wheel" element={<MerchWheel />} />

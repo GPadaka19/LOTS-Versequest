@@ -1,5 +1,0 @@
-Mon 20 Oct 01.09
-Test using CF R2 Bucket, Target sc.jpg
-
-Mon 20 Oct 01.36
-Redirect to https://versequest.gpadaka.com/lots-installer.zip
